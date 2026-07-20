@@ -1,0 +1,25 @@
+<?php
+require __DIR__ . '/lib.php';
+$heroes = published(load_content('hero'));
+$works = published(load_content('works'));
+$news = published(load_content('news'));
+?>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>プロ厨房HIT沖縄｜飲食店づくりをトータルサポート</title><meta name="description" content="沖縄の飲食店開業、厨房設計、厨房機器、内外装工事、居抜き売買までワンストップで支援します。">
+<link rel="stylesheet" href="assets/style.css"><script src="assets/site.js" defer></script></head><body>
+<header class="site-header"><a class="brand" href="index.php"><span>PRO KITCHEN</span>プロ厨房HIT<small>OKINAWA</small></a><button class="nav-toggle" aria-expanded="false" aria-controls="nav">MENU</button><nav id="nav"><a href="#about">私たちについて</a><a href="#services">サービス</a><a href="#works">施工事例</a><a href="#news">最新情報</a><a class="nav-cta" href="#contact">お問い合わせ</a></nav></header>
+<main>
+<section class="hero" aria-label="メインビジュアル"><div class="slides">
+<?php foreach ($heroes as $i => $hero): ?><article class="slide<?= $i === 0 ? ' active' : '' ?>" style="--bg:<?= e($hero['color']) ?>;--overlay:<?= e($hero['overlay']) ?>;--opacity:<?= e(((int)$hero['overlay_opacity'])/100) ?>;--dot-opacity:<?= e(((int)$hero['dots_opacity'])/100) ?>;<?= $hero['image'] ? '--image:url('.e($hero['image']).');' : '' ?>" aria-hidden="<?= $i === 0 ? 'false' : 'true' ?>"><div class="hero-copy"><p class="eyebrow">PRO KITCHEN HIT OKINAWA</p><h1><?= e($hero['title']) ?></h1><p><?= e($hero['lead']) ?></p><a class="button light" href="#contact">お店づくりを相談する</a></div></article><?php endforeach; ?>
+</div><div class="slider-controls"><button data-prev aria-label="前のスライド">←</button><span data-counter>01 / <?= str_pad((string)count($heroes), 2, '0', STR_PAD_LEFT) ?></span><button data-next aria-label="次のスライド">→</button></div></section>
+<section class="intro section" id="about"><p class="section-no">01 / ABOUT US</p><div><p class="kicker">BUILDING RESTAURANTS,<br>BUILDING FUTURES.</p><h2>厨房機器を売るだけでは、<br>お店は完成しません。</h2><p>私たちは、飲食店オーナーの「こんなお店をつくりたい」という想いを形にするチームです。現地調査、厨房レイアウト、CAD図面、機器選定、搬入設置、内外装工事まで。一社でまとめて対応します。</p><p>経営と現場の両方を知るからこそ、初期投資だけでなく、動きやすさ、売上、将来の設備更新まで見据えて提案します。</p></div></section>
+<section class="services section dark" id="services"><p class="section-no">02 / SERVICES</p><div><h2>お店の一生に、<br>ずっと寄り添う。</h2><div class="service-grid">
+<?php $services=[['01','開業サポート','現地調査から厨房設計、見積、搬入まで一括対応。'],['02','厨房機器 販売・買取','新品と中古を最適に組み合わせ、全国ネットワークで調達。'],['03','内装・外装工事','厨房だけでなく、お店全体を考えた施工。'],['04','ラショナル導入支援','現役ユーザーの実体験をもとに、導入効果まで提案。']]; foreach($services as $s): ?><article><span><?= $s[0] ?></span><h3><?= $s[1] ?></h3><p><?= $s[2] ?></p></article><?php endforeach; ?>
+</div></div></section>
+<section class="section works" id="works"><p class="section-no">03 / WORKS</p><div><div class="section-head"><h2>現場から生まれた、<br>お店づくりの実績。</h2><span>OKINAWA PROJECT MAP</span></div><div class="works-layout"><div class="work-list"><?php foreach($works as $work): ?><article><div class="placeholder"<?= $work['image'] ? ' style="background-image:url('.e($work['image']).')"' : '' ?>></div><p><?= e($work['category']) ?> / <?= e($work['area']) ?></p><h3><?= e($work['title']) ?></h3><p><?= e($work['summary']) ?></p></article><?php endforeach; ?></div><div class="map" data-map><strong>OKINAWA</strong><?php foreach($works as $work): ?><button class="map-pin" style="--x:<?= e(50 + (((float)$work['longitude']-127.7)*70)) ?>%;--y:<?= e(50 - (((float)$work['latitude']-26.3)*65)) ?>%" title="<?= e($work['title']) ?>"><span></span></button><?php endforeach; ?></div></div></div></section>
+<section class="story section"><p class="section-no">04 / OUR STRENGTH</p><div><h2>飲食店経営者だから、<br>できる提案がある。</h2><p>代表・新垣大作は、開業、運営、スタッフ育成、厨房づくり、設備投資、店舗売却までを実際に経験。現在も広島で沖縄料理店「新垣家」を経営しています。</p><blockquote>「機械を売る」のではなく、<br>「繁盛するお店づくり」を考える。</blockquote></div></section>
+<section class="uriten section"><p class="section-no">05 / URITEN</p><div><p class="eyebrow">SHOP SEARCH & TRANSFER</p><h2>店舗を探すところから、<br>想いを引き継ぐところまで。</h2><p>居抜き売買事業「ウリテン」と連携し、店舗探し、開業、そして売却までを支えます。</p><a class="button" href="https://uriten-okinawa.com/" target="_blank" rel="noopener">ウリテン沖縄を見る ↗</a></div></section>
+<section class="news section" id="news"><p class="section-no">06 / NEWS</p><div><h2>最新情報</h2><?php foreach(array_slice($news,0,3) as $item): ?><article><time><?= e($item['published_at']) ?></time><span><?= e($item['category']) ?></span><h3><?= e($item['title']) ?></h3><p><?= e($item['body']) ?></p></article><?php endforeach; ?></div></section>
+<section class="contact" id="contact"><p class="eyebrow">LET'S BUILD YOUR RESTAURANT.</p><h2>そのお店の未来を、<br>一緒につくりませんか。</h2><p>開業、厨房機器、工事、店舗売却。まだ構想段階でもお気軽にご相談ください。</p><a class="button light" href="mailto:info@example.com">お問い合わせ</a></section>
+</main><footer><div class="brand"><span>PRO KITCHEN</span>プロ厨房HIT<small>OKINAWA</small></div><p>プロ厨房HIT フランチャイズ加盟店<br>代表 新垣 大作 / 役員 高見 昌也</p><a href="admin.php">ADMIN</a><small>© <?= date('Y') ?> PRO KITCHEN HIT OKINAWA</small></footer>
+</body></html>

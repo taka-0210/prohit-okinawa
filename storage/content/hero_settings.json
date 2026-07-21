@@ -1,0 +1,9 @@
+[
+    {
+        "id": "hero-settings",
+        "overlay": "#2e3b47",
+        "overlay_opacity": 75,
+        "dots": true,
+        "dots_opacity": 18
+    }
+]

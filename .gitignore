@@ -1,0 +1,14 @@
+# Deployment packages generated for manual server uploads
+/deploy/
+
+# Runtime authentication and session data
+/storage/admin.json
+/storage/sessions/
+
+# Customer inquiry data must never be committed
+/storage/content/inquiries.json
+
+# Local/editor artifacts
+.DS_Store
+Thumbs.db
+*.log

@@ -1,7 +1,21 @@
 document.addEventListener('DOMContentLoaded',()=>{
- const slides=[...document.querySelectorAll('.slide')],counter=document.querySelector('[data-counter]'); let current=0,timer;
- const show=n=>{if(!slides.length)return;current=(n+slides.length)%slides.length;slides.forEach((s,i)=>{s.classList.toggle('active',i===current);s.setAttribute('aria-hidden',i===current?'false':'true')});if(counter)counter.textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0')};
- const start=()=>{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>show(current+1),6500)};
- document.querySelector('[data-next]')?.addEventListener('click',()=>{clearInterval(timer);show(current+1)});document.querySelector('[data-prev]')?.addEventListener('click',()=>{clearInterval(timer);show(current-1)});start();
+ document.querySelectorAll('.hero .eyebrow').forEach(el=>el.textContent='PRO CHUBO HIT OKINAWA');
+ const companyNumber=document.querySelector('#company > .section-no'),newsNumber=document.querySelector('#news > .section-no');if(companyNumber)companyNumber.textContent='05 / COMPANY';if(newsNumber)newsNumber.textContent='06 / NEWS';
+ document.querySelectorAll('.service-grid article[data-service-slug]').forEach(card=>{const slug=card.dataset.serviceSlug;if(!slug)return;const open=()=>location.href=`service.php?slug=${encodeURIComponent(slug)}`;card.classList.add('has-service-page');card.addEventListener('click',open);card.setAttribute('tabindex','0');card.setAttribute('role','link');card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open()}})});
+ const hero=document.querySelector('.hero'),slides=[...document.querySelectorAll('.slide')],counter=document.querySelector('[data-counter]');
+ let current=0,timer=null;
+ slides.forEach(slide=>{const image=getComputedStyle(slide).getPropertyValue('--image').trim();if(image)slide.style.backgroundImage=image});
+ const dots=document.createElement('div');dots.className='slider-dots';dots.setAttribute('aria-label','スライド選択');
+ slides.forEach((slide,index)=>{const button=document.createElement('button');button.type='button';button.setAttribute('aria-label',`スライド${index+1}を表示`);button.addEventListener('click',()=>{show(index);restart()});dots.append(button)});
+ hero?.append(dots);
+ const show=n=>{if(!slides.length)return;current=(n+slides.length)%slides.length;slides.forEach((slide,index)=>{const active=index===current;slide.classList.toggle('active',active);slide.setAttribute('aria-hidden',active?'false':'true')});[...dots.children].forEach((dot,index)=>dot.classList.toggle('active',index===current));if(counter)counter.textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0')};
+ const stop=()=>{if(timer){clearInterval(timer);timer=null}};
+ const start=()=>{stop();if(slides.length>1&&!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>show(current+1),5000)};
+ const restart=()=>{stop();start()};
+ document.querySelector('[data-next]')?.addEventListener('click',()=>{show(current+1);restart()});
+ document.querySelector('[data-prev]')?.addEventListener('click',()=>{show(current-1);restart()});
+ hero?.addEventListener('mouseenter',stop);hero?.addEventListener('mouseleave',start);hero?.addEventListener('focusin',stop);hero?.addEventListener('focusout',start);
+ document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
+ show(0);start();
  const toggle=document.querySelector('.nav-toggle'),nav=document.querySelector('#nav');toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')==='true';toggle.setAttribute('aria-expanded',String(!open));nav?.classList.toggle('open',!open)});
 });

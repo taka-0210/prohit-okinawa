@@ -1,0 +1,7 @@
+.contact-header img {
+  display: block;
+  max-width: 210px;
+  max-height: 50px;
+  object-fit: contain;
+  filter: none;
+}

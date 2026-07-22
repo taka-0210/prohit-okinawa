@@ -1,0 +1,13 @@
+.service-header {
+  background: #102a43;
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.service-header nav a {
+  color: #fff;
+}
+
+.service-header .contact-link {
+  border-color: #fff;
+}

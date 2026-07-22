@@ -28,6 +28,7 @@ $company = load_content('company')[0] ?? [];
   <meta name="description" content="<?= e($service['lead']) ?>">
   <link rel="stylesheet" href="assets/service-page.css">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">
+  <link rel="stylesheet" href="assets/service-header-fix.css?v=1">
 </head>
 <body>
 <header class="service-header">

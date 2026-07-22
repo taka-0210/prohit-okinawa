@@ -1,9 +1,6 @@
 name: Deploy demo to Xserver
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:

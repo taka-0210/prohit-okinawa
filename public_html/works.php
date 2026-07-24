@@ -17,7 +17,9 @@ foreach ($works as $work) {
         $outsideWorks[] = $work;
     }
 }
-$groups['outside'] = ['map'=>null,'works'=>$outsideWorks];
+if ($outsideWorks !== []) {
+    $groups['outside'] = ['map'=>null,'works'=>$outsideWorks];
+}
 $activeGroup = array_key_first(array_filter($groups, fn(array $group): bool => $group['works'] !== [])) ?? array_key_first($groups);
 function cluster_map_works(array $works, float $threshold = 6.0): array
 {

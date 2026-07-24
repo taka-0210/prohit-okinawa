@@ -151,7 +151,7 @@ $currentImages = $edit ? work_images($edit) : [];
         <div class="map-fields" data-map-fields>
           <label>地図
             <select name="map_id" data-map-select>
-              <option value="outside" <?= $selectedMapId==='outside'?'selected':'' ?>>沖縄以外（地図なし）</option>
+              <option value="outside" <?= $selectedMapId==='outside'?'selected':'' ?>>地図なし／未割り当て</option>
               <?php foreach($maps as $map): ?>
               <option value="<?= e($map['id']) ?>" data-image="<?= e($map['image']??'') ?>" data-scale="<?= e(((int)($map['display_scale']??100))/100) ?>" <?= $selectedMapId===($map['id']??'')?'selected':'' ?>>MAP <?= str_pad((string)($map['map_number']??0),2,'0',STR_PAD_LEFT) ?>｜<?= e($map['title']??'') ?></option>
               <?php endforeach; ?>

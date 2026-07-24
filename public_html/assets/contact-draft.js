@@ -27,20 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   try {
     const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
-    if (!saved.expiresAt || saved.expiresAt < Date.now()) {
+    const isValidDraft = saved.expiresAt && saved.expiresAt >= Date.now();
+    if (!isValidDraft) {
       localStorage.removeItem(storageKey);
-      return;
+    } else {
+      const draft = saved.values || {};
+      fields.forEach((name) => {
+        const field = form.elements.namedItem(name);
+        if (!field || draft[name] === undefined) return;
+        if (field.type === 'checkbox') {
+          field.checked = Boolean(draft[name]);
+        } else if (!field.value) {
+          field.value = String(draft[name]);
+        }
+      });
     }
-    const draft = saved.values || {};
-    fields.forEach((name) => {
-      const field = form.elements.namedItem(name);
-      if (!field || draft[name] === undefined) return;
-      if (field.type === 'checkbox') {
-        field.checked = Boolean(draft[name]);
-      } else if (!field.value) {
-        field.value = String(draft[name]);
-      }
-    });
   } catch {
     localStorage.removeItem(storageKey);
   }

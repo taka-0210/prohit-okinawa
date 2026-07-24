@@ -24,8 +24,7 @@ $newsThumbnail = static function (array $item): string {
   <title>最新情報｜<?= e($company['company_name'] ?? APP_NAME) ?></title>
   <meta name="description" content="プロ厨房HIT沖縄からのお知らせ、施工事例やサービスに関する最新情報をご案内します。">
   <link rel="stylesheet" href="assets/news-page.css">
-  <link rel="stylesheet" href="assets/news-archive-links.css?v=2">
-  <script src="assets/news-gallery.js?v=1" defer></script>
+  <link rel="stylesheet" href="assets/news-archive-links.css">
 </head>
 <body>
 <header class="news-header">
@@ -50,13 +49,11 @@ $newsThumbnail = static function (array $item): string {
       <?php if ($news === []): ?><p class="news-empty">現在、公開中のお知らせはありません。</p><?php endif; ?>
       <?php foreach ($news as $item): ?>
       <?php $thumbnail = $newsThumbnail($item); ?>
-      <article id="<?= e($item['id'] ?? '') ?>" class="<?= $thumbnail !== '' ? 'has-thumbnail' : '' ?>">
-        <a class="news-entry-main" href="news-detail.php?id=<?= rawurlencode((string)($item['id'] ?? '')) ?>">
-          <div class="news-meta"><time datetime="<?= e($item['published_at'] ?? '') ?>"><?= e($item['published_at'] ?? '') ?></time><span><?= e($item['category'] ?? 'お知らせ') ?></span></div>
-          <div class="news-copy"><h2><?= e($item['title'] ?? '') ?></h2></div>
-        </a>
-        <?php if ($thumbnail !== ''): ?><button class="news-thumbnail" type="button" data-news-image="<?= e($thumbnail) ?>" data-news-title="<?= e($item['title'] ?? '') ?>" aria-label="<?= e($item['title'] ?? '') ?>の写真を拡大表示"><img src="<?= e($thumbnail) ?>" alt="" loading="lazy"></button><?php endif; ?>
-      </article>
+      <a href="news-detail.php?id=<?= rawurlencode((string)($item['id'] ?? '')) ?>"><article id="<?= e($item['id'] ?? '') ?>" class="<?= $thumbnail !== '' ? 'has-thumbnail' : '' ?>">
+        <div class="news-meta"><time datetime="<?= e($item['published_at'] ?? '') ?>"><?= e($item['published_at'] ?? '') ?></time><span><?= e($item['category'] ?? 'お知らせ') ?></span></div>
+        <div class="news-copy"><h2><?= e($item['title'] ?? '') ?></h2></div>
+        <?php if ($thumbnail !== ''): ?><figure class="news-thumbnail"><img src="<?= e($thumbnail) ?>" alt="" loading="lazy"></figure><?php endif; ?>
+      </article></a>
       <?php endforeach; ?>
     </div>
   </section>

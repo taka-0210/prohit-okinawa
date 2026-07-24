@@ -18,6 +18,11 @@ if (!$service) {
     exit('サービスページが見つかりません。');
 }
 $company = load_content('company')[0] ?? [];
+$visibleSections = array_values(array_filter(
+    array_slice($service['sections'] ?? [], 0, 5),
+    static fn(array $section): bool => !array_key_exists('enabled', $section) || !empty($section['enabled'])
+));
+$visibleSectionCount = count($visibleSections);
 ?>
 <!doctype html>
 <html lang="ja">
@@ -45,10 +50,10 @@ $company = load_content('company')[0] ?? [];
   <section class="service-hero"><div><p><?= e($service['title_en'] ?? 'SERVICE') ?></p><h1><?= e($service['title']) ?></h1><p class="lead"><?= e($service['lead']) ?></p></div><span><?= str_pad((string) (array_search($service, $allServices, true) + 1), 2, '0', STR_PAD_LEFT) ?></span></section>
   <section class="service-intro"><p>OUR APPROACH</p><div><h2>お店の動きと未来から、<br>厨房を設計する。</h2><p><?= nl2br(e($service['intro'])) ?></p></div></section>
   <div class="service-story">
-    <?php foreach (array_slice($service['sections'] ?? [], 0, 5) as $index => $section): ?>
+    <?php foreach ($visibleSections as $index => $section): ?>
       <section class="story-block">
         <div class="story-photo<?= empty($section['image']) ? ' is-placeholder' : '' ?>"<?= !empty($section['image']) ? ' style="background-image:url(' . e($section['image']) . ')"' : '' ?>><span>PHOTO <?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div>
-        <div class="story-text"><p><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?> / 05</p><h2><?= e($section['heading'] ?? '') ?></h2><p><?= nl2br(e($section['body'] ?? '')) ?></p></div>
+        <div class="story-text"><p><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string) $visibleSectionCount, 2, '0', STR_PAD_LEFT) ?></p><h2><?= e($section['heading'] ?? '') ?></h2><p><?= nl2br(e($section['body'] ?? '')) ?></p></div>
       </section>
     <?php endforeach; ?>
   </div>

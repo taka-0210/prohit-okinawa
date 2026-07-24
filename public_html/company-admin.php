@@ -22,7 +22,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 }
 ?>
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ブランド・会社情報｜管理画面</title><link rel="stylesheet" href="assets/admin.css"><link rel="stylesheet" href="assets/company-admin.css"><link rel="stylesheet" href="assets/admin-menu-fix.css"></head><body class="admin-shell">
-<aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav><a href="admin.php">ダッシュボード</a><a href="admin.php?tab=hero">HEROスライド</a><a href="admin.php?tab=works">施工事例</a><a href="admin.php?tab=news">最新情報</a><a class="active" href="company-admin.php">ブランド・会社情報</a></nav></aside><script src="assets/admin-nav.js?v=2" defer></script>
+<aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav><a href="admin.php">ダッシュボード</a><a href="admin.php?tab=hero">HEROスライド</a><a href="admin.php?tab=works">施工事例</a><a href="admin.php?tab=news">最新情報</a><a class="active" href="company-admin.php">ブランド・会社情報</a></nav></aside><script src="assets/admin-nav.js?v=5" defer></script>
 <main class="admin-main"><header><div><p>PRO KITCHEN HIT OKINAWA</p><h1>ブランド・会社情報</h1></div><a href="index.php" target="_blank">公開サイトを確認 ↗</a></header>
 <?php if(isset($_GET['saved'])):?><p class="success">会社情報を保存しました。</p><?php endif;?><?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
 <section class="panel editor company-editor"><form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>">

@@ -40,6 +40,7 @@ function seed_content(): void
             ['id' => 'work-1', 'title' => '那覇市・飲食店 厨房導入', 'category' => '新規開業', 'area' => '那覇市', 'summary' => '動線と将来の設備更新まで見据えた厨房計画。', 'latitude' => 26.2124, 'longitude' => 127.6809, 'image' => '', 'published' => true],
             ['id' => 'work-2', 'title' => '沖縄市・店舗改装', 'category' => '内外装工事', 'area' => '沖縄市', 'summary' => '既存設備を活かしながら店舗全体をリニューアル。', 'latitude' => 26.3344, 'longitude' => 127.8056, 'image' => '', 'published' => true],
         ],
+        'maps' => [],
         'news' => [
             ['id' => 'news-1', 'title' => 'プロ厨房HIT沖縄 Webサイト準備中', 'category' => 'お知らせ', 'body' => '現在、Webサイトの公開準備を進めています。', 'published_at' => date('Y-m-d'), 'published' => true],
         ],

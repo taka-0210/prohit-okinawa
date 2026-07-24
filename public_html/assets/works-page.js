@@ -36,7 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = panel.querySelector(`[data-work-card="${CSS.escape(id)}"]`);
       card?.scrollIntoView({behavior: 'smooth', block: 'center'});
     };
-    pins.forEach(pin => pin.addEventListener('click', () => showWork(pin.dataset.workPin)));
+    pins.forEach(pin => pin.addEventListener('click', () => {
+      closePopups();
+      showWork(pin.dataset.workPin);
+    }));
     panel.querySelectorAll('[data-cluster-toggle]').forEach(toggle => {
       toggle.addEventListener('click', event => {
         event.stopPropagation();

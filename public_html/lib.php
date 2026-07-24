@@ -44,7 +44,7 @@ function seed_content(): void
         ],
         'company' => [[
             'id' => 'company-profile', 'logo' => '',
-            'company_name' => 'プロ厨房HIT沖縄', 'company_name_en' => 'PRO CHUBO HIT OKINAWA',
+            'company_name' => '株式会社 プロ厨房HIT 沖縄', 'company_name_en' => 'PRO CHUBO HIT OKINAWA',
             'postal_code' => '', 'address' => '沖縄県', 'phone' => '', 'email' => '',
             'hours' => '', 'closed_days' => '', 'representative' => '新垣 大作', 'executive' => '高見 昌也',
             'affiliation' => 'プロ厨房HIT フランチャイズ加盟店',
@@ -74,6 +74,10 @@ function seed_content(): void
     $company = load_content('company');
     if (($company[0]['company_name_en'] ?? '') === 'PRO KITCHEN HIT OKINAWA') {
         $company[0]['company_name_en'] = 'PRO CHUBO HIT OKINAWA';
+        save_content('company', $company);
+    }
+    if (($company[0]['company_name'] ?? '') === 'プロ厨房HIT沖縄') {
+        $company[0]['company_name'] = '株式会社 プロ厨房HIT 沖縄';
         save_content('company', $company);
     }
     if (!is_file(content_path('hero_settings'))) {

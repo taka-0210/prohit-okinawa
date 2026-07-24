@@ -1,7 +1,29 @@
+.contact-header {
+  height: 90px;
+  padding: 0 4vw;
+}
+
+.contact-header > a:first-child {
+  display: flex;
+  align-items: center;
+}
+
 .contact-header img {
   display: block;
   max-width: 210px;
   max-height: 50px;
   object-fit: contain;
   filter: none;
+}
+
+@media (max-width: 700px) {
+  .contact-header {
+    height: 74px;
+    padding: 0 20px;
+  }
+
+  .contact-header img {
+    max-width: 155px;
+    max-height: 38px;
+  }
 }

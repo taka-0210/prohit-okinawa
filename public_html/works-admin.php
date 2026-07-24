@@ -118,7 +118,7 @@ $currentImages = $edit ? work_images($edit) : [];
           <td><strong><?= e($item['title']??'') ?></strong><small><?= e($item['area']??'') ?></small></td>
           <td><?= $map?'MAP '.str_pad((string)($map['map_number']??0),2,'0',STR_PAD_LEFT).' '.e($map['title']??''):'沖縄以外' ?></td>
           <td><?= count($images) ?> / 10</td>
-          <td><span class="status <?= !empty($item['published'])?'live':'' ?>"><?= !empty($item['published'])?'公開':'下書き' ?></span></td>
+          <td><span class="status <?= !empty($item['published'])?'live':'' ?>"><?= !empty($item['published'])?'公開':'非公開' ?></span></td>
           <td><a href="works-admin.php?edit=<?= e($item['id']) ?>">編集</a></td>
         </tr>
       <?php endforeach; ?>

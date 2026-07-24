@@ -100,7 +100,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
           <?php foreach(cluster_map_works($group['works'],max(0,min(20,(float)($map['cluster_threshold']??6)))) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
           <div class="pin-group" style="left:<?= e(50+($cluster['x']-50)*$mapScale) ?>%;top:<?= e($cluster['y']) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
             <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
-            <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"><span><?= $item['number'] ?></span></button>
+            <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"></button>
             <?php else: ?>
             <button type="button" class="project-pin cluster-pin" data-cluster-toggle aria-expanded="false" aria-label="このエリアの<?= $clusterCount ?>件を表示"><span><?= $clusterCount ?></span></button>
             <div class="pin-popup" data-pin-popup hidden>
@@ -113,7 +113,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
           </div>
           <?php endforeach; ?>
         </div>
-        <p>地図上の番号を選ぶと、該当する施工事例を確認できます。数字が店舗数のマークは、近接する事例をまとめて表示しています。</p>
+        <p>地図上のマークを選ぶと、該当する施工事例を確認できます。数字入りのマークは近接する店舗の件数を表しています。</p>
       </div>
       <?php endif; ?>
       <div class="project-list">

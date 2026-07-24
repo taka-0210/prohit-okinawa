@@ -12,8 +12,15 @@
   transform: none;
 }
 
-.pin-group .project-pin.active {
+.pin-group .project-pin.active:not(.cluster-pin) {
   background: var(--orange);
   transform: none;
   box-shadow: 0 0 0 4px rgb(232 98 61 / 22%), 0 3px 10px #06182766;
+}
+
+.pin-group .cluster-pin.active,
+.pin-group .cluster-pin.cluster-open {
+  background: var(--navy);
+  transform: none;
+  box-shadow: 0 0 0 4px rgb(16 42 67 / 22%), 0 3px 10px #06182766;
 }

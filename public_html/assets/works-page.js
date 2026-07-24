@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (popup === except) return;
       popup.hidden = true;
       popup.previousElementSibling?.setAttribute('aria-expanded', 'false');
+      popup.previousElementSibling?.classList.remove('cluster-open');
     });
   };
   const activate = id => {
@@ -42,8 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const popup = toggle.nextElementSibling;
         const opening = popup.hidden;
         closePopups(opening ? popup : null);
+        panel.querySelectorAll('.project-pin.active').forEach(pin => pin.classList.remove('active'));
         popup.hidden = !opening;
         toggle.setAttribute('aria-expanded', String(opening));
+        toggle.classList.toggle('cluster-open', opening);
       });
     });
     panel.querySelectorAll('[data-popup-work]').forEach(button => {

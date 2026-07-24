@@ -3,6 +3,24 @@ require __DIR__ . '/lib.php';
 $heroes = published(load_content('hero'));
 $heroEffects = load_content('hero_settings')[0] ?? ['overlay' => '#102a43', 'overlay_opacity' => 35, 'dots' => true, 'dots_opacity' => 18];
 $works = published(load_content('works'));
+$homeWorksSettings = load_content('home_works')[0] ?? ['mode'=>'latest', 'selected_ids'=>[]];
+if (($homeWorksSettings['mode'] ?? 'latest') === 'selected') {
+    $workLookup = [];
+    foreach ($works as $work) $workLookup[(string)($work['id'] ?? '')] = $work;
+    $selectedHomeWorks = [];
+    foreach ((array)($homeWorksSettings['selected_ids'] ?? []) as $workId) {
+        if (isset($workLookup[$workId])) $selectedHomeWorks[] = $workLookup[$workId];
+    }
+    $selectedHomeIds = array_column($selectedHomeWorks, 'id');
+    foreach (array_reverse($works) as $work) {
+        if (count($selectedHomeWorks) >= 4) break;
+        if (!in_array((string)($work['id'] ?? ''), $selectedHomeIds, true)) {
+            $selectedHomeWorks[] = $work;
+            $selectedHomeIds[] = (string)($work['id'] ?? '');
+        }
+    }
+    $works = array_reverse($selectedHomeWorks);
+}
 $news = published(load_content('news'));
 usort($news, static fn(array $a, array $b): int => strcmp((string)($b['published_at'] ?? ''), (string)($a['published_at'] ?? '')));
 $company = load_content('company')[0] ?? [];

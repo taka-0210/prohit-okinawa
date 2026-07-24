@@ -3,6 +3,7 @@ require __DIR__ . '/lib.php';
 if (!is_admin()) redirect('admin.php');
 
 $items = load_content('works');
+$homeWorksSettings = load_content('home_works')[0] ?? ['mode'=>'latest', 'selected_ids'=>[]];
 $maps = load_content('maps');
 usort($maps, fn(array $a, array $b): int => [(int)($a['sort_order']??0),(int)($a['map_number']??0)] <=> [(int)($b['sort_order']??0),(int)($b['map_number']??0)]);
 $mapLookup = [];
@@ -33,6 +34,26 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     try {
         $action = (string)($_POST['action'] ?? 'save');
         $id = (string)($_POST['id'] ?? '');
+        if ($action === 'save_home_works') {
+            $mode = ($_POST['home_works_mode'] ?? 'latest') === 'selected' ? 'selected' : 'latest';
+            $publishedIds = array_column(array_filter($items, fn(array $item): bool => !empty($item['published'])), 'id');
+            $selectedIds = [];
+            foreach ((array)($_POST['home_work_ids'] ?? []) as $selectedId) {
+                $selectedId = (string)$selectedId;
+                if ($selectedId !== '' && in_array($selectedId, $publishedIds, true) && !in_array($selectedId, $selectedIds, true)) {
+                    $selectedIds[] = $selectedId;
+                }
+            }
+            if ($mode === 'selected' && count($selectedIds) !== 4) {
+                throw new RuntimeException('「4件選択」では、重複しない公開事例を4件選んでください。');
+            }
+            save_content('home_works', [[
+                'id' => 'home-works',
+                'mode' => $mode,
+                'selected_ids' => array_slice($selectedIds, 0, 4),
+            ]]);
+            redirect('works-admin.php?home_saved=1');
+        }
         if ($action === 'delete') {
             $items = array_values(array_filter($items, fn(array $item): bool => ($item['id'] ?? '') !== $id));
             save_content('works', $items);
@@ -99,6 +120,7 @@ $currentImages = $edit ? work_images($edit) : [];
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
   <link rel="stylesheet" href="assets/works-admin.css?v=2">
+  <link rel="stylesheet" href="assets/home-works-admin.css?v=1">
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
@@ -106,8 +128,37 @@ $currentImages = $edit ? work_images($edit) : [];
 <main class="admin-main">
   <header><div><p>PRO CHUBO HIT OKINAWA</p><h1>施工事例</h1></div><a href="works.php" target="_blank">施工事例ページを確認 ↗</a></header>
   <?php if(isset($_GET['saved'])): ?><p class="success">保存しました。</p><?php endif; ?>
+  <?php if(isset($_GET['home_saved'])): ?><p class="success">HOMEの施工事例表示を保存しました。</p><?php endif; ?>
   <?php if($error): ?><p class="error"><?= e($error) ?></p><?php endif; ?>
   <?php if(!$maps): ?><p class="error">沖縄県内の事例を登録する場合は、先に「地図管理」で地図を登録してください。</p><?php endif; ?>
+  <section class="panel home-works-settings">
+    <div>
+      <p class="eyebrow">HOME DISPLAY</p>
+      <h2>HOMEに表示する施工事例</h2>
+      <p class="hint">「最新4件」または、表示順を指定した「4件選択」から選べます。</p>
+    </div>
+    <form method="post">
+      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+      <input type="hidden" name="action" value="save_home_works">
+      <div class="home-works-mode">
+        <label><input type="radio" name="home_works_mode" value="latest" <?= ($homeWorksSettings['mode']??'latest')!=='selected'?'checked':'' ?>>最新4件</label>
+        <label><input type="radio" name="home_works_mode" value="selected" <?= ($homeWorksSettings['mode']??'latest')==='selected'?'checked':'' ?>>4件選択</label>
+      </div>
+      <div class="home-work-selects">
+        <?php $currentHomeIds=(array)($homeWorksSettings['selected_ids']??[]); for($slot=0;$slot<4;$slot++): ?>
+        <label>表示 <?= $slot+1 ?>
+          <select name="home_work_ids[]">
+            <option value="">選択してください</option>
+            <?php foreach(array_reverse($items) as $item): if(empty($item['published'])) continue; ?>
+            <option value="<?= e($item['id']??'') ?>" <?= ($currentHomeIds[$slot]??'')===($item['id']??'')?'selected':'' ?>><?= e($item['title']??'') ?></option>
+            <?php endforeach; ?>
+          </select>
+        </label>
+        <?php endfor; ?>
+      </div>
+      <button class="primary">HOME表示を保存</button>
+    </form>
+  </section>
   <div class="toolbar"><p><?= count($items) ?>件登録</p><a class="primary" href="works-admin.php?edit=new">＋ 新規追加</a></div>
   <div class="works-admin-layout">
     <section class="panel list">

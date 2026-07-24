@@ -19,7 +19,7 @@ function work_external_url(string $value): string
     if ($value === '') return '';
     if (!preg_match('~^https?://~i', $value)) $value = 'https://' . $value;
     if (!filter_var($value, FILTER_VALIDATE_URL)) {
-        throw new RuntimeException('Instagram・ホームページURLを正しい形式で入力してください。');
+        throw new RuntimeException('外部リンクURLを正しい形式で入力してください。');
     }
     $scheme = strtolower((string)parse_url($value, PHP_URL_SCHEME));
     if (!in_array($scheme, ['http', 'https'], true)) {
@@ -62,6 +62,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'area' => trim((string)($_POST['area'] ?? '')),
             'designer' => trim((string)($_POST['designer'] ?? '')),
             'address' => trim((string)($_POST['address'] ?? '')),
+            'google_maps_url' => work_external_url((string)($_POST['google_maps_url'] ?? '')),
             'summary' => trim((string)($_POST['summary'] ?? '')),
             'instagram_url' => work_external_url((string)($_POST['instagram_url'] ?? '')),
             'website_url' => work_external_url((string)($_POST['website_url'] ?? '')),
@@ -139,6 +140,8 @@ $currentImages = $edit ? work_images($edit) : [];
           <label>デザイナー<input name="designer" value="<?= e($v['designer']??'') ?>"></label>
           <label>住所<input name="address" value="<?= e($v['address']??'') ?>" placeholder="沖縄県〇〇市..."></label>
         </div>
+        <label>GoogleマップURL<input type="url" name="google_maps_url" value="<?= e($v['google_maps_url']??'') ?>" placeholder="https://maps.app.goo.gl/..."></label>
+        <p class="hint">Googleマップの「共有」からコピーしたURLを登録してください。未入力の場合は住所検索を使用します。</p>
         <label>概要<textarea name="summary" rows="5"><?= e($v['summary']??'') ?></textarea></label>
         <div class="fields">
           <label>Instagram URL<input type="url" name="instagram_url" value="<?= e($v['instagram_url']??'') ?>" placeholder="https://www.instagram.com/..."></label>

@@ -114,7 +114,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
       <?php endif; ?>
       <div class="project-list">
         <?php if(!$group['works']): ?><p class="empty">現在、公開中の施工事例はありません。</p><?php endif; ?>
-        <?php foreach($group['works'] as $index=>$work): $images=work_images($work); ?>
+        <?php foreach($group['works'] as $index=>$work): $images=work_images($work); $googleMapsUrl=(string)($work['google_maps_url']??''); if($googleMapsUrl===''&&!empty($work['address']))$googleMapsUrl='https://www.google.com/maps/search/?api=1&query='.rawurlencode((string)$work['address']); ?>
         <article id="work-<?= e($work['id']) ?>" data-work-card="<?= e($work['id']) ?>">
           <?php if($images): ?>
           <button class="work-gallery-trigger" type="button" data-title="<?= e($work['title']??'') ?>" data-images="<?= e(json_encode($images,JSON_UNESCAPED_SLASHES)) ?>">
@@ -125,10 +125,10 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
           <div class="project-copy">
             <p><span><?= $index+1 ?></span><?= e($work['category']??'') ?><?= !empty($work['area'])?' / '.e($work['area']):'' ?></p>
             <h2><?= e($work['title']??'') ?></h2>
-            <?php if(!empty($work['designer'])||!empty($work['address'])): ?>
+            <?php if(!empty($work['designer'])||!empty($work['address'])||$googleMapsUrl!==''): ?>
             <dl class="project-meta">
               <?php if(!empty($work['designer'])): ?><div><dt>DESIGNER</dt><dd><?= e($work['designer']) ?></dd></div><?php endif; ?>
-              <?php if(!empty($work['address'])): ?><div><dt>ADDRESS</dt><dd><a href="https://www.google.com/maps/search/?api=1&amp;query=<?= rawurlencode((string)$work['address']) ?>" target="_blank" rel="noopener noreferrer"><?= e($work['address']) ?> ↗</a></dd></div><?php endif; ?>
+              <?php if($googleMapsUrl!==''): ?><div><dt>ADDRESS</dt><dd><a href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer"><?= !empty($work['address'])?e($work['address']):'Googleマップを開く' ?> ↗</a></dd></div><?php elseif(!empty($work['address'])): ?><div><dt>ADDRESS</dt><dd><?= e($work['address']) ?></dd></div><?php endif; ?>
             </dl>
             <?php endif; ?>
             <div><?= nl2br(e($work['summary']??'')) ?></div>

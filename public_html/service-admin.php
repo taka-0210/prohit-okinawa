@@ -7,7 +7,7 @@ if (!$service) { http_response_code(404); exit('サービスが見つかりま�
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
  verify_csrf(); try {
   $sections=[]; for($index=0;$index<5;$index++){$current=(string)($service['sections'][$index]['image']??'');$sections[]=['heading'=>trim((string)($_POST['section_heading'][$index]??'')),'body'=>trim((string)($_POST['section_body'][$index]??'')),'image'=>upload_image('section_image_'.$index,$current),'enabled'=>isset($_POST['section_enabled'][$index])];}
-  $service=['id'=>$id,'title'=>trim((string)($_POST['title']??'')),'title_en'=>trim((string)($_POST['title_en']??'')),'lead'=>trim((string)($_POST['lead']??'')),'intro'=>trim((string)($_POST['intro']??'')),'sections'=>$sections,'published'=>isset($_POST['published'])];
+  $service=['id'=>$id,'title'=>trim((string)($_POST['title']??'')),'title_en'=>trim((string)($_POST['title_en']??'')),'lead'=>trim((string)($_POST['lead']??'')),'intro'=>trim((string)($_POST['intro']??'')),'sections'=>$sections,'published'=>isset($_POST['published']),'content_revision'=>(int)($service['content_revision']??0)];
   if($service['title']==='')throw new RuntimeException('サービス名は必須です。');$items[$serviceIndex]=$service;save_content('services',$items);redirect('service-admin.php?id='.rawurlencode($id).'&saved=1');
  }catch(Throwable $exception){$error=$exception->getMessage();}
 }

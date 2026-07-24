@@ -31,7 +31,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
         $nearestDistance = INF;
         foreach ($clusters as $clusterIndex => $cluster) {
             $distance = hypot($x - $cluster['x'], $y - $cluster['y']);
-            if ($distance <= $threshold && $distance < $nearestDistance) {
+            if ($threshold > 0 && $distance <= $threshold && $distance < $nearestDistance) {
                 $nearest = $clusterIndex;
                 $nearestDistance = $distance;
             }
@@ -97,7 +97,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
       <div class="project-map">
         <div class="map-canvas" style="--map-scale:<?= e($mapScale) ?>">
           <img src="<?= e($map['image']??'') ?>" alt="<?= e($map['title']??'') ?>の施工事例地図">
-          <?php foreach(cluster_map_works($group['works']) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
+          <?php foreach(cluster_map_works($group['works'],max(0,min(20,(float)($map['cluster_threshold']??6)))) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
           <div class="pin-group" style="left:<?= e(50+($cluster['x']-50)*$mapScale) ?>%;top:<?= e(50+($cluster['y']-50)*$mapScale) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
             <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
             <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"><span><?= $item['number'] ?></span></button>

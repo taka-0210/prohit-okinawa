@@ -11,3 +11,9 @@
   object-fit: fill;
   transform: none;
 }
+
+.pin-group .project-pin.active {
+  background: var(--orange);
+  transform: none;
+  box-shadow: 0 0 0 4px rgb(232 98 61 / 22%), 0 3px 10px #06182766;
+}

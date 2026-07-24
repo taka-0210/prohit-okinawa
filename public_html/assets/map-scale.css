@@ -3,9 +3,11 @@
 }
 
 .map-canvas > img {
+  width: calc(100% * var(--map-scale, 1));
   height: auto;
   max-height: none;
+  margin-right: auto;
+  margin-left: auto;
   object-fit: fill;
-  transform: scale(var(--map-scale, 1));
-  transform-origin: center;
+  transform: none;
 }

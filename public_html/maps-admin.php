@@ -76,7 +76,7 @@ usort($items, fn(array $a, array $b): int => [(int)($a['sort_order'] ?? 0), (int
   <title>地図管理</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
-  <link rel="stylesheet" href="assets/maps-admin.css?v=2">
+  <link rel="stylesheet" href="assets/maps-admin.css?v=3">
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>

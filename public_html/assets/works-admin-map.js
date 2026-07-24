@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const storedX = clamp(Number(x.value) || 0);
     const storedY = clamp(Number(y.value) || 0);
     pin.style.left = `${50 + (storedX - 50) * scale}%`;
-    pin.style.top = `${50 + (storedY - 50) * scale}%`;
+    pin.style.top = `${storedY}%`;
   };
   const updateFromPointer = event => {
     const rect = map.getBoundingClientRect();
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayX = (event.clientX - rect.left) / rect.width * 100;
     const displayY = (event.clientY - rect.top) / rect.height * 100;
     x.value = clamp(50 + (displayX - 50) / scale).toFixed(1);
-    y.value = clamp(50 + (displayY - 50) / scale).toFixed(1);
+    y.value = clamp(displayY).toFixed(1);
     place();
   };
   const render = () => {
@@ -42,8 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const scale = Number(option.dataset.scale) || 1;
       map.dataset.scale = scale;
       map.style.setProperty('--map-scale', scale);
-      image.style.transform = `scale(${scale})`;
-      image.style.transformOrigin = 'center';
+      image.style.width = `${scale * 100}%`;
+      image.style.marginRight = 'auto';
+      image.style.marginLeft = 'auto';
+      image.style.transform = 'none';
       image.src = source;
       place();
     }

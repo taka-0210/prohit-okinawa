@@ -28,6 +28,7 @@ $activeGroup = array_key_first(array_filter($groups, fn(array $group): bool => $
   <title>施工事例｜<?= e($company['company_name']??APP_NAME) ?></title>
   <meta name="description" content="沖縄県内・県外で手がけた厨房、店舗工事、飲食店開業支援の施工事例をご紹介します。">
   <link rel="stylesheet" href="assets/works-page.css?v=1">
+  <link rel="stylesheet" href="assets/works-links.css?v=1">
   <link rel="stylesheet" href="assets/work-gallery.css">
   <script src="assets/works-page.js?v=1" defer></script>
   <script src="assets/work-gallery.js" defer></script>
@@ -86,6 +87,12 @@ $activeGroup = array_key_first(array_filter($groups, fn(array $group): bool => $
             <p><span><?= $index+1 ?></span><?= e($work['category']??'') ?><?= !empty($work['area'])?' / '.e($work['area']):'' ?></p>
             <h2><?= e($work['title']??'') ?></h2>
             <div><?= nl2br(e($work['summary']??'')) ?></div>
+            <?php if(!empty($work['instagram_url'])||!empty($work['website_url'])): ?>
+            <div class="project-links">
+              <?php if(!empty($work['instagram_url'])): ?><a href="<?= e($work['instagram_url']) ?>" target="_blank" rel="noopener noreferrer">Instagram ↗</a><?php endif; ?>
+              <?php if(!empty($work['website_url'])): ?><a href="<?= e($work['website_url']) ?>" target="_blank" rel="noopener noreferrer">ホームページ ↗</a><?php endif; ?>
+            </div>
+            <?php endif; ?>
           </div>
         </article>
         <?php endforeach; ?>

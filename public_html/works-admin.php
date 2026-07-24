@@ -13,6 +13,20 @@ $edit = null;
 foreach ($items as $item) {
     if (($item['id'] ?? '') === $editId) $edit = $item;
 }
+function work_external_url(string $value): string
+{
+    $value = trim($value);
+    if ($value === '') return '';
+    if (!preg_match('~^https?://~i', $value)) $value = 'https://' . $value;
+    if (!filter_var($value, FILTER_VALIDATE_URL)) {
+        throw new RuntimeException('Instagram・ホームページURLを正しい形式で入力してください。');
+    }
+    $scheme = strtolower((string)parse_url($value, PHP_URL_SCHEME));
+    if (!in_array($scheme, ['http', 'https'], true)) {
+        throw new RuntimeException('URLはhttp://またはhttps://で入力してください。');
+    }
+    return $value;
+}
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     verify_csrf();
@@ -47,6 +61,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'category' => trim((string)($_POST['category'] ?? '')),
             'area' => trim((string)($_POST['area'] ?? '')),
             'summary' => trim((string)($_POST['summary'] ?? '')),
+            'instagram_url' => work_external_url((string)($_POST['instagram_url'] ?? '')),
+            'website_url' => work_external_url((string)($_POST['website_url'] ?? '')),
             'map_id' => $mapId,
             'position_x' => $positionX,
             'position_y' => $positionY,
@@ -118,6 +134,11 @@ $currentImages = $edit ? work_images($edit) : [];
           <label>市町村・表示地域<input name="area" value="<?= e($v['area']??'') ?>"></label>
         </div>
         <label>概要<textarea name="summary" rows="5"><?= e($v['summary']??'') ?></textarea></label>
+        <div class="fields">
+          <label>Instagram URL<input type="url" name="instagram_url" value="<?= e($v['instagram_url']??'') ?>" placeholder="https://www.instagram.com/..."></label>
+          <label>ホームページURL<input type="url" name="website_url" value="<?= e($v['website_url']??'') ?>" placeholder="https://example.com/"></label>
+        </div>
+        <p class="hint">登録したリンクは、公開施工事例ページに表示されます。未入力の場合は表示されません。</p>
         <div class="map-fields" data-map-fields>
           <label>地図
             <select name="map_id" data-map-select>

@@ -160,6 +160,6 @@ $currentImages = $edit ? work_images($edit) : [];
     <?php endif; ?>
   </div>
 </main>
-<script src="assets/works-admin-map.js?v=1" defer></script>
+<script src="assets/works-admin-map.js?v=2" defer></script>
 </body>
 </html>

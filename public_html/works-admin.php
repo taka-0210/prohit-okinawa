@@ -60,6 +60,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'title' => trim((string)($_POST['title'] ?? '')),
             'category' => trim((string)($_POST['category'] ?? '')),
             'area' => trim((string)($_POST['area'] ?? '')),
+            'designer' => trim((string)($_POST['designer'] ?? '')),
+            'address' => trim((string)($_POST['address'] ?? '')),
             'summary' => trim((string)($_POST['summary'] ?? '')),
             'instagram_url' => work_external_url((string)($_POST['instagram_url'] ?? '')),
             'website_url' => work_external_url((string)($_POST['website_url'] ?? '')),
@@ -132,6 +134,10 @@ $currentImages = $edit ? work_images($edit) : [];
         <div class="fields">
           <label>カテゴリ<input name="category" value="<?= e($v['category']??'') ?>"></label>
           <label>市町村・表示地域<input name="area" value="<?= e($v['area']??'') ?>"></label>
+        </div>
+        <div class="fields">
+          <label>デザイナー<input name="designer" value="<?= e($v['designer']??'') ?>"></label>
+          <label>住所<input name="address" value="<?= e($v['address']??'') ?>" placeholder="沖縄県〇〇市..."></label>
         </div>
         <label>概要<textarea name="summary" rows="5"><?= e($v['summary']??'') ?></textarea></label>
         <div class="fields">

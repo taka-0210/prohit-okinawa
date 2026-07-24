@@ -19,6 +19,33 @@ foreach ($works as $work) {
 }
 $groups['outside'] = ['map'=>null,'works'=>$outsideWorks];
 $activeGroup = array_key_first(array_filter($groups, fn(array $group): bool => $group['works'] !== [])) ?? array_key_first($groups);
+function cluster_map_works(array $works, float $threshold = 6.0): array
+{
+    $clusters = [];
+    foreach ($works as $index => $work) {
+        $x = max(0, min(100, (float)($work['position_x'] ?? 50)));
+        $y = max(0, min(100, (float)($work['position_y'] ?? 50)));
+        $nearest = null;
+        $nearestDistance = INF;
+        foreach ($clusters as $clusterIndex => $cluster) {
+            $distance = hypot($x - $cluster['x'], $y - $cluster['y']);
+            if ($distance <= $threshold && $distance < $nearestDistance) {
+                $nearest = $clusterIndex;
+                $nearestDistance = $distance;
+            }
+        }
+        $entry = ['work'=>$work,'number'=>$index+1];
+        if ($nearest === null) {
+            $clusters[] = ['x'=>$x,'y'=>$y,'items'=>[$entry]];
+            continue;
+        }
+        $count = count($clusters[$nearest]['items']);
+        $clusters[$nearest]['x'] = (($clusters[$nearest]['x'] * $count) + $x) / ($count + 1);
+        $clusters[$nearest]['y'] = (($clusters[$nearest]['y'] * $count) + $y) / ($count + 1);
+        $clusters[$nearest]['items'][] = $entry;
+    }
+    return $clusters;
+}
 ?>
 <!doctype html>
 <html lang="ja">
@@ -28,9 +55,9 @@ $activeGroup = array_key_first(array_filter($groups, fn(array $group): bool => $
   <title>施工事例｜<?= e($company['company_name']??APP_NAME) ?></title>
   <meta name="description" content="沖縄県内・県外で手がけた厨房、店舗工事、飲食店開業支援の施工事例をご紹介します。">
   <link rel="stylesheet" href="assets/works-page.css?v=1">
-  <link rel="stylesheet" href="assets/works-links.css?v=1">
+  <link rel="stylesheet" href="assets/works-links.css?v=2">
   <link rel="stylesheet" href="assets/work-gallery.css">
-  <script src="assets/works-page.js?v=1" defer></script>
+  <script src="assets/works-page.js?v=2" defer></script>
   <script src="assets/work-gallery.js" defer></script>
 </head>
 <body>
@@ -66,11 +93,23 @@ $activeGroup = array_key_first(array_filter($groups, fn(array $group): bool => $
       <div class="project-map">
         <div class="map-canvas">
           <img src="<?= e($map['image']??'') ?>" alt="<?= e($map['title']??'') ?>の施工事例地図">
-          <?php foreach($group['works'] as $index=>$work): ?>
-          <button type="button" class="project-pin" data-work-pin="<?= e($work['id']) ?>" style="left:<?= e(max(0,min(100,(float)($work['position_x']??50)))) ?>%;top:<?= e(max(0,min(100,(float)($work['position_y']??50)))) ?>%" aria-label="<?= e($work['title']??'') ?>"><span><?= $index+1 ?></span></button>
+          <?php foreach(cluster_map_works($group['works']) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
+          <div class="pin-group" style="left:<?= e($cluster['x']) ?>%;top:<?= e($cluster['y']) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
+            <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
+            <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"><span><?= $item['number'] ?></span></button>
+            <?php else: ?>
+            <button type="button" class="project-pin cluster-pin" data-cluster-toggle aria-expanded="false" aria-label="このエリアの<?= $clusterCount ?>件を表示"><span><?= $clusterCount ?></span></button>
+            <div class="pin-popup" data-pin-popup hidden>
+              <strong>このエリアの施工事例</strong>
+              <?php foreach($cluster['items'] as $item): ?>
+              <button type="button" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></button>
+              <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+          </div>
           <?php endforeach; ?>
         </div>
-        <p>地図上の番号を選ぶと、該当する施工事例を確認できます。</p>
+        <p>地図上の番号を選ぶと、該当する施工事例を確認できます。数字が店舗数のマークは、近接する事例をまとめて表示しています。</p>
       </div>
       <?php endif; ?>
       <div class="project-list">
@@ -86,6 +125,12 @@ $activeGroup = array_key_first(array_filter($groups, fn(array $group): bool => $
           <div class="project-copy">
             <p><span><?= $index+1 ?></span><?= e($work['category']??'') ?><?= !empty($work['area'])?' / '.e($work['area']):'' ?></p>
             <h2><?= e($work['title']??'') ?></h2>
+            <?php if(!empty($work['designer'])||!empty($work['address'])): ?>
+            <dl class="project-meta">
+              <?php if(!empty($work['designer'])): ?><div><dt>DESIGNER</dt><dd><?= e($work['designer']) ?></dd></div><?php endif; ?>
+              <?php if(!empty($work['address'])): ?><div><dt>ADDRESS</dt><dd><a href="https://www.google.com/maps/search/?api=1&amp;query=<?= rawurlencode((string)$work['address']) ?>" target="_blank" rel="noopener noreferrer"><?= e($work['address']) ?> ↗</a></dd></div><?php endif; ?>
+            </dl>
+            <?php endif; ?>
             <div><?= nl2br(e($work['summary']??'')) ?></div>
             <?php if(!empty($work['instagram_url'])||!empty($work['website_url'])): ?>
             <div class="project-links">

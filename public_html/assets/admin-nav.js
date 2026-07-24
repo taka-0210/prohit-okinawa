@@ -5,8 +5,8 @@
  const nav=document.querySelector('.admin-shell aside nav');
  if(!nav)return;
  const path=location.pathname.split('/').pop()||'admin.php',tab=new URLSearchParams(location.search).get('tab')||'dashboard';
- const items=[['admin.php','dashboard','ダッシュボード'],['admin.php?tab=hero','hero','HEROスライド'],['hero-settings.php','hero-settings','HERO共通設定'],['service-admin.php','services','サービスページ'],['maps-admin.php','maps','地図管理'],['works-admin.php','works','施工事例'],['admin.php?tab=news','news','最新情報'],['inquiries-admin.php','inquiries','お問い合わせ'],['company-admin.php','company','ブランド・会社情報']];
- const current=path==='hero-settings.php'?'hero-settings':path==='service-admin.php'?'services':path==='maps-admin.php'?'maps':path==='works-admin.php'?'works':path==='inquiries-admin.php'?'inquiries':path==='company-admin.php'?'company':tab;
+ const items=[['admin.php','dashboard','ダッシュボード'],['admin.php?tab=hero','hero','HEROスライド'],['hero-settings.php','hero-settings','HERO共通設定'],['service-admin.php','services','サービスページ'],['maps-admin.php','maps','地図管理'],['works-admin.php','works','施工事例'],['news-admin.php','news','最新情報'],['inquiries-admin.php','inquiries','お問い合わせ'],['company-admin.php','company','ブランド・会社情報']];
+ const current=path==='hero-settings.php'?'hero-settings':path==='service-admin.php'?'services':path==='maps-admin.php'?'maps':path==='works-admin.php'?'works':path==='news-admin.php'?'news':path==='inquiries-admin.php'?'inquiries':path==='company-admin.php'?'company':tab;
  nav.innerHTML=items.map(([href,key,label])=>`<a class="${current===key?'active':''}" href="${href}">${label}</a>`).join('');
  if(path==='service-admin.php'){
   const tabStyle=document.createElement('link');tabStyle.rel='stylesheet';tabStyle.href='assets/service-admin-tabs.css?v=2';document.head.append(tabStyle);

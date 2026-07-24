@@ -48,6 +48,7 @@ if (!is_admin()): ?>
 
 $requestedTab = (string)($_GET['tab'] ?? 'dashboard');
 if ($requestedTab === 'works') redirect('works-admin.php');
+if ($requestedTab === 'news') redirect('news-admin.php');
 $tab = in_array($requestedTab, ['dashboard', 'hero', 'works', 'news'], true) ? $requestedTab : 'dashboard';
 $editId=(string)($_GET['edit']??''); $items=$tab==='dashboard'?[]:load_content($tab); $edit=null; foreach($items as $item)if(($item['id']??'')===$editId)$edit=$item;
 ?><!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>管理画面｜<?= APP_NAME ?></title><link rel="stylesheet" href="assets/admin.css"></head><body class="admin-shell">

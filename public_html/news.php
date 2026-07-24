@@ -16,6 +16,7 @@ usort($news, static fn(array $a, array $b): int => strcmp(
   <title>最新情報｜<?= e($company['company_name'] ?? APP_NAME) ?></title>
   <meta name="description" content="プロ厨房HIT沖縄からのお知らせ、施工事例やサービスに関する最新情報をご案内します。">
   <link rel="stylesheet" href="assets/news-page.css">
+  <link rel="stylesheet" href="assets/news-archive-links.css">
 </head>
 <body>
 <header class="news-header">
@@ -39,10 +40,10 @@ usort($news, static fn(array $a, array $b): int => strcmp(
     <div class="news-list">
       <?php if ($news === []): ?><p class="news-empty">現在、公開中のお知らせはありません。</p><?php endif; ?>
       <?php foreach ($news as $item): ?>
-      <article id="<?= e($item['id'] ?? '') ?>">
+      <a href="news-detail.php?id=<?= rawurlencode((string)($item['id'] ?? '')) ?>"><article id="<?= e($item['id'] ?? '') ?>">
         <div class="news-meta"><time datetime="<?= e($item['published_at'] ?? '') ?>"><?= e($item['published_at'] ?? '') ?></time><span><?= e($item['category'] ?? 'お知らせ') ?></span></div>
-        <div class="news-copy"><h2><?= e($item['title'] ?? '') ?></h2><?php if (!empty($item['body'])): ?><p><?= nl2br(e($item['body'])) ?></p><?php endif; ?></div>
-      </article>
+        <div class="news-copy"><h2><?= e($item['title'] ?? '') ?></h2></div>
+      </article></a>
       <?php endforeach; ?>
     </div>
   </section>

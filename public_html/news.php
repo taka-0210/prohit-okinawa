@@ -7,6 +7,14 @@ usort($news, static fn(array $a, array $b): int => strcmp(
     (string)($b['published_at'] ?? ''),
     (string)($a['published_at'] ?? '')
 ));
+$newsThumbnail = static function (array $item): string {
+    foreach ((array)($item['blocks'] ?? []) as $block) {
+        if (($block['type'] ?? '') === 'image' && !empty($block['image'])) {
+            return (string)$block['image'];
+        }
+    }
+    return '';
+};
 ?>
 <!doctype html>
 <html lang="ja">
@@ -40,9 +48,11 @@ usort($news, static fn(array $a, array $b): int => strcmp(
     <div class="news-list">
       <?php if ($news === []): ?><p class="news-empty">現在、公開中のお知らせはありません。</p><?php endif; ?>
       <?php foreach ($news as $item): ?>
-      <a href="news-detail.php?id=<?= rawurlencode((string)($item['id'] ?? '')) ?>"><article id="<?= e($item['id'] ?? '') ?>">
+      <?php $thumbnail = $newsThumbnail($item); ?>
+      <a href="news-detail.php?id=<?= rawurlencode((string)($item['id'] ?? '')) ?>"><article id="<?= e($item['id'] ?? '') ?>" class="<?= $thumbnail !== '' ? 'has-thumbnail' : '' ?>">
         <div class="news-meta"><time datetime="<?= e($item['published_at'] ?? '') ?>"><?= e($item['published_at'] ?? '') ?></time><span><?= e($item['category'] ?? 'お知らせ') ?></span></div>
         <div class="news-copy"><h2><?= e($item['title'] ?? '') ?></h2></div>
+        <?php if ($thumbnail !== ''): ?><figure class="news-thumbnail"><img src="<?= e($thumbnail) ?>" alt="" loading="lazy"></figure><?php endif; ?>
       </article></a>
       <?php endforeach; ?>
     </div>

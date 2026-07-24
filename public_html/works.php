@@ -57,6 +57,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
   <link rel="stylesheet" href="assets/works-page.css?v=1">
   <link rel="stylesheet" href="assets/works-links.css?v=3">
   <link rel="stylesheet" href="assets/work-gallery.css">
+  <link rel="stylesheet" href="assets/map-scale.css?v=1">
   <script src="assets/works-page.js?v=2" defer></script>
   <script src="assets/work-gallery.js" defer></script>
 </head>
@@ -90,11 +91,12 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
     <?php foreach($groups as $groupId=>$group): $map=$group['map']; ?>
     <div class="works-panel<?= $map?'':' no-map' ?>" data-map-panel="<?= e($groupId) ?>" <?= $groupId===$activeGroup?'':'hidden' ?>>
       <?php if($map): ?>
+      <?php $mapScale=max(.4,min(1.5,((int)($map['display_scale']??100))/100)); ?>
       <div class="project-map">
-        <div class="map-canvas">
+        <div class="map-canvas" style="--map-scale:<?= e($mapScale) ?>">
           <img src="<?= e($map['image']??'') ?>" alt="<?= e($map['title']??'') ?>の施工事例地図">
           <?php foreach(cluster_map_works($group['works']) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
-          <div class="pin-group" style="left:<?= e($cluster['x']) ?>%;top:<?= e($cluster['y']) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
+          <div class="pin-group" style="left:<?= e(50+($cluster['x']-50)*$mapScale) ?>%;top:<?= e(50+($cluster['y']-50)*$mapScale) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
             <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
             <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"><span><?= $item['number'] ?></span></button>
             <?php else: ?>

@@ -1,0 +1,8 @@
+.map-canvas {
+  overflow: hidden;
+}
+
+.map-canvas > img {
+  transform: scale(var(--map-scale, 1));
+  transform-origin: center;
+}

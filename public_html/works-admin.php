@@ -153,7 +153,7 @@ $currentImages = $edit ? work_images($edit) : [];
             <select name="map_id" data-map-select>
               <option value="outside" <?= $selectedMapId==='outside'?'selected':'' ?>>沖縄以外（地図なし）</option>
               <?php foreach($maps as $map): ?>
-              <option value="<?= e($map['id']) ?>" data-image="<?= e($map['image']??'') ?>" <?= $selectedMapId===($map['id']??'')?'selected':'' ?>>MAP <?= str_pad((string)($map['map_number']??0),2,'0',STR_PAD_LEFT) ?>｜<?= e($map['title']??'') ?></option>
+              <option value="<?= e($map['id']) ?>" data-image="<?= e($map['image']??'') ?>" data-scale="<?= e(((int)($map['display_scale']??100))/100) ?>" <?= $selectedMapId===($map['id']??'')?'selected':'' ?>>MAP <?= str_pad((string)($map['map_number']??0),2,'0',STR_PAD_LEFT) ?>｜<?= e($map['title']??'') ?></option>
               <?php endforeach; ?>
             </select>
           </label>
@@ -190,6 +190,6 @@ $currentImages = $edit ? work_images($edit) : [];
     <?php endif; ?>
   </div>
 </main>
-<script src="assets/works-admin-map.js?v=2" defer></script>
+<script src="assets/works-admin-map.js?v=3" defer></script>
 </body>
 </html>

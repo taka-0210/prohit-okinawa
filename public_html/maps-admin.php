@@ -43,6 +43,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'map_number' => $mapNumber,
             'title' => trim((string)($_POST['title'] ?? '')),
             'image' => upload_image('image', (string)($existing['image'] ?? '')),
+            'display_scale' => max(40, min(150, (int)($_POST['display_scale'] ?? 100))),
             'sort_order' => (int)($_POST['sort_order'] ?? $mapNumber),
             'published' => isset($_POST['published']),
         ];
@@ -74,7 +75,7 @@ usort($items, fn(array $a, array $b): int => [(int)($a['sort_order'] ?? 0), (int
   <title>地図管理</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
-  <link rel="stylesheet" href="assets/maps-admin.css">
+  <link rel="stylesheet" href="assets/maps-admin.css?v=2">
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
@@ -108,8 +109,9 @@ usort($items, fn(array $a, array $b): int => [(int)($a['sort_order'] ?? 0), (int
         <input type="hidden" name="action" value="save">
         <input type="hidden" name="id" value="<?= e($edit['id']??'') ?>">
         <label>地図名<input name="title" required value="<?= e($v['title']??'') ?>" placeholder="例：沖縄本島"></label>
+        <label>表示倍率（％）<input type="number" name="display_scale" min="40" max="150" step="1" value="<?= e($v['display_scale']??100) ?>"><small>100％が元の大きさです。40～150％の範囲で調整できます。</small></label>
         <label>表示順<input type="number" name="sort_order" min="0" value="<?= e($v['sort_order']??count($items)+1) ?>"></label>
-        <?php if(!empty($v['image'])): ?><div class="map-preview"><img src="<?= e($v['image']) ?>" alt="登録中の地図"></div><?php endif; ?>
+        <?php if(!empty($v['image'])): ?><div class="map-preview" style="--map-scale:<?= e(((int)($v['display_scale']??100))/100) ?>"><img src="<?= e($v['image']) ?>" alt="登録中の地図"></div><?php endif; ?>
         <label>地図画像<input type="file" name="image" accept="image/jpeg,image/png,image/webp" <?= $edit?'':'required' ?>><small>JPEG・PNG・WebP／6MBまで。<br>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
         <label class="check"><input type="checkbox" name="published" <?= !isset($v['published'])||$v['published']?'checked':'' ?>>公開する</label>
         <button class="primary">保存する</button>

@@ -1,5 +1,9 @@
-.map-canvas {
+.map-viewport {
   overflow: hidden;
+}
+
+.map-canvas {
+  transform-origin: 0 0;
 }
 
 .map-canvas > img {
@@ -23,4 +27,27 @@
   background: var(--navy);
   transform: none;
   box-shadow: 0 0 0 4px rgb(16 42 67 / 22%), 0 3px 10px #06182766;
+}
+
+.map-gesture-hint {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .map-viewport {
+    touch-action: pan-y;
+  }
+
+  .map-viewport.is-zoomed {
+    touch-action: none;
+  }
+
+  .map-viewport .map-canvas {
+    will-change: transform;
+  }
+
+  .map-gesture-hint {
+    display: block;
+    margin-top: 4px;
+  }
 }

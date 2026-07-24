@@ -59,8 +59,8 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
   <link rel="stylesheet" href="assets/works-page.css?v=1">
   <link rel="stylesheet" href="assets/works-links.css?v=3">
   <link rel="stylesheet" href="assets/work-gallery.css">
-  <link rel="stylesheet" href="assets/map-scale.css?v=5">
-  <script src="assets/works-page.js?v=4" defer></script>
+  <link rel="stylesheet" href="assets/map-scale.css?v=6">
+  <script src="assets/works-page.js?v=5" defer></script>
   <script src="assets/work-gallery.js" defer></script>
 </head>
 <body>
@@ -95,25 +95,27 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
       <?php if($map): ?>
       <?php $mapScale=max(.4,min(1.5,((int)($map['display_scale']??100))/100)); ?>
       <div class="project-map">
-        <div class="map-canvas" style="--map-scale:<?= e($mapScale) ?>">
-          <img src="<?= e($map['image']??'') ?>" alt="<?= e($map['title']??'') ?>の施工事例地図">
-          <?php foreach(cluster_map_works($group['works'],max(0,min(20,(float)($map['cluster_threshold']??6)))) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
-          <div class="pin-group" style="left:<?= e(50+($cluster['x']-50)*$mapScale) ?>%;top:<?= e($cluster['y']) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
-            <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
-            <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"></button>
-            <?php else: ?>
-            <button type="button" class="project-pin cluster-pin" data-cluster-toggle aria-expanded="false" aria-label="このエリアの<?= $clusterCount ?>件を表示"><span><?= $clusterCount ?></span></button>
-            <div class="pin-popup" data-pin-popup hidden>
-              <strong>このエリアの施工事例</strong>
-              <?php foreach($cluster['items'] as $item): ?>
-              <button type="button" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></button>
-              <?php endforeach; ?>
+        <div class="map-viewport" data-map-viewport>
+          <div class="map-canvas" style="--map-scale:<?= e($mapScale) ?>">
+            <img src="<?= e($map['image']??'') ?>" alt="<?= e($map['title']??'') ?>の施工事例地図">
+            <?php foreach(cluster_map_works($group['works'],max(0,min(20,(float)($map['cluster_threshold']??6)))) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
+            <div class="pin-group" style="left:<?= e(50+($cluster['x']-50)*$mapScale) ?>%;top:<?= e($cluster['y']) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
+              <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
+              <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"></button>
+              <?php else: ?>
+              <button type="button" class="project-pin cluster-pin" data-cluster-toggle aria-expanded="false" aria-label="このエリアの<?= $clusterCount ?>件を表示"><span><?= $clusterCount ?></span></button>
+              <div class="pin-popup" data-pin-popup hidden>
+                <strong>このエリアの施工事例</strong>
+                <?php foreach($cluster['items'] as $item): ?>
+                <button type="button" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></button>
+                <?php endforeach; ?>
+              </div>
+              <?php endif; ?>
             </div>
-            <?php endif; ?>
+            <?php endforeach; ?>
           </div>
-          <?php endforeach; ?>
         </div>
-        <p>地図上のマークを選ぶと、該当する施工事例を確認できます。数字入りのマークは近接する店舗の件数を表しています。</p>
+        <p>地図上のマークを選ぶと、該当する施工事例を確認できます。数字入りのマークは近接する店舗の件数を表しています。<span class="map-gesture-hint">地図は2本指で拡大・縮小できます。</span></p>
       </div>
       <?php endif; ?>
       <div class="project-list">

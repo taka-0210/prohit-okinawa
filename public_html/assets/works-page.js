@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     panels.forEach(panel => panel.hidden = panel.dataset.mapPanel !== id);
     if (select) select.value = id;
     closePopups();
+    panels.forEach(panel => panel.dispatchEvent(new CustomEvent('mapchange')));
   };
   tabs.forEach(tab => tab.addEventListener('click', () => activate(tab.dataset.mapTab)));
   select?.addEventListener('change', () => activate(select.value));
@@ -62,6 +63,86 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('mouseenter', () => highlight(card.dataset.workCard));
       card.addEventListener('mouseleave', () => highlight(''));
     });
+
+    const viewport = panel.querySelector('[data-map-viewport]');
+    const canvas = viewport?.querySelector('.map-canvas');
+    if (viewport && canvas) {
+      let scale = 1;
+      let x = 0;
+      let y = 0;
+      let pinchDistance = 0;
+      let pinchScale = 1;
+      let panStart = null;
+      let moved = false;
+      const midpoint = touches => ({
+        x: (touches[0].clientX + touches[1].clientX) / 2,
+        y: (touches[0].clientY + touches[1].clientY) / 2
+      });
+      const distance = touches => Math.hypot(
+        touches[0].clientX - touches[1].clientX,
+        touches[0].clientY - touches[1].clientY
+      );
+      const constrain = () => {
+        const maxX = viewport.clientWidth * (scale - 1);
+        const maxY = viewport.clientHeight * (scale - 1);
+        x = Math.min(0, Math.max(-maxX, x));
+        y = Math.min(0, Math.max(-maxY, y));
+      };
+      const render = () => {
+        constrain();
+        canvas.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+        viewport.classList.toggle('is-zoomed', scale > 1.01);
+      };
+      const reset = () => {
+        scale = 1;
+        x = 0;
+        y = 0;
+        render();
+      };
+      viewport.addEventListener('touchstart', event => {
+        moved = false;
+        if (event.touches.length === 2) {
+          event.preventDefault();
+          pinchDistance = distance(event.touches);
+          pinchScale = scale;
+          panStart = {...midpoint(event.touches), x, y};
+        } else if (event.touches.length === 1 && scale > 1.01) {
+          panStart = {x: event.touches[0].clientX, y: event.touches[0].clientY, offsetX: x, offsetY: y};
+        }
+      }, {passive: false});
+      viewport.addEventListener('touchmove', event => {
+        if (event.touches.length === 2 && pinchDistance > 0) {
+          event.preventDefault();
+          const center = midpoint(event.touches);
+          const nextScale = Math.max(1, Math.min(3, pinchScale * distance(event.touches) / pinchDistance));
+          const ratio = nextScale / scale;
+          x = center.x - viewport.getBoundingClientRect().left - ((center.x - viewport.getBoundingClientRect().left) - x) * ratio;
+          y = center.y - viewport.getBoundingClientRect().top - ((center.y - viewport.getBoundingClientRect().top) - y) * ratio;
+          scale = nextScale;
+          moved = true;
+          render();
+        } else if (event.touches.length === 1 && scale > 1.01 && panStart) {
+          event.preventDefault();
+          x = panStart.offsetX + event.touches[0].clientX - panStart.x;
+          y = panStart.offsetY + event.touches[0].clientY - panStart.y;
+          moved = true;
+          render();
+        }
+      }, {passive: false});
+      viewport.addEventListener('touchend', () => {
+        pinchDistance = 0;
+        panStart = null;
+      });
+      viewport.addEventListener('click', event => {
+        if (moved) {
+          event.preventDefault();
+          event.stopPropagation();
+          moved = false;
+        }
+      }, true);
+      panel.addEventListener('mapchange', reset);
+      window.addEventListener('resize', render);
+    }
   });
   document.addEventListener('click', event => {
     if (!event.target.closest('.pin-group')) closePopups();

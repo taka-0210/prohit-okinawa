@@ -3,6 +3,9 @@
 }
 
 .map-canvas > img {
+  height: auto;
+  max-height: none;
+  object-fit: fill;
   transform: scale(var(--map-scale, 1));
   transform-origin: center;
 }

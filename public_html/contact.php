@@ -59,7 +59,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 if (isset($_GET['thanks']) && !empty($_SESSION['contact_sent_id'])) $step = 'thanks';
 function field_error(array $errors, string $field): string { return isset($errors[$field]) ? '<small class="field-error">'.e($errors[$field]).'</small>' : ''; }
 ?>
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>お問い合わせ｜<?=e(APP_NAME)?></title><meta name="description" content="飲食店の開業、厨房設計、厨房機器、店舗工事、店舗売却についてお気軽にご相談ください。"><link rel="stylesheet" href="assets/contact.css"><link rel="stylesheet" href="assets/contact-logo-fix.css?v=2"><script src="assets/contact-draft.js" defer></script></head><body data-contact-complete="<?=$step==='thanks'?'1':'0'?>">
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>お問い合わせ｜<?=e(APP_NAME)?></title><meta name="description" content="飲食店の開業、厨房設計、厨房機器、店舗工事、店舗売却についてお気軽にご相談ください。"><link rel="stylesheet" href="assets/contact.css"><link rel="stylesheet" href="assets/contact-logo-fix.css?v=2"><script src="assets/contact-draft.js?v=2" defer></script></head><body data-contact-complete="<?=$step==='thanks'?'1':'0'?>">
 <header class="contact-header"><a href="index.php"><?=!empty($company['logo'])?'<img src="'.e($company['logo']).'" alt="'.e($company['company_name']??APP_NAME).'">':'<strong>'.e(APP_NAME).'</strong>'?></a><a href="index.php">サイトへ戻る</a></header>
 <main class="contact-main"><div class="contact-title"><p>CONTACT</p><h1>お問い合わせ</h1><span>開業前の構想段階から、お気軽にご相談ください。</span></div>
 <?php if($step==='thanks'): ?>

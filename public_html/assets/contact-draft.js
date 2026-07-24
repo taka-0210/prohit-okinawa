@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const storageKey = 'prohit-okinawa-contact-draft';
+  const draftLifetime = 2 * 60 * 60 * 1000;
 
   if (document.body.dataset.contactComplete === '1') {
-    sessionStorage.removeItem(storageKey);
+    localStorage.removeItem(storageKey);
     return;
   }
 
@@ -18,11 +19,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!field) return;
       draft[name] = field.type === 'checkbox' ? field.checked : field.value;
     });
-    sessionStorage.setItem(storageKey, JSON.stringify(draft));
+    localStorage.setItem(storageKey, JSON.stringify({
+      values: draft,
+      expiresAt: Date.now() + draftLifetime,
+    }));
   };
 
   try {
-    const draft = JSON.parse(sessionStorage.getItem(storageKey) || '{}');
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    if (!saved.expiresAt || saved.expiresAt < Date.now()) {
+      localStorage.removeItem(storageKey);
+      return;
+    }
+    const draft = saved.values || {};
     fields.forEach((name) => {
       const field = form.elements.namedItem(name);
       if (!field || draft[name] === undefined) return;
@@ -33,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   } catch {
-    sessionStorage.removeItem(storageKey);
+    localStorage.removeItem(storageKey);
   }
 
   form.addEventListener('input', saveDraft);

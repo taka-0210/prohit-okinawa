@@ -95,7 +95,7 @@ usort($items, fn(array $a, array $b): int => [(int)($a['sort_order'] ?? 0), (int
           <td>MAP <?= str_pad((string)($item['map_number']??0), 2, '0', STR_PAD_LEFT) ?></td>
           <td><strong><?= e($item['title']??'') ?></strong></td>
           <td><?= $usageCount ?>件</td>
-          <td><span class="status <?= !empty($item['published'])?'live':'' ?>"><?= !empty($item['published'])?'公開':'下書き' ?></span></td>
+          <td><span class="status <?= !empty($item['published'])?'live':'' ?>"><?= !empty($item['published'])?'公開':'非公開' ?></span></td>
           <td><a href="maps-admin.php?edit=<?= e($item['id']) ?>">編集</a></td>
         </tr>
       <?php endforeach; ?>

@@ -7,6 +7,7 @@ define('DATA_DIR', basename(dirname(__DIR__)) === 'public_html'
     ? dirname(__DIR__, 2) . '/storage-demo'
     : __DIR__ . '/../storage');
 const UPLOAD_DIR = __DIR__ . '/uploads';
+const UPLOAD_IMAGE_MAX_EDGE = 1920;
 
 function boot_app(): void
 {
@@ -250,8 +251,52 @@ function upload_image(string $field, string $current = ''): string
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
     $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
     if (!isset($extensions[$mime])) throw new RuntimeException('JPEG、PNG、WebPのみ利用できます。');
+    return store_uploaded_image((string)$file['tmp_name'], $mime);
+}
+
+function store_uploaded_image(string $temporary, string $mime): string
+{
+    $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
     $name = bin2hex(random_bytes(12)) . '.' . $extensions[$mime];
-    if (!move_uploaded_file($file['tmp_name'], UPLOAD_DIR . '/' . $name)) throw new RuntimeException('画像を保存できませんでした。');
+    $destination = UPLOAD_DIR . '/' . $name;
+    $size = @getimagesize($temporary);
+    if (!$size || empty($size[0]) || empty($size[1])) throw new RuntimeException('画像のサイズを確認できませんでした。');
+    $width = (int)$size[0];
+    $height = (int)$size[1];
+    if (max($width, $height) <= UPLOAD_IMAGE_MAX_EDGE) {
+        if (!move_uploaded_file($temporary, $destination)) throw new RuntimeException('画像を保存できませんでした。');
+        return 'uploads/' . $name;
+    }
+    $loaders = [
+        'image/jpeg' => 'imagecreatefromjpeg',
+        'image/png' => 'imagecreatefrompng',
+        'image/webp' => 'imagecreatefromwebp',
+    ];
+    $loader = $loaders[$mime];
+    if (!function_exists($loader) || !function_exists('imagecreatetruecolor')) {
+        throw new RuntimeException('画像の自動縮小を利用できません。サーバーの画像処理設定を確認してください。');
+    }
+    $source = @$loader($temporary);
+    if (!$source) throw new RuntimeException('画像を読み込めませんでした。');
+    $scale = UPLOAD_IMAGE_MAX_EDGE / max($width, $height);
+    $resizedWidth = max(1, (int)round($width * $scale));
+    $resizedHeight = max(1, (int)round($height * $scale));
+    $resized = imagecreatetruecolor($resizedWidth, $resizedHeight);
+    if ($mime !== 'image/jpeg') {
+        imagealphablending($resized, false);
+        imagesavealpha($resized, true);
+        $transparent = imagecolorallocatealpha($resized, 0, 0, 0, 127);
+        imagefill($resized, 0, 0, $transparent);
+    }
+    imagecopyresampled($resized, $source, 0, 0, 0, 0, $resizedWidth, $resizedHeight, $width, $height);
+    $saved = match ($mime) {
+        'image/jpeg' => imagejpeg($resized, $destination, 85),
+        'image/png' => imagepng($resized, $destination, 6),
+        'image/webp' => imagewebp($resized, $destination, 85),
+    };
+    imagedestroy($source);
+    imagedestroy($resized);
+    if (!$saved) throw new RuntimeException('画像を保存できませんでした。');
     return 'uploads/' . $name;
 }
 
@@ -272,9 +317,7 @@ function upload_image_files(string $field, int $limit): array
         $mime = (new finfo(FILEINFO_MIME_TYPE))->file($temporary);
         $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
         if (!isset($extensions[$mime])) throw new RuntimeException('JPEG、PNG、WebPのみ利用できます。');
-        $name = bin2hex(random_bytes(12)) . '.' . $extensions[$mime];
-        if (!move_uploaded_file($temporary, UPLOAD_DIR . '/' . $name)) throw new RuntimeException('画像を保存できませんでした。');
-        $saved[] = 'uploads/' . $name;
+        $saved[] = store_uploaded_image($temporary, $mime);
     }
     return $saved;
 }

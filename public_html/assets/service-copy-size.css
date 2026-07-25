@@ -1,0 +1,24 @@
+.service-hero .lead {
+  max-width: 760px;
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 2;
+}
+
+.service-intro > div > p {
+  max-width: 850px;
+  margin: 0;
+  font-size: clamp(18px, 1.5vw, 24px);
+  font-weight: 600;
+  line-height: 2;
+}
+
+@media (max-width: 800px) {
+  .service-hero .lead {
+    font-size: 17px;
+  }
+
+  .service-intro > div > p {
+    font-size: 18px;
+    line-height: 1.9;
+  }
+}

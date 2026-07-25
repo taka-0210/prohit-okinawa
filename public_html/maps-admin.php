@@ -80,7 +80,7 @@ usort($items, fn(array $a, array $b): int => [(int)($a['sort_order'] ?? 0), (int
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
-<script src="assets/admin-nav.js?v=6" defer></script>
+<script src="assets/admin-nav.js?v=7" defer></script>
 <main class="admin-main">
   <header><div><p>PRO CHUBO HIT OKINAWA</p><h1>地図管理</h1></div><a href="works.php" target="_blank">施工事例ページを確認 ↗</a></header>
   <?php if(isset($_GET['saved'])): ?><p class="success">保存しました。</p><?php endif; ?>

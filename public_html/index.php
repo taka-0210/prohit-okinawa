@@ -5,9 +5,12 @@ $homeAbout = load_content('home')[0] ?? [
     'about_kicker' => "BUILDING RESTAURANTS,\nBUILDING FUTURES.",
     'about_heading' => "厨房機器を売るだけでは、\nお店は完成しません。",
     'about_body' => "私たちは、飲食店オーナーの「こんなお店をつくりたい」という想いを形にする、店舗づくりのプロフェッショナルチームです。新規開業はもちろん、改装や設備の入れ替え、店舗の譲渡・買取まで、お店の状況やこれからの計画に寄り添いながら、最適な方法を一緒に考えます。\n\n現地調査、厨房レイアウト、CAD図面、厨房機器の選定、搬入・設置、内外装工事まで、店舗づくりに必要な工程を一つの窓口で対応します。複数の業者とのやり取りをできる限り減らし、計画全体を見渡しながら進めることで、開業準備にかかる負担や行き違いを抑えます。\n\n大切にしているのは、機器を販売することだけではなく、そのお店に本当に必要な環境をつくること。業態やメニュー、厨房の広さ、スタッフの動線、予算を丁寧に確認し、営業のしやすさや将来の設備更新まで見据えてご提案します。完成した瞬間だけでなく、その先も長く愛されるお店づくりを支えます。",
-    'strength_heading' => "飲食店経営者だから、\nできる提案がある。",
-    'strength_body' => '代表・新垣大作は、開業、運営、スタッフ育成、厨房づくり、設備投資、店舗売却までを実際に経験。現在も広島で沖縄料理店「新垣家」を経営しています。',
-    'strength_quote' => "「機械を売る」のではなく、\n「繁盛するお店づくり」を考える。",
+];
+$homeStrength = load_content('strength')[0] ?? [
+    'heading' => "飲食店経営者だから、\nできる提案がある。",
+    'body' => '代表・新垣大作は、開業、運営、スタッフ育成、厨房づくり、設備投資、店舗売却までを実際に経験。現在も広島で沖縄料理店「新垣家」を経営しています。',
+    'quote' => "「機械を売る」のではなく、\n「繁盛するお店づくり」を考える。",
+    'images' => [],
 ];
 $heroEffects = load_content('hero_settings')[0] ?? ['overlay' => '#102a43', 'overlay_opacity' => 35, 'dots' => true, 'dots_opacity' => 18];
 $works = published(load_content('works'));
@@ -47,7 +50,7 @@ $history = array_values(array_filter(array_map(function (string $line): array {
 <?php foreach ($heroes as $i => $hero): ?><article class="slide<?= $i === 0 ? ' active' : '' ?>" style="--bg:<?= e($hero['color']) ?>;--overlay:<?= e($hero['overlay']) ?>;--opacity:<?= e(((int)$hero['overlay_opacity'])/100) ?>;--dot-opacity:<?= e(((int)$hero['dots_opacity'])/100) ?>;<?= $hero['image'] ? '--image:url('.e($hero['image']).');' : '' ?>" aria-hidden="<?= $i === 0 ? 'false' : 'true' ?>"><div class="hero-copy"><p class="eyebrow">PRO KITCHEN HIT OKINAWA</p><h1><?= e($hero['title']) ?></h1><p><?= e($hero['lead']) ?></p><a class="button light" href="#contact">お店づくりを相談する</a></div></article><?php endforeach; ?>
 </div><div class="slider-controls"><button data-prev aria-label="前のスライド">←</button><span data-counter>01 / <?= str_pad((string)count($heroes), 2, '0', STR_PAD_LEFT) ?></span><button data-next aria-label="次のスライド">→</button></div></section>
 <section class="intro section" id="about"><p class="section-no">01 / ABOUT US</p><div><p class="kicker"><?= nl2br(e($homeAbout['about_kicker']??'')) ?></p><h2><?= nl2br(e($homeAbout['about_heading']??'')) ?></h2><?php foreach(preg_split('/\R{2,}/u',trim((string)($homeAbout['about_body']??'')))?:[] as $paragraph): ?><p><?= nl2br(e($paragraph)) ?></p><?php endforeach; ?></div></section>
-<section class="story section" id="strength"><p class="section-no">02 / OUR STRENGTH</p><div><h2><?=nl2br(e($homeAbout['strength_heading']??''))?></h2><?php foreach(preg_split('/\R{2,}/u',trim((string)($homeAbout['strength_body']??'')))?:[] as $paragraph): ?><p><?=nl2br(e($paragraph))?></p><?php endforeach; ?><blockquote><?=nl2br(e($homeAbout['strength_quote']??''))?></blockquote></div></section>
+<section class="story section strength-section" id="strength"><p class="section-no">02 / OUR STRENGTH</p><div><h2><?=nl2br(e($homeStrength['heading']??''))?></h2><?php foreach(preg_split('/\R{2,}/u',trim((string)($homeStrength['body']??'')))?:[] as $paragraph): ?><p><?=nl2br(e($paragraph))?></p><?php endforeach; ?><?php $strengthImages=array_values(array_filter((array)($homeStrength['images']??[]),'is_string'));if($strengthImages):?><div class="strength-reel" aria-label="OUR STRENGTH 写真"><div class="strength-reel-track"><?php for($copy=0;$copy<2;$copy++):?><div class="strength-reel-group" <?=$copy===1?'aria-hidden="true"':''?>><?php foreach($strengthImages as $image):?><img src="<?=e($image)?>" alt="" loading="lazy"><?php endforeach;?></div><?php endfor;?></div></div><?php endif;?><blockquote><?=nl2br(e($homeStrength['quote']??''))?></blockquote></div></section>
 <section class="services section dark" id="services"><p class="section-no">03 / SERVICES</p><div><h2>お店の一生に、<br>ずっと寄り添う。</h2><div class="service-grid">
 <?php foreach($servicePages as $index=>$servicePage): ?><article data-service-slug="<?=e($servicePage['id'])?>"><span><?=str_pad((string)($index+1),2,'0',STR_PAD_LEFT)?></span><h3><?=e($servicePage['title'])?></h3><p><?=e($servicePage['lead'])?></p></article><?php endforeach; ?>
 </div></div></section>

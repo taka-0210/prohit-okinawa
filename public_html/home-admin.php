@@ -7,9 +7,6 @@ $defaults = [
     'about_kicker' => "BUILDING RESTAURANTS,\nBUILDING FUTURES.",
     'about_heading' => "厨房機器を売るだけでは、\nお店は完成しません。",
     'about_body' => "私たちは、飲食店オーナーの「こんなお店をつくりたい」という想いを形にする、店舗づくりのプロフェッショナルチームです。新規開業はもちろん、改装や設備の入れ替え、店舗の譲渡・買取まで、お店の状況やこれからの計画に寄り添いながら、最適な方法を一緒に考えます。\n\n現地調査、厨房レイアウト、CAD図面、厨房機器の選定、搬入・設置、内外装工事まで、店舗づくりに必要な工程を一つの窓口で対応します。複数の業者とのやり取りをできる限り減らし、計画全体を見渡しながら進めることで、開業準備にかかる負担や行き違いを抑えます。\n\n大切にしているのは、機器を販売することだけではなく、そのお店に本当に必要な環境をつくること。業態やメニュー、厨房の広さ、スタッフの動線、予算を丁寧に確認し、営業のしやすさや将来の設備更新まで見据えてご提案します。完成した瞬間だけでなく、その先も長く愛されるお店づくりを支えます。",
-    'strength_heading' => "飲食店経営者だから、\nできる提案がある。",
-    'strength_body' => '代表・新垣大作は、開業、運営、スタッフ育成、厨房づくり、設備投資、店舗売却までを実際に経験。現在も広島で沖縄料理店「新垣家」を経営しています。',
-    'strength_quote' => "「機械を売る」のではなく、\n「繁盛するお店づくり」を考える。",
 ];
 $home = array_replace($defaults, load_content('home')[0] ?? []);
 $error = '';
@@ -22,9 +19,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'about_kicker' => trim((string)($_POST['about_kicker'] ?? '')),
             'about_heading' => trim((string)($_POST['about_heading'] ?? '')),
             'about_body' => trim((string)($_POST['about_body'] ?? '')),
-            'strength_heading' => trim((string)($_POST['strength_heading'] ?? '')),
-            'strength_body' => trim((string)($_POST['strength_body'] ?? '')),
-            'strength_quote' => trim((string)($_POST['strength_quote'] ?? '')),
         ];
         if (in_array('', $home, true)) {
             throw new RuntimeException('すべての項目を入力してください。');
@@ -48,7 +42,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
-<script src="assets/admin-nav.js?v=6" defer></script>
+<script src="assets/admin-nav.js?v=7" defer></script>
 <main class="admin-main">
   <header><div><p>PRO CHUBO HIT OKINAWA</p><h1>ホーム基本情報</h1></div><a href="index.php#about" target="_blank">公開ページを確認 ↗</a></header>
   <?php if(isset($_GET['saved'])):?><p class="success">ABOUT USを保存しました。</p><?php endif;?>
@@ -60,11 +54,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       <label>英字キャッチコピー<textarea name="about_kicker" rows="3" required><?= e($home['about_kicker']) ?></textarea><small>入力した改行を公開ページにも反映します。</small></label>
       <label>大見出し<textarea name="about_heading" rows="3" required><?= e($home['about_heading']) ?></textarea><small>読みやすい位置で改行してください。</small></label>
       <label>本文<textarea name="about_body" rows="10" required><?= e($home['about_body']) ?></textarea><small>空行を入れると段落が分かれます。通常の改行もそのまま反映されます。</small></label>
-      <hr>
-      <p class="section-label">02 / OUR STRENGTH</p>
-      <label>大見出し<textarea name="strength_heading" rows="3" required><?= e($home['strength_heading']) ?></textarea><small>入力した改行を公開ページにも反映します。</small></label>
-      <label>本文<textarea name="strength_body" rows="6" required><?= e($home['strength_body']) ?></textarea><small>空行を入れると段落が分かれます。</small></label>
-      <label>強調メッセージ<textarea name="strength_quote" rows="3" required><?= e($home['strength_quote']) ?></textarea><small>セクション下部へ大きく表示します。</small></label>
       <button class="primary">ホーム基本情報を保存する</button>
     </form>
   </section>

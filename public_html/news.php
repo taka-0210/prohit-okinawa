@@ -24,7 +24,7 @@ $newsThumbnail = static function (array $item): string {
   <title>最新情報｜<?= e($company['company_name'] ?? APP_NAME) ?></title>
   <meta name="description" content="プロ厨房HIT沖縄からのお知らせ、施工事例やサービスに関する最新情報をご案内します。">
   <link rel="stylesheet" href="assets/news-page.css">
-  <link rel="stylesheet" href="assets/news-archive-links.css?v=2">
+  <link rel="stylesheet" href="assets/news-archive-links.css?v=3">
 </head>
 <body>
 <header class="news-header">
@@ -52,7 +52,7 @@ $newsThumbnail = static function (array $item): string {
       <a href="news-detail.php?id=<?= rawurlencode((string)($item['id'] ?? '')) ?>"><article id="<?= e($item['id'] ?? '') ?>" class="<?= $thumbnail !== '' ? 'has-thumbnail' : '' ?>">
         <div class="news-meta"><time datetime="<?= e($item['published_at'] ?? '') ?>"><?= e($item['published_at'] ?? '') ?></time><span><?= e($item['category'] ?? 'お知らせ') ?></span></div>
         <div class="news-copy"><h2><?= e($item['title'] ?? '') ?></h2></div>
-        <?php if ($thumbnail !== ''): ?><figure class="news-thumbnail"><img src="<?= e($thumbnail) ?>" alt="" loading="lazy"></figure><?php endif; ?>
+        <figure class="news-thumbnail<?= $thumbnail === '' ? ' is-placeholder' : '' ?>"><?php if ($thumbnail !== ''): ?><img src="<?= e($thumbnail) ?>" alt="" loading="lazy"><?php else: ?><span>NEWS</span><?php endif; ?></figure>
       </article></a>
       <?php endforeach; ?>
     </div>

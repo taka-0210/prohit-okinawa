@@ -1,0 +1,34 @@
+.admin-main {
+  min-width: 0;
+}
+
+.admin-main form,
+.service-admin-tab-area,
+.service-admin-tabs,
+.service-basics,
+.service-blocks,
+.service-block,
+.block-copy {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.service-admin-tabs {
+  width: 100%;
+}
+
+.service-block {
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+}
+
+.block-copy input,
+.block-copy textarea {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 800px) {
+  .service-block {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

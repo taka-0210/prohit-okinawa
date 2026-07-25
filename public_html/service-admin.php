@@ -76,6 +76,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
   <link rel="stylesheet" href="assets/service-admin.css?v=4">
+  <link rel="stylesheet" href="assets/service-admin-fit.css?v=1">
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>

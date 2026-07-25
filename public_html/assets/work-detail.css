@@ -1,77 +1,117 @@
 .work-detail-hero {
-  padding: 100px var(--site-gutter) 85px;
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(440px, 1.05fr);
+  gap: 6vw;
+  align-items: center;
+  min-height: 430px;
+  padding: 54px var(--site-gutter);
   background: #102a43;
   color: #fff;
 }
 
-.work-detail-hero > a {
+.work-detail-heading > a {
   color: #9db8ca;
   font: 700 10px Arial, sans-serif;
   letter-spacing: .15em;
   text-decoration: none;
 }
 
-.work-detail-hero > p {
-  margin: 45px 0 8px;
+.work-detail-heading > p {
+  margin: 32px 0 8px;
   color: #9db8ca;
   font-size: 12px;
 }
 
 .work-detail-hero h1 {
-  max-width: 1050px;
+  max-width: 720px;
   margin: 0;
-  font-size: clamp(38px, 6vw, 78px);
-  line-height: 1.3;
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.35;
   letter-spacing: -.045em;
+}
+
+.work-detail-heading dl {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  max-width: 520px;
+  margin: 28px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #ffffff30;
+}
+
+.work-detail-heading dt {
+  color: #9db8ca;
+  font: 700 9px Arial, sans-serif;
+  letter-spacing: .12em;
+}
+
+.work-detail-heading dd {
+  margin: 0;
+  font-size: 11px;
+}
+
+.work-hero-photo {
+  min-width: 0;
+}
+
+.work-hero-photo > button,
+.work-hero-photo > div {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  border: 0;
+  background: #294158;
+}
+
+.work-hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.work-hero-photo button > span {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 7px 10px;
+  background: #102a43e8;
+  color: #fff;
+  font: 700 9px Arial, sans-serif;
+  letter-spacing: .1em;
+}
+
+.work-hero-photo .is-placeholder {
+  display: grid;
+  place-items: center;
+  color: #9db8ca;
+  font: 700 10px Arial, sans-serif;
+  letter-spacing: .18em;
 }
 
 .work-detail-main {
   width: min(1440px, calc(100% - 80px));
   margin: 0 auto;
-  padding: 100px 0 130px;
-}
-
-.work-main-photo {
-  position: relative;
-  display: block;
-  width: 100%;
-  min-height: 420px;
-  overflow: hidden;
-  border: 0;
-  background: #b7b9b5;
-}
-
-.work-main-photo img {
-  display: block;
-  width: 100%;
-  max-height: 820px;
-  object-fit: cover;
-}
-
-.work-main-photo > span {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
-  padding: 8px 12px;
-  background: #102a43e8;
-  color: #fff;
-  font: 700 10px Arial, sans-serif;
-  letter-spacing: .12em;
-}
-
-.work-main-photo.is-placeholder {
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font: 700 11px Arial, sans-serif;
-  letter-spacing: .2em;
+  padding: 70px 0 120px;
 }
 
 .work-thumbnails {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin-top: 14px;
+  margin-bottom: 70px;
+}
+
+.work-thumbnails button {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: #e3e4df;
+  cursor: zoom-in;
 }
 
 .work-thumbnails img {
@@ -85,7 +125,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(340px, .8fr);
   gap: 9vw;
-  margin-top: 90px;
+  margin-top: 0;
 }
 
 .detail-label {
@@ -197,6 +237,19 @@
 }
 
 @media (max-width: 850px) {
+  .work-detail-hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    min-height: 0;
+    padding-top: 55px;
+    padding-bottom: 55px;
+  }
+
+  .work-hero-photo > button,
+  .work-hero-photo > div {
+    height: 360px;
+  }
+
   .work-detail-content {
     grid-template-columns: 1fr;
     gap: 55px;
@@ -205,12 +258,22 @@
 
 @media (max-width: 650px) {
   .work-detail-hero {
-    padding-top: 70px;
-    padding-bottom: 60px;
+    gap: 32px;
+    padding-top: 45px;
+    padding-bottom: 45px;
   }
 
-  .work-detail-hero > p {
-    margin-top: 35px;
+  .work-detail-heading > p {
+    margin-top: 28px;
+  }
+
+  .work-detail-hero h1 {
+    font-size: clamp(31px, 10vw, 44px);
+  }
+
+  .work-hero-photo > button,
+  .work-hero-photo > div {
+    height: 240px;
   }
 
   .work-detail-main {
@@ -218,12 +281,9 @@
     padding: 60px 0 80px;
   }
 
-  .work-main-photo {
-    min-height: 230px;
-  }
-
   .work-thumbnails {
     grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 55px;
   }
 
   .work-detail-content {

@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
         images = [];
       }
       if (!images.length) return;
-      index = 0;
+      index = Number.parseInt(trigger.dataset.startIndex || '0', 10);
+      if (!Number.isFinite(index)) index = 0;
       dialog.querySelector('h2').textContent = trigger.dataset.title || '';
       render();
       dialog.showModal();

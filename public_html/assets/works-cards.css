@@ -1,3 +1,12 @@
+.works-hero {
+  padding-top: 68px;
+  padding-bottom: 64px;
+}
+
+.works-hero h1 {
+  font-size: clamp(48px, 6vw, 78px);
+}
+
 .project-card-link {
   display: block;
   color: inherit;
@@ -114,6 +123,15 @@
 }
 
 @media (max-width: 650px) {
+  .works-hero {
+    padding-top: 52px;
+    padding-bottom: 48px;
+  }
+
+  .works-hero h1 {
+    font-size: clamp(42px, 15vw, 62px);
+  }
+
   .project-card-link article {
     min-height: 0;
   }

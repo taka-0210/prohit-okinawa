@@ -37,6 +37,7 @@ $visibleSectionCount = count($visibleSections);
   <link rel="stylesheet" href="assets/content-links.css?v=1">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">
   <link rel="stylesheet" href="assets/service-header-fix.css?v=2">
+  <link rel="stylesheet" href="assets/site-width.css?v=1">
 </head>
 <body>
 <header class="service-header">

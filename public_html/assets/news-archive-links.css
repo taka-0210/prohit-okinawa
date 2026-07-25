@@ -1,5 +1,5 @@
 .news-archive {
-  width: min(1180px, calc(100% - 48px));
+  width: min(1440px, calc(100% - 80px));
   margin: 0 auto;
   padding: 80px 0 110px;
 }
@@ -10,7 +10,7 @@
 
 .news-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 22px;
   border-top: 0;
 }
@@ -126,7 +126,13 @@
   outline-offset: 3px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
+  .news-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
   .news-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

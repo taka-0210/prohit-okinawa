@@ -24,7 +24,7 @@ $newsThumbnail = static function (array $item): string {
   <title>最新情報｜<?= e($company['company_name'] ?? APP_NAME) ?></title>
   <meta name="description" content="プロ厨房HIT沖縄からのお知らせ、施工事例やサービスに関する最新情報をご案内します。">
   <link rel="stylesheet" href="assets/news-page.css">
-  <link rel="stylesheet" href="assets/news-archive-links.css?v=3">
+  <link rel="stylesheet" href="assets/news-archive-links.css?v=4">
 </head>
 <body>
 <header class="news-header">

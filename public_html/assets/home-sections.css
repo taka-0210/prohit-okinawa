@@ -14,26 +14,31 @@
 }
 
 .strength-section > .section-no {
+  grid-column: 1;
   grid-row: 1 / 4;
+}
+
+.strength-copy {
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .instagram-section {
   overflow: clip;
 }
 
-.strength-reel {
+.story > .strength-reel {
   grid-column: 1 / -1;
-  position: relative;
-  left: 50%;
-  width: min(1440px, 100vw);
-  max-width: none;
+  grid-row: 2;
+  width: 100%;
+  max-width: 1440px;
   margin: 54px 0 0;
-  transform: translateX(-50%);
   overflow: hidden;
 }
 
 .strength-quote {
   grid-column: 2;
+  grid-row: 3;
 }
 
 .strength-reel-track {
@@ -63,13 +68,22 @@
 
 @media (max-width: 800px) {
   .strength-section > .section-no {
+    grid-column: auto;
     grid-row: auto;
   }
 
-  .strength-reel {
-    width: 100vw;
-    margin-right: 0;
-    margin-left: 0;
+  .strength-copy,
+  .story > .strength-reel,
+  .strength-quote {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .story > .strength-reel {
+    width: calc(100% + (2 * var(--site-gutter)));
+    max-width: none;
+    margin-right: calc(-1 * var(--site-gutter));
+    margin-left: calc(-1 * var(--site-gutter));
     margin-top: 38px;
   }
 

@@ -41,7 +41,7 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
   <meta name="description" content="<?= e(mb_substr((string)($work['summary']??''),0,120)) ?>">
   <link rel="stylesheet" href="assets/works-page.css?v=1">
   <link rel="stylesheet" href="assets/work-gallery.css?v=2">
-  <link rel="stylesheet" href="assets/work-detail.css?v=1">
+  <link rel="stylesheet" href="assets/work-detail.css?v=2">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
   <script src="assets/work-gallery.js?v=3" defer></script>
 </head>
@@ -61,19 +61,18 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
       <h1><?= e($work['title']) ?></h1>
       <?php if(!empty($work['designer'])): ?><dl><dt>DESIGNER</dt><dd><?= e($work['designer']) ?></dd></dl><?php endif; ?>
     </div>
-    <div class="work-hero-photo">
+    <div class="work-hero-photo<?= count($images)>1?' has-photo-rail':'' ?>">
       <?php if($images): ?>
-      <button class="work-gallery-trigger" type="button" data-title="<?= e($work['title']) ?>" data-images="<?= e(json_encode($images,JSON_UNESCAPED_SLASHES)) ?>" data-start-index="0">
+      <button class="work-gallery-trigger work-hero-primary" type="button" data-title="<?= e($work['title']) ?>" data-images="<?= e(json_encode($images,JSON_UNESCAPED_SLASHES)) ?>" data-start-index="0">
         <img src="<?= e($images[0]) ?>" alt="<?= e($work['title']) ?>">
         <?php if(count($images)>1): ?><span><?= count($images) ?> PHOTOS　写真を見る</span><?php endif; ?>
       </button>
+      <?php if(count($images)>1): ?><div class="work-hero-photo-rail" aria-label="施工写真一覧"><?php foreach($images as $imageIndex=>$image): ?><button class="work-gallery-trigger" type="button" data-title="<?= e($work['title']) ?>" data-images="<?= e(json_encode($images,JSON_UNESCAPED_SLASHES)) ?>" data-start-index="<?= $imageIndex ?>" aria-label="施工写真 <?= $imageIndex+1 ?> を開く"><img src="<?= e($image) ?>" alt="" loading="lazy"></button><?php endforeach; ?></div><?php endif; ?>
       <?php else: ?><div class="is-placeholder"><span>NO IMAGE</span></div><?php endif; ?>
     </div>
   </section>
 
   <section class="work-detail-main">
-    <?php if(count($images)>1): ?><div class="work-thumbnails"><?php foreach(array_slice($images,1,4,true) as $imageIndex=>$image): ?><button class="work-gallery-trigger" type="button" data-title="<?= e($work['title']) ?>" data-images="<?= e(json_encode($images,JSON_UNESCAPED_SLASHES)) ?>" data-start-index="<?= $imageIndex ?>"><img src="<?= e($image) ?>" alt="施工写真 <?= $imageIndex+1 ?>" loading="lazy"></button><?php endforeach; ?></div><?php endif; ?>
-
     <div class="work-detail-content">
       <div class="work-description">
         <p class="detail-label">PROJECT STORY</p>

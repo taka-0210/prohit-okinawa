@@ -52,10 +52,16 @@
 }
 
 .work-hero-photo {
+  display: grid;
   min-width: 0;
 }
 
-.work-hero-photo > button,
+.work-hero-photo.has-photo-rail {
+  grid-template-columns: minmax(0, 1fr) 94px;
+  gap: 12px;
+}
+
+.work-hero-primary,
 .work-hero-photo > div {
   position: relative;
   display: block;
@@ -66,14 +72,14 @@
   background: #294158;
 }
 
-.work-hero-photo img {
+.work-hero-primary img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.work-hero-photo button > span {
+.work-hero-primary > span {
   position: absolute;
   right: 14px;
   bottom: 14px;
@@ -92,33 +98,45 @@
   letter-spacing: .18em;
 }
 
+.work-hero-photo-rail {
+  display: grid;
+  grid-auto-rows: 96px;
+  gap: 10px;
+  height: 320px;
+  padding-right: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: #9db8ca #294158;
+  scrollbar-width: thin;
+}
+
+.work-hero-photo-rail button {
+  display: block;
+  width: 100%;
+  height: 96px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #ffffff35;
+  background: #294158;
+  cursor: zoom-in;
+}
+
+.work-hero-photo-rail button:hover,
+.work-hero-photo-rail button:focus-visible {
+  border-color: #fff;
+}
+
+.work-hero-photo-rail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .work-detail-main {
   width: min(1440px, calc(100% - 80px));
   margin: 0 auto;
   padding: 70px 0 120px;
-}
-
-.work-thumbnails {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 70px;
-}
-
-.work-thumbnails button {
-  display: block;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-  background: #e3e4df;
-  cursor: zoom-in;
-}
-
-.work-thumbnails img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
 }
 
 .work-detail-content {
@@ -245,9 +263,18 @@
     padding-bottom: 55px;
   }
 
-  .work-hero-photo > button,
+  .work-hero-primary,
   .work-hero-photo > div {
     height: 360px;
+  }
+
+  .work-hero-photo-rail {
+    height: 360px;
+    grid-auto-rows: 109px;
+  }
+
+  .work-hero-photo-rail button {
+    height: 109px;
   }
 
   .work-detail-content {
@@ -271,19 +298,34 @@
     font-size: clamp(31px, 10vw, 44px);
   }
 
-  .work-hero-photo > button,
+  .work-hero-photo.has-photo-rail {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .work-hero-primary,
   .work-hero-photo > div {
     height: 240px;
+  }
+
+  .work-hero-photo-rail {
+    display: flex;
+    width: 100%;
+    height: 78px;
+    padding: 0 0 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .work-hero-photo-rail button {
+    flex: 0 0 92px;
+    width: 92px;
+    height: 72px;
   }
 
   .work-detail-main {
     width: calc(100% - 40px);
     padding: 60px 0 80px;
-  }
-
-  .work-thumbnails {
-    grid-template-columns: repeat(2, 1fr);
-    margin-bottom: 55px;
   }
 
   .work-detail-content {

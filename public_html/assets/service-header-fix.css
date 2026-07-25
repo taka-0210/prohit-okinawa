@@ -26,8 +26,8 @@
 
 .service-hero {
   align-items: center;
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 54px;
+  padding-bottom: 54px;
 }
 
 @media (max-width: 800px) {
@@ -43,7 +43,7 @@
 
   .service-hero {
     align-items: center;
-    padding-top: 55px;
-    padding-bottom: 55px;
+    padding-top: 45px;
+    padding-bottom: 45px;
   }
 }

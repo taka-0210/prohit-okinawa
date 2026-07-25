@@ -72,7 +72,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="csrf-token" content="<?=e(csrf_token())?>">
-  <title>サービスページ管理</title>
+  <title>サービス管理</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
   <link rel="stylesheet" href="assets/service-admin.css?v=2">
@@ -81,7 +81,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
 <script src="assets/admin-nav.js?v=5" defer></script>
 <main class="admin-main">
-  <header><div><p>PRO CHUBO HIT OKINAWA</p><h1><?= $isNew?'新規サービス登録':'サービスページ管理' ?></h1></div><?php if(!$isNew):?><a href="service.php?slug=<?=e($id)?>" target="_blank">公開ページを確認 ↗</a><?php endif;?></header>
+  <header><div><p>PRO CHUBO HIT OKINAWA</p><h1><?= $isNew?'新規サービス登録':'サービス管理' ?></h1></div><?php if(!$isNew):?><a href="service.php?slug=<?=e($id)?>" target="_blank">公開ページを確認 ↗</a><?php endif;?></header>
   <?php if(isset($_GET['saved'])):?><p class="success">保存しました。</p><?php endif;?>
   <?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
   <form method="post" enctype="multipart/form-data">

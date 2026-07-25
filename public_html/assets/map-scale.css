@@ -30,6 +30,11 @@
 }
 
 .map-gesture-hint {
+  display: block;
+  margin-top: 4px;
+}
+
+.map-hint-mobile {
   display: none;
 }
 
@@ -46,8 +51,11 @@
     will-change: transform;
   }
 
-  .map-gesture-hint {
-    display: block;
-    margin-top: 4px;
+  .map-hint-desktop {
+    display: none;
+  }
+
+  .map-hint-mobile {
+    display: inline;
   }
 }

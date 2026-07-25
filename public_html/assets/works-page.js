@@ -138,6 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
         pinchDistance = 0;
         panStart = null;
       });
+      viewport.addEventListener('wheel', event => {
+        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        event.preventDefault();
+        const rect = viewport.getBoundingClientRect();
+        const pointerX = event.clientX - rect.left;
+        const pointerY = event.clientY - rect.top;
+        const nextScale = Math.max(1, Math.min(3, scale * Math.exp(-event.deltaY * .0015)));
+        const ratio = nextScale / scale;
+        x = pointerX - (pointerX - x) * ratio;
+        y = pointerY - (pointerY - y) * ratio;
+        scale = nextScale;
+        render();
+      }, {passive: false});
       viewport.addEventListener('click', event => {
         if (moved) {
           event.preventDefault();

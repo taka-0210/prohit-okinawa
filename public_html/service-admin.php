@@ -3,6 +3,7 @@ require __DIR__ . '/lib.php';
 if (!is_admin()) redirect('admin.php');
 
 $id = (string)($_GET['id'] ?? 'kitchen-design-opening');
+$isNew = $id === 'new';
 $items = load_content('services');
 $service = null;
 $serviceIndex = null;
@@ -13,7 +14,18 @@ foreach ($items as $index => $item) {
         $serviceIndex = $index;
     }
 }
-if (!$service) {
+if ($isNew) {
+    $service = [
+        'id' => '',
+        'title' => '',
+        'title_en' => '',
+        'lead' => '',
+        'intro' => '',
+        'sections' => [],
+        'published' => false,
+        'content_revision' => 2,
+    ];
+} elseif (!$service) {
     http_response_code(404);
     exit('サービスが見つかりません。');
 }
@@ -30,8 +42,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 'enabled' => isset($_POST['section_enabled'][$index]),
             ];
         }
+        $savedId = $isNew ? 'service-' . bin2hex(random_bytes(5)) : $id;
         $service = [
-            'id' => $id,
+            'id' => $savedId,
             'title' => trim((string)($_POST['title'] ?? '')),
             'title_en' => trim((string)($_POST['title_en'] ?? '')),
             'lead' => trim((string)($_POST['lead'] ?? '')),
@@ -41,9 +54,13 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'content_revision' => (int)($service['content_revision'] ?? 0),
         ];
         if ($service['title'] === '') throw new RuntimeException('サービス名は必須です。');
-        $items[$serviceIndex] = $service;
+        if ($isNew) {
+            $items[] = $service;
+        } else {
+            $items[$serviceIndex] = $service;
+        }
         save_content('services', $items);
-        redirect('service-admin.php?id=' . rawurlencode($id) . '&saved=1');
+        redirect('service-admin.php?id=' . rawurlencode($savedId) . '&saved=1');
     } catch (Throwable $exception) {
         $error = $exception->getMessage();
     }
@@ -54,6 +71,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="csrf-token" content="<?=e(csrf_token())?>">
   <title>サービスページ管理</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
@@ -63,7 +81,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
 <script src="assets/admin-nav.js?v=5" defer></script>
 <main class="admin-main">
-  <header><div><p>PRO CHUBO HIT OKINAWA</p><h1>サービスページ管理</h1></div><a href="service.php?slug=<?=e($id)?>" target="_blank">公開ページを確認 ↗</a></header>
+  <header><div><p>PRO CHUBO HIT OKINAWA</p><h1><?= $isNew?'新規サービス登録':'サービスページ管理' ?></h1></div><?php if(!$isNew):?><a href="service.php?slug=<?=e($id)?>" target="_blank">公開ページを確認 ↗</a><?php endif;?></header>
   <?php if(isset($_GET['saved'])):?><p class="success">保存しました。</p><?php endif;?>
   <?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
   <form method="post" enctype="multipart/form-data">
@@ -91,7 +109,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       </section>
       <?php endfor;?>
     </div>
-    <div class="save-bar"><button class="primary">サービスページを保存する</button></div>
+    <div class="save-bar"><button class="primary"><?= $isNew?'新規サービスを登録する':'サービスページを保存する' ?></button></div>
   </form>
 </main>
 </body>

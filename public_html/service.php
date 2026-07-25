@@ -48,7 +48,7 @@ $visibleSectionCount = count($visibleSections);
 </header>
 <main>
   <section class="service-hero"><div><p><?= e($service['title_en'] ?? 'SERVICE') ?></p><h1><?= e($service['title']) ?></h1><p class="lead"><?= e($service['lead']) ?></p></div><span><?= str_pad((string) (array_search($service, $allServices, true) + 1), 2, '0', STR_PAD_LEFT) ?></span></section>
-  <section class="service-intro"><p>OUR APPROACH</p><div><h2>お店の動きと未来から、<br>厨房を設計する。</h2><p><?= nl2br(e($service['intro'])) ?></p></div></section>
+  <section class="service-intro"><p>OUR APPROACH</p><div><h2><?= nl2br(e(trim((string)($service['intro_heading'] ?? '')) ?: (string)$service['title'])) ?></h2><p><?= nl2br(e($service['intro'])) ?></p></div></section>
   <div class="service-story">
     <?php foreach ($visibleSections as $index => $section): ?>
       <section class="story-block">

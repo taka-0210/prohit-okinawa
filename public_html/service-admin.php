@@ -20,6 +20,7 @@ if ($isNew) {
         'title' => '',
         'title_en' => '',
         'lead' => '',
+        'intro_heading' => '',
         'intro' => '',
         'sections' => [],
         'published' => false,
@@ -48,6 +49,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'title' => trim((string)($_POST['title'] ?? '')),
             'title_en' => trim((string)($_POST['title_en'] ?? '')),
             'lead' => trim((string)($_POST['lead'] ?? '')),
+            'intro_heading' => trim((string)($_POST['intro_heading'] ?? '')),
             'intro' => trim((string)($_POST['intro'] ?? '')),
             'sections' => $sections,
             'published' => isset($_POST['published']),
@@ -90,6 +92,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       <h2>基本情報</h2>
       <div class="fields"><label>サービス名<input name="title" required value="<?=e($service['title'])?>"></label><label>英語表記<input name="title_en" value="<?=e($service['title_en']??'')?>"></label></div>
       <label>リード文<textarea name="lead" rows="3"><?=e($service['lead']??'')?></textarea></label>
+      <label>導入見出し<input name="intro_heading" value="<?=e($service['intro_heading']??$service['title']??'')?>"></label>
       <label>導入文<textarea name="intro" rows="5"><?=e($service['intro']??'')?></textarea></label>
       <label class="publication-toggle">
         <input type="checkbox" name="published" <?=!empty($service['published'])?'checked':''?>>

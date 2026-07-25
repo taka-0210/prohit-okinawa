@@ -95,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       const render = () => {
         constrain();
+        canvas.style.setProperty('--map-zoom-inverse', String(1 / scale));
+        canvas.style.setProperty('--map-popup-offset', `${42 / scale}px`);
         canvas.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
         viewport.classList.toggle('is-zoomed', scale > 1.01);
       };

@@ -14,4 +14,12 @@
       preview.append(image);
     });
   });
+
+  const speed = document.querySelector('[data-strength-speed]');
+  const speedOutput = document.querySelector('[data-strength-speed-output]');
+  if (speed && speedOutput) {
+    const updateSpeed = () => speedOutput.textContent = `${speed.value}秒`;
+    speed.addEventListener('input', updateSpeed);
+    updateSpeed();
+  }
 })();

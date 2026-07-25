@@ -53,6 +53,7 @@ function seed_content(): void
             'body' => '代表・新垣大作は、開業、運営、スタッフ育成、厨房づくり、設備投資、店舗売却までを実際に経験。現在も広島で沖縄料理店「新垣家」を経営しています。',
             'quote' => "「機械を売る」のではなく、\n「繁盛するお店づくり」を考える。",
             'images' => [],
+            'scroll_duration' => 72,
         ]],
         'news' => [
             ['id' => 'news-1', 'title' => 'プロ厨房HIT沖縄 Webサイト準備中', 'category' => 'お知らせ', 'body' => '現在、Webサイトの公開準備を進めています。', 'published_at' => date('Y-m-d'), 'published' => true],

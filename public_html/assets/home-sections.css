@@ -36,7 +36,7 @@
 .strength-reel-track {
   display: flex;
   width: max-content;
-  animation: strength-reel-loop 72s linear infinite;
+  animation: strength-reel-loop var(--strength-duration, 72s) linear infinite;
 }
 
 .strength-reel-group {

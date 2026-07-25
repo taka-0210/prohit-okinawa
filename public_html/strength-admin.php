@@ -8,6 +8,7 @@ $defaults = [
     'body' => '代表・新垣大作は、開業、運営、スタッフ育成、厨房づくり、設備投資、店舗売却までを実際に経験。現在も広島で沖縄料理店「新垣家」を経営しています。',
     'quote' => "「機械を売る」のではなく、\n「繁盛するお店づくり」を考える。",
     'images' => [],
+    'scroll_duration' => 72,
 ];
 $strength = array_replace($defaults, load_content('strength')[0] ?? []);
 $error = '';
@@ -30,6 +31,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'body' => trim((string)($_POST['body'] ?? '')),
             'quote' => trim((string)($_POST['quote'] ?? '')),
             'images' => array_slice(array_merge($keptImages, $newImages), 0, 12),
+            'scroll_duration' => max(30, min(180, (int)($_POST['scroll_duration'] ?? 72))),
         ];
         if ($strength['heading'] === '' || $strength['body'] === '' || $strength['quote'] === '') {
             throw new RuntimeException('大見出し、本文、強調メッセージをすべて入力してください。');
@@ -71,6 +73,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         <?php if(!empty($strength['images'])):?><div class="strength-image-list"><?php foreach($strength['images'] as $image):?><label><img src="<?=e($image)?>" alt=""><span><input type="checkbox" name="keep_images[]" value="<?=e($image)?>" checked> この写真を使用する</span></label><?php endforeach;?></div><?php endif;?>
         <label class="image-upload">写真を追加<input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple data-strength-images><small>JPEG・PNG・WebP／1枚6MBまで・合計12枚まで。長辺1920pxを超える画像は比率を保って自動縮小します。</small></label>
         <div class="strength-image-preview" data-strength-preview></div>
+        <label class="strength-speed">スクロール速度 <output data-strength-speed-output><?=e((string)($strength['scroll_duration']??72))?>秒</output><input type="range" name="scroll_duration" min="30" max="180" step="6" value="<?=e((string)($strength['scroll_duration']??72))?>" data-strength-speed><small>数字が大きいほど、ゆっくり流れます。</small></label>
       </div>
       <label>強調メッセージ<textarea name="quote" rows="3" required><?=e($strength['quote'])?></textarea><small>写真の下へ大きく表示します。</small></label>
       <button class="primary">OUR STRENGTHを保存する</button>

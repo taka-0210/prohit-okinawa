@@ -33,7 +33,7 @@ $visibleSectionCount = count($visibleSections);
   <meta name="description" content="<?= e($service['lead']) ?>">
   <link rel="stylesheet" href="assets/service-page.css">
   <link rel="stylesheet" href="assets/service-copy-size.css?v=1">
-  <link rel="stylesheet" href="assets/service-text-only.css?v=1">
+  <link rel="stylesheet" href="assets/service-text-only.css?v=2">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">
   <link rel="stylesheet" href="assets/service-header-fix.css?v=2">
 </head>

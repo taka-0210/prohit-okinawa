@@ -6,9 +6,12 @@
 }
 
 .story-block.is-text-only .story-text {
+  width: 100%;
   max-width: 940px;
   min-height: 0;
+  margin: 0 auto;
   padding: 75px;
+  text-align: left;
 }
 
 .story-block.is-text-only .story-text > p:last-child {

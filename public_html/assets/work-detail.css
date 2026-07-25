@@ -60,7 +60,7 @@
 }
 
 .work-hero-photo.has-photo-rail {
-  grid-template-columns: minmax(0, 1fr) 94px;
+  grid-template-columns: minmax(0, 1fr) 150px;
   gap: 12px;
 }
 
@@ -335,8 +335,8 @@
   }
 
   .work-hero-photo > .work-hero-photo-rail button {
-    flex: 0 0 92px;
-    width: 92px;
+    flex: 0 0 108px;
+    width: 108px;
     height: 72px;
   }
 

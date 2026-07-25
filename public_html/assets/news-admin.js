@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type === 'image') {
       label.innerHTML = `写真<input type="file" name="block_image_${key}" accept="image/jpeg,image/png,image/webp" required><small>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small>`;
     } else {
-      label.innerHTML = `本文<textarea name="block_text[${key}]" rows="7"></textarea>`;
+      label.innerHTML = `小見出し（任意）<input name="block_subtitle[${key}]">`;
+      const textLabel = document.createElement('label');
+      textLabel.innerHTML = `本文<textarea name="block_text[${key}]" rows="7"></textarea>`;
+      section.append(label, textLabel);
+      return section;
     }
     section.append(label);
     return section;
@@ -39,5 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target.closest('[data-remove-block]')) block.remove();
     if (event.target.closest('[data-move-up]') && block.previousElementSibling) list.insertBefore(block, block.previousElementSibling);
     if (event.target.closest('[data-move-down]') && block.nextElementSibling) list.insertBefore(block.nextElementSibling, block);
+  });
+  list.addEventListener('change', event => {
+    const input = event.target.closest('input[type=file]');
+    if (!input || !input.files || !input.files[0]) return;
+    const block = input.closest('[data-news-block]');
+    let preview = block.querySelector('.news-image-preview');
+    if (!preview) {
+      preview = document.createElement('img');
+      preview.className = 'news-image-preview';
+      preview.alt = '選択した写真のプレビュー';
+      block.insertBefore(preview, input.closest('label'));
+    }
+    if (preview.dataset.previewUrl) URL.revokeObjectURL(preview.dataset.previewUrl);
+    const previewUrl = URL.createObjectURL(input.files[0]);
+    preview.dataset.previewUrl = previewUrl;
+    preview.src = previewUrl;
   });
 });

@@ -39,8 +39,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             if ($key === '') continue;
             $type = (string)($_POST['block_type'][$key] ?? '');
             if ($type === 'text') {
+                $subtitle = trim((string)($_POST['block_subtitle'][$key] ?? ''));
                 $text = trim((string)($_POST['block_text'][$key] ?? ''));
-                if ($text !== '') $blocks[] = ['id'=>$key, 'type'=>'text', 'text'=>$text];
+                if ($subtitle !== '' || $text !== '') $blocks[] = ['id'=>$key, 'type'=>'text', 'subtitle'=>$subtitle, 'text'=>$text];
             } elseif ($type === 'image') {
                 $current = (string)($existingImages[$key] ?? '');
                 $image = upload_image('block_image_' . $key, $current);
@@ -83,7 +84,7 @@ if ($blocks === [] && !empty($edit['body'])) {
     $blocks = [['id'=>'legacy-text', 'type'=>'text', 'text'=>(string)$edit['body']]];
 }
 ?>
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>最新情報管理</title><link rel="stylesheet" href="assets/admin.css"><link rel="stylesheet" href="assets/admin-menu-fix.css"><link rel="stylesheet" href="assets/news-admin.css"></head>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>最新情報管理</title><link rel="stylesheet" href="assets/admin.css"><link rel="stylesheet" href="assets/admin-menu-fix.css"><link rel="stylesheet" href="assets/news-admin.css"><link rel="stylesheet" href="assets/news-block-enhancements.css?v=1"></head>
 <body class="admin-shell"><aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside><script src="assets/admin-nav.js?v=6" defer></script>
 <main class="admin-main"><header><div><p>PRO CHUBO HIT OKINAWA</p><h1>最新情報</h1></div><a href="news.php" target="_blank">公開ページを確認 ↗</a></header>
 <?php if(isset($_GET['saved'])):?><p class="success">保存しました。</p><?php endif;?><?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
@@ -98,9 +99,9 @@ if ($blocks === [] && !empty($edit['body'])) {
 <div class="news-block-editor" data-news-block-editor><div class="news-block-toolbar"><strong>記事内容</strong><div><button type="button" data-add-text>＋ テキスト</button><button type="button" data-add-image>＋ 写真</button></div></div><p class="hint">テキストと写真を、記事に表示したい順番で追加してください。</p><div data-news-block-list>
 <?php foreach($blocks as $index=>$block): $key=preg_replace('/[^a-zA-Z0-9_-]/','',(string)($block['id']??'block-'.$index)); ?>
 <section class="news-edit-block" data-news-block><input type="hidden" name="block_key[]" value="<?=e($key)?>"><input type="hidden" name="block_type[<?=e($key)?>]" value="<?=e($block['type']??'text')?>"><header><strong><?=($block['type']??'text')==='image'?'写真':'テキスト'?></strong><div><button type="button" data-move-up>↑</button><button type="button" data-move-down>↓</button><button type="button" data-remove-block>削除</button></div></header>
-<?php if(($block['type']??'text')==='image'):?><input type="hidden" name="block_existing_image[<?=e($key)?>]" value="<?=e($block['image']??'')?>"><?php if(!empty($block['image'])):?><img src="<?=e($block['image'])?>" alt="登録中の写真"><?php endif;?><label>写真<input type="file" name="block_image_<?=e($key)?>" accept="image/jpeg,image/png,image/webp"><small>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
-<?php else:?><label>本文<textarea name="block_text[<?=e($key)?>]" rows="7"><?=e($block['text']??'')?></textarea></label><?php endif;?></section>
+<?php if(($block['type']??'text')==='image'):?><input type="hidden" name="block_existing_image[<?=e($key)?>]" value="<?=e($block['image']??'')?>"><?php if(!empty($block['image'])):?><img class="news-image-preview" src="<?=e($block['image'])?>" alt="登録中の写真"><?php endif;?><label>写真<input type="file" name="block_image_<?=e($key)?>" accept="image/jpeg,image/png,image/webp"><small>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
+<?php else:?><label>小見出し（任意）<input name="block_subtitle[<?=e($key)?>]" value="<?=e($block['subtitle']??'')?>"></label><label>本文<textarea name="block_text[<?=e($key)?>]" rows="7"><?=e($block['text']??'')?></textarea></label><?php endif;?></section>
 <?php endforeach;?></div></div>
 <label class="check"><input type="checkbox" name="published" <?=!isset($v['published'])||$v['published']?'checked':''?>>公開する</label><button class="primary">保存する</button></form>
 <?php if($edit):?><form method="post" onsubmit="return confirm('この記事を削除しますか？')"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?=e($edit['id'])?>"><button class="danger">削除</button></form><?php endif;?>
-</section><?php endif;?></div></main><script src="assets/news-admin.js?v=1" defer></script></body></html>
+</section><?php endif;?></div></main><script src="assets/news-admin.js?v=2" defer></script></body></html>

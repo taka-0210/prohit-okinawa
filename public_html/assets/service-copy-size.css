@@ -5,10 +5,11 @@
 }
 
 .service-intro > div > p {
-  max-width: 850px;
+  max-width: 900px;
   margin: 0;
-  font-size: clamp(18px, 1.5vw, 24px);
-  font-weight: 600;
+  color: #334650;
+  font-size: clamp(17px, 1.35vw, 22px);
+  font-weight: 500;
   line-height: 2;
 }
 
@@ -18,7 +19,7 @@
   }
 
   .service-intro > div > p {
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.9;
   }
 }

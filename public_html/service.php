@@ -32,7 +32,7 @@ $visibleSectionCount = count($visibleSections);
   <title><?= e($service['title']) ?>｜<?= e($company['company_name'] ?? APP_NAME) ?></title>
   <meta name="description" content="<?= e($service['lead']) ?>">
   <link rel="stylesheet" href="assets/service-page.css?v=2">
-  <link rel="stylesheet" href="assets/service-copy-size.css?v=1">
+  <link rel="stylesheet" href="assets/service-copy-size.css?v=2">
   <link rel="stylesheet" href="assets/service-text-only.css?v=2">
   <link rel="stylesheet" href="assets/content-links.css?v=1">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">

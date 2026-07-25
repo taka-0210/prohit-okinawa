@@ -92,7 +92,7 @@ $internalLinkOptions = internal_link_options();
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
-<script src="assets/admin-nav.js?v=5" defer></script>
+<script src="assets/admin-nav.js?v=6" defer></script>
 <main class="admin-main">
   <header><div><p>PRO CHUBO HIT OKINAWA</p><h1><?= $isNew?'新規サービス登録':'サービス管理' ?></h1></div><?php if(!$isNew):?><a href="service.php?slug=<?=e($id)?>" target="_blank">公開ページを確認 ↗</a><?php endif;?></header>
   <?php if(isset($_GET['saved'])):?><p class="success">保存しました。</p><?php endif;?>

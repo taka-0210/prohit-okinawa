@@ -1,6 +1,11 @@
 <?php
 require __DIR__ . '/lib.php';
 $heroes = published(load_content('hero'));
+$homeAbout = load_content('home')[0] ?? [
+    'about_kicker' => "BUILDING RESTAURANTS,\nBUILDING FUTURES.",
+    'about_heading' => "厨房機器を売るだけでは、\nお店は完成しません。",
+    'about_body' => "私たちは、飲食店オーナーの「こんなお店をつくりたい」という想いを形にするチームです。現地調査、厨房レイアウト、CAD図面、機器選定、搬入設置、内外装工事まで。一社でまとめて対応します。\n\n経営と現場の両方を知るからこそ、初期投資だけでなく、動きやすさ、売上、将来の設備更新まで見据えて提案します。",
+];
 $heroEffects = load_content('hero_settings')[0] ?? ['overlay' => '#102a43', 'overlay_opacity' => 35, 'dots' => true, 'dots_opacity' => 18];
 $works = published(load_content('works'));
 $homeWorksSettings = load_content('home_works')[0] ?? ['mode'=>'latest', 'selected_ids'=>[]];
@@ -38,7 +43,7 @@ $history = array_values(array_filter(array_map(function (string $line): array {
 <section class="hero" aria-label="メインビジュアル" style="--common-overlay:<?=e($heroEffects['overlay']??'#102a43')?>;--common-opacity:<?=e(((int)($heroEffects['overlay_opacity']??35))/100)?>;--common-dot-opacity:<?=!empty($heroEffects['dots'])?e(((int)($heroEffects['dots_opacity']??18))/100):'0'?>"><div class="slides">
 <?php foreach ($heroes as $i => $hero): ?><article class="slide<?= $i === 0 ? ' active' : '' ?>" style="--bg:<?= e($hero['color']) ?>;--overlay:<?= e($hero['overlay']) ?>;--opacity:<?= e(((int)$hero['overlay_opacity'])/100) ?>;--dot-opacity:<?= e(((int)$hero['dots_opacity'])/100) ?>;<?= $hero['image'] ? '--image:url('.e($hero['image']).');' : '' ?>" aria-hidden="<?= $i === 0 ? 'false' : 'true' ?>"><div class="hero-copy"><p class="eyebrow">PRO KITCHEN HIT OKINAWA</p><h1><?= e($hero['title']) ?></h1><p><?= e($hero['lead']) ?></p><a class="button light" href="#contact">お店づくりを相談する</a></div></article><?php endforeach; ?>
 </div><div class="slider-controls"><button data-prev aria-label="前のスライド">←</button><span data-counter>01 / <?= str_pad((string)count($heroes), 2, '0', STR_PAD_LEFT) ?></span><button data-next aria-label="次のスライド">→</button></div></section>
-<section class="intro section" id="about"><p class="section-no">01 / ABOUT US</p><div><p class="kicker">BUILDING RESTAURANTS,<br>BUILDING FUTURES.</p><h2>厨房機器を売るだけでは、<br>お店は完成しません。</h2><p>私たちは、飲食店オーナーの「こんなお店をつくりたい」という想いを形にするチームです。現地調査、厨房レイアウト、CAD図面、機器選定、搬入設置、内外装工事まで。一社でまとめて対応します。</p><p>経営と現場の両方を知るからこそ、初期投資だけでなく、動きやすさ、売上、将来の設備更新まで見据えて提案します。</p></div></section>
+<section class="intro section" id="about"><p class="section-no">01 / ABOUT US</p><div><p class="kicker"><?= nl2br(e($homeAbout['about_kicker']??'')) ?></p><h2><?= nl2br(e($homeAbout['about_heading']??'')) ?></h2><?php foreach(preg_split('/\R{2,}/u',trim((string)($homeAbout['about_body']??'')))?:[] as $paragraph): ?><p><?= nl2br(e($paragraph)) ?></p><?php endforeach; ?></div></section>
 <section class="services section dark" id="services"><p class="section-no">02 / SERVICES</p><div><h2>お店の一生に、<br>ずっと寄り添う。</h2><div class="service-grid">
 <?php foreach($servicePages as $index=>$servicePage): ?><article data-service-slug="<?=e($servicePage['id'])?>"><span><?=str_pad((string)($index+1),2,'0',STR_PAD_LEFT)?></span><h3><?=e($servicePage['title'])?></h3><p><?=e($servicePage['lead'])?></p></article><?php endforeach; ?>
 </div></div></section>

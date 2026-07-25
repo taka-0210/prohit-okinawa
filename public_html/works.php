@@ -60,7 +60,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
   <link rel="stylesheet" href="assets/works-links.css?v=6">
   <link rel="stylesheet" href="assets/map-scale.css?v=8">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
-  <link rel="stylesheet" href="assets/works-cards.css?v=2">
+  <link rel="stylesheet" href="assets/works-cards.css?v=3">
   <script src="assets/works-page.js?v=9" defer></script>
 </head>
 <body>
@@ -104,7 +104,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
               <button type="button" class="project-pin single-pin" data-work-pin="<?= e($item['work']['id']) ?>" data-single-toggle aria-expanded="false" aria-label="<?= e($item['work']['title']??'') ?>を表示"></button>
               <div class="pin-popup" data-pin-popup hidden>
                 <strong>この場所の施工事例</strong>
-                <a href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></a>
+                <a href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" data-popup-work="<?= e($item['work']['id']) ?>"><span class="single-popup-bullet">・</span><?= e($item['work']['title']??'') ?></a>
               </div>
               <?php else: ?>
               <button type="button" class="project-pin cluster-pin" data-cluster-toggle aria-expanded="false" aria-label="このエリアの<?= $clusterCount ?>件を表示"><span><?= $clusterCount ?></span></button>

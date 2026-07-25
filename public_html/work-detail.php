@@ -98,11 +98,11 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
           </div>
         </div>
         <?php endif; ?>
-        <?php if($googleMapsUrl!==''): ?><a class="google-map-button" href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer">Googleマップで見る <span>→</span></a><?php endif; ?>
+        <?php if($googleMapsUrl!==''): ?><a class="external-link-button google-map-button" href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer"><span>Googleマップで見る</span><span class="external-link-arrow" aria-hidden="true">↗</span></a><?php endif; ?>
         <?php if(!empty($work['instagram_url'])||!empty($work['website_url'])): ?>
         <div class="work-external-links">
-          <?php if(!empty($work['instagram_url'])): ?><a href="<?= e($work['instagram_url']) ?>" target="_blank" rel="noopener noreferrer">Instagram ↗</a><?php endif; ?>
-          <?php if(!empty($work['website_url'])): ?><a href="<?= e($work['website_url']) ?>" target="_blank" rel="noopener noreferrer">店舗ホームページ ↗</a><?php endif; ?>
+          <?php if(!empty($work['instagram_url'])): ?><a class="external-link-button" href="<?= e($work['instagram_url']) ?>" target="_blank" rel="noopener noreferrer"><span>Instagramを見る</span><span class="external-link-arrow" aria-hidden="true">↗</span></a><?php endif; ?>
+          <?php if(!empty($work['website_url'])): ?><a class="external-link-button" href="<?= e($work['website_url']) ?>" target="_blank" rel="noopener noreferrer"><span>店舗ホームページを見る</span><span class="external-link-arrow" aria-hidden="true">↗</span></a><?php endif; ?>
         </div>
         <?php endif; ?>
       </aside>

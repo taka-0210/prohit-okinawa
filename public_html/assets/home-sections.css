@@ -24,6 +24,7 @@
 .strength-reel {
   grid-column: 1 / -1;
   width: calc(100% + (2 * var(--site-gutter)));
+  max-width: none;
   margin: 54px calc(-1 * var(--site-gutter)) 0;
   overflow: hidden;
 }
@@ -35,7 +36,7 @@
 .strength-reel-track {
   display: flex;
   width: max-content;
-  animation: strength-reel-loop 48s linear infinite;
+  animation: strength-reel-loop 72s linear infinite;
 }
 
 .strength-reel-group {

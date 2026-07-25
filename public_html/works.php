@@ -58,11 +58,10 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
   <meta name="description" content="沖縄県内・県外で手がけた厨房、店舗工事、飲食店開業支援の施工事例をご紹介します。">
   <link rel="stylesheet" href="assets/works-page.css?v=1">
   <link rel="stylesheet" href="assets/works-links.css?v=3">
-  <link rel="stylesheet" href="assets/work-gallery.css?v=2">
   <link rel="stylesheet" href="assets/map-scale.css?v=6">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
+  <link rel="stylesheet" href="assets/works-cards.css?v=1">
   <script src="assets/works-page.js?v=6" defer></script>
-  <script src="assets/work-gallery.js?v=2" defer></script>
 </head>
 <body>
 <header class="works-header">
@@ -102,13 +101,13 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
             <?php foreach(cluster_map_works($group['works'],max(0,min(20,(float)($map['cluster_threshold']??6)))) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
             <div class="pin-group" style="left:<?= e(50+($cluster['x']-50)*$mapScale) ?>%;top:<?= e($cluster['y']) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
               <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
-              <button type="button" class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"></button>
+              <a class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"></a>
               <?php else: ?>
               <button type="button" class="project-pin cluster-pin" data-cluster-toggle aria-expanded="false" aria-label="このエリアの<?= $clusterCount ?>件を表示"><span><?= $clusterCount ?></span></button>
               <div class="pin-popup" data-pin-popup hidden>
                 <strong>このエリアの施工事例</strong>
                 <?php foreach($cluster['items'] as $item): ?>
-                <button type="button" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></button>
+                <a href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></a>
                 <?php endforeach; ?>
               </div>
               <?php endif; ?>
@@ -121,32 +120,19 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
       <?php endif; ?>
       <div class="project-list">
         <?php if(!$group['works']): ?><p class="empty">現在、公開中の施工事例はありません。</p><?php endif; ?>
-        <?php foreach($group['works'] as $index=>$work): $images=work_images($work); $googleMapsUrl=(string)($work['google_maps_url']??''); if($googleMapsUrl===''&&!empty($work['address']))$googleMapsUrl='https://www.google.com/maps/search/?api=1&query='.rawurlencode((string)$work['address']); ?>
-        <article id="work-<?= e($work['id']) ?>" data-work-card="<?= e($work['id']) ?>">
-          <?php if($images): ?>
-          <button class="work-gallery-trigger" type="button" data-title="<?= e($work['title']??'') ?>" data-images="<?= e(json_encode($images,JSON_UNESCAPED_SLASHES)) ?>">
-            <span class="project-photo" style="background-image:url(<?= e($images[0]) ?>)"></span>
-            <?php if(count($images)>1): ?><span class="photo-count"><?= count($images) ?> PHOTOS</span><?php endif; ?>
-          </button>
-          <?php else: ?><div class="project-photo is-placeholder"></div><?php endif; ?>
-          <div class="project-copy">
-            <p><span><?= $index+1 ?></span><?= e($work['category']??'') ?><?= !empty($work['area'])?' / '.e($work['area']):'' ?></p>
-            <h2><?= e($work['title']??'') ?></h2>
-            <?php if(!empty($work['designer'])||!empty($work['address'])||$googleMapsUrl!==''): ?>
-            <dl class="project-meta">
-              <?php if(!empty($work['designer'])): ?><div><dt>DESIGNER</dt><dd><?= e($work['designer']) ?></dd></div><?php endif; ?>
-              <?php if($googleMapsUrl!==''): ?><div><dt>ADDRESS</dt><dd><a href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer"><?= !empty($work['address'])?e($work['address']):'Googleマップを開く' ?> ↗</a></dd></div><?php elseif(!empty($work['address'])): ?><div><dt>ADDRESS</dt><dd><?= e($work['address']) ?></dd></div><?php endif; ?>
-            </dl>
-            <?php endif; ?>
-            <div><?= nl2br(e($work['summary']??'')) ?></div>
-            <?php if(!empty($work['instagram_url'])||!empty($work['website_url'])): ?>
-            <div class="project-links">
-              <?php if(!empty($work['instagram_url'])): ?><a href="<?= e($work['instagram_url']) ?>" target="_blank" rel="noopener noreferrer">Instagram ↗</a><?php endif; ?>
-              <?php if(!empty($work['website_url'])): ?><a href="<?= e($work['website_url']) ?>" target="_blank" rel="noopener noreferrer">ホームページ ↗</a><?php endif; ?>
+        <?php foreach($group['works'] as $index=>$work): $images=work_images($work); ?>
+        <a class="project-card-link" href="work-detail.php?id=<?= rawurlencode((string)$work['id']) ?>">
+          <article id="work-<?= e($work['id']) ?>" data-work-card="<?= e($work['id']) ?>">
+            <?php if($images): ?><span class="project-photo" style="background-image:url(<?= e($images[0]) ?>)"></span>
+            <?php else: ?><span class="project-photo is-placeholder"></span><?php endif; ?>
+            <div class="project-copy">
+              <p><?= e($work['category']??'') ?><?= !empty($work['area'])?' / '.e($work['area']):'' ?></p>
+              <h2><?= e($work['title']??'') ?></h2>
+              <?php if(!empty($work['designer'])): ?><small>DESIGNER　<?= e($work['designer']) ?></small><?php endif; ?>
+              <strong>詳しく見る <span>→</span></strong>
             </div>
-            <?php endif; ?>
-          </div>
-        </article>
+          </article>
+        </a>
         <?php endforeach; ?>
       </div>
     </div>

@@ -1,0 +1,32 @@
+.home-work-detail-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-work-detail-link article {
+  height: 100%;
+}
+
+.home-work-detail-link .placeholder {
+  display: block;
+  overflow: hidden;
+  transition: transform .25s ease;
+}
+
+.home-work-detail-link strong {
+  display: inline-block;
+  margin-top: 10px;
+  color: #102a43;
+  font-size: 11px;
+}
+
+.home-work-detail-link:hover .placeholder,
+.home-work-detail-link:focus-visible .placeholder {
+  transform: scale(1.015);
+}
+
+.home-work-detail-link:focus-visible {
+  outline: 2px solid #e8623d;
+  outline-offset: 4px;
+}

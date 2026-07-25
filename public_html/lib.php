@@ -234,7 +234,7 @@ function internal_link_options(): array
     }
     foreach (load_content('works') as $work) {
         if (empty($work['id'])) continue;
-        $options['施工事例｜' . ($work['title'] ?? $work['id'])] = 'works.php#work-' . rawurlencode((string)$work['id']);
+        $options['施工事例｜' . ($work['title'] ?? $work['id'])] = 'work-detail.php?id=' . rawurlencode((string)$work['id']);
     }
     return $options;
 }

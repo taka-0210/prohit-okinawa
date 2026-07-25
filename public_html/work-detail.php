@@ -89,7 +89,6 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
           <?php if(!empty($work['address'])): ?><div><dt>住所</dt><dd><?= e($work['address']) ?></dd></div><?php endif; ?>
           <?php if($map): ?><div><dt>掲載地図</dt><dd><?= e($map['title']??'') ?></dd></div><?php endif; ?>
         </dl>
-        <?php if($googleMapsUrl!==''): ?><a class="google-map-button" href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer">Googleマップで見る <span>→</span></a><?php endif; ?>
         <?php if($map&&!empty($map['image'])): ?>
         <div class="mini-project-map">
           <p>MAP / <?= e($map['title']??'') ?></p>
@@ -99,6 +98,7 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
           </div>
         </div>
         <?php endif; ?>
+        <?php if($googleMapsUrl!==''): ?><a class="google-map-button" href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer">Googleマップで見る <span>→</span></a><?php endif; ?>
         <?php if(!empty($work['instagram_url'])||!empty($work['website_url'])): ?>
         <div class="work-external-links">
           <?php if(!empty($work['instagram_url'])): ?><a href="<?= e($work['instagram_url']) ?>" target="_blank" rel="noopener noreferrer">Instagram ↗</a><?php endif; ?>

@@ -23,9 +23,12 @@
 
 .strength-reel {
   grid-column: 1 / -1;
-  width: calc(100% + (2 * var(--site-gutter)));
+  position: relative;
+  left: 50%;
+  width: min(1440px, 100vw);
   max-width: none;
-  margin: 54px calc(-1 * var(--site-gutter)) 0;
+  margin: 54px 0 0;
+  transform: translateX(-50%);
   overflow: hidden;
 }
 
@@ -54,7 +57,7 @@
 
 @keyframes strength-reel-loop {
   to {
-    transform: translateX(-50%);
+    transform: translateX(-25%);
   }
 }
 
@@ -64,9 +67,9 @@
   }
 
   .strength-reel {
-    width: calc(100% + (2 * var(--site-gutter)));
-    margin-right: calc(-1 * var(--site-gutter));
-    margin-left: calc(-1 * var(--site-gutter));
+    width: 100vw;
+    margin-right: 0;
+    margin-left: 0;
     margin-top: 38px;
   }
 

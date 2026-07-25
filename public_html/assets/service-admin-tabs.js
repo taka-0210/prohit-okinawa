@@ -2,26 +2,26 @@ const initializeServiceAdminTabs = async () => {
   const form = document.querySelector('.admin-main form');
   if (!form) return;
   let services = [
-    ['kitchen-design-opening', '厨房設計・開業支援'],
-    ['equipment-sales-purchase', '厨房機器 販売・買取'],
-    ['interior-exterior', '内装・外装工事'],
-    ['uriten', 'ウリテン事業'],
-    ['okinawa-opening', '沖縄での飲食店開業サポート'],
-    ['rational', 'ラショナル製品の導入支援'],
+    {id: 'kitchen-design-opening', title: '厨房設計・開業支援', published: true},
+    {id: 'equipment-sales-purchase', title: '厨房機器 販売・買取', published: true},
+    {id: 'interior-exterior', title: '内装・外装工事', published: true},
+    {id: 'uriten', title: 'ウリテン事業', published: true},
+    {id: 'okinawa-opening', title: '沖縄での飲食店開業サポート', published: true},
+    {id: 'rational', title: 'ラショナル製品の導入支援', published: true},
   ];
   try {
     const response = await fetch('service-tabs-data.php', {cache: 'no-store'});
     if (response.ok) {
       const storedServices = await response.json();
       if (Array.isArray(storedServices) && storedServices.length) {
-        services = storedServices.map(service => [service.id, service.title]);
+        services = storedServices;
       }
     }
   } catch (_) {
     // 通信できない場合も既定のタブで編集を続けられるようにする。
   }
 
-  const current = new URLSearchParams(location.search).get('id') || services[0][0];
+  const current = new URLSearchParams(location.search).get('id') || services[0].id;
   const wrapper = document.createElement('div');
   wrapper.className = 'service-admin-tab-area';
   wrapper.innerHTML = '<p>サービスを横にドラッグすると、公開サイトの表示順も入れ替わります。</p>';
@@ -33,17 +33,20 @@ const initializeServiceAdminTabs = async () => {
       link.querySelector('span').textContent = String(index + 1).padStart(2, '0');
     });
   };
-  services.forEach(([id, title]) => {
+  services.forEach(({id, title, published}) => {
     const link = document.createElement('a');
     link.href = `service-admin.php?id=${encodeURIComponent(id)}`;
     link.dataset.serviceId = id;
     link.draggable = true;
-    link.className = id === current ? 'active' : '';
+    link.className = `${id === current ? 'active ' : ''}${published ? 'is-published' : 'is-unpublished'}`.trim();
     if (id === current) link.setAttribute('aria-current', 'page');
     const number = document.createElement('span');
     const name = document.createElement('strong');
     name.textContent = title;
-    link.append(number, name);
+    const status = document.createElement('small');
+    status.className = 'service-status';
+    status.textContent = published ? '公開' : '非公開';
+    link.append(number, name, status);
     tabs.append(link);
   });
   const addLink = document.createElement('a');

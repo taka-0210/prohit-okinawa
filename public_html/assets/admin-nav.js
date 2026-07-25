@@ -9,7 +9,7 @@
  const current=path==='hero-settings.php'?'hero-settings':path==='service-admin.php'?'services':path==='maps-admin.php'?'maps':path==='works-admin.php'?'works':path==='news-admin.php'?'news':path==='inquiries-admin.php'?'inquiries':path==='company-admin.php'?'company':tab;
  nav.innerHTML=items.map(([href,key,label])=>`<a class="${current===key?'active':''}" href="${href}">${label}</a>`).join('');
  if(path==='service-admin.php'){
-  const tabStyle=document.createElement('link');tabStyle.rel='stylesheet';tabStyle.href='assets/service-admin-tabs.css?v=3';document.head.append(tabStyle);
-  const tabScript=document.createElement('script');tabScript.src='assets/service-admin-tabs.js?v=4';document.head.append(tabScript);
+  const tabStyle=document.createElement('link');tabStyle.rel='stylesheet';tabStyle.href='assets/service-admin-tabs.css?v=4';document.head.append(tabStyle);
+  const tabScript=document.createElement('script');tabScript.src='assets/service-admin-tabs.js?v=5';document.head.append(tabScript);
  }
 })();

@@ -75,7 +75,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <title>サービス管理</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
-  <link rel="stylesheet" href="assets/service-admin.css?v=2">
+  <link rel="stylesheet" href="assets/service-admin.css?v=3">
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
@@ -91,7 +91,16 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       <div class="fields"><label>サービス名<input name="title" required value="<?=e($service['title'])?>"></label><label>英語表記<input name="title_en" value="<?=e($service['title_en']??'')?>"></label></div>
       <label>リード文<textarea name="lead" rows="3"><?=e($service['lead']??'')?></textarea></label>
       <label>導入文<textarea name="intro" rows="5"><?=e($service['intro']??'')?></textarea></label>
-      <label class="check"><input type="checkbox" name="published" <?=!empty($service['published'])?'checked':''?>>公開する</label>
+      <label class="publication-toggle">
+        <input type="checkbox" name="published" <?=!empty($service['published'])?'checked':''?>>
+        <span class="publication-switch" aria-hidden="true"></span>
+        <span class="publication-state">
+          <strong class="state-public">公開</strong>
+          <strong class="state-private">非公開</strong>
+          <small class="state-public">公開サイトにこのサービスを表示します。</small>
+          <small class="state-private">管理画面にのみ保存し、公開サイトには表示しません。</small>
+        </span>
+      </label>
     </section>
     <div class="service-blocks">
       <?php for($index=0;$index<5;$index++):$section=$service['sections'][$index]??[];$sectionEnabled=!array_key_exists('enabled',$section)||!empty($section['enabled']);?>

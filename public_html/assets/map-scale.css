@@ -22,6 +22,11 @@
   box-shadow: 0 0 0 4px rgb(232 98 61 / 22%), 0 3px 10px #06182766;
 }
 
+.pin-group .single-pin.pin-open {
+  background: var(--orange);
+  box-shadow: 0 0 0 4px rgb(232 98 61 / 22%), 0 3px 10px #06182766;
+}
+
 .pin-group .cluster-pin.active,
 .pin-group .cluster-pin.cluster-open {
   background: var(--navy);

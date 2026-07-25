@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
       popup.hidden = true;
       popup.previousElementSibling?.setAttribute('aria-expanded', 'false');
       popup.previousElementSibling?.classList.remove('cluster-open');
+      popup.previousElementSibling?.classList.remove('pin-open');
     });
   };
   const activate = id => {
@@ -37,11 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = panel.querySelector(`[data-work-card="${CSS.escape(id)}"]`);
       card?.scrollIntoView({behavior: 'smooth', block: 'center'});
     };
-    pins.forEach(pin => pin.addEventListener('click', () => {
-      closePopups();
-      showWork(pin.dataset.workPin);
-    }));
-    panel.querySelectorAll('[data-cluster-toggle]').forEach(toggle => {
+    panel.querySelectorAll('[data-cluster-toggle], [data-single-toggle]').forEach(toggle => {
       toggle.addEventListener('click', event => {
         event.stopPropagation();
         const popup = toggle.nextElementSibling;
@@ -51,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.hidden = !opening;
         toggle.setAttribute('aria-expanded', String(opening));
         toggle.classList.toggle('cluster-open', opening);
+        toggle.classList.toggle('pin-open', opening);
       });
     });
     panel.querySelectorAll('[data-popup-work]').forEach(button => {

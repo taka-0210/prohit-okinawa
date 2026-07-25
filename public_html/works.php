@@ -58,10 +58,10 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
   <meta name="description" content="沖縄県内・県外で手がけた厨房、店舗工事、飲食店開業支援の施工事例をご紹介します。">
   <link rel="stylesheet" href="assets/works-page.css?v=2">
   <link rel="stylesheet" href="assets/works-links.css?v=6">
-  <link rel="stylesheet" href="assets/map-scale.css?v=7">
+  <link rel="stylesheet" href="assets/map-scale.css?v=8">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
   <link rel="stylesheet" href="assets/works-cards.css?v=2">
-  <script src="assets/works-page.js?v=8" defer></script>
+  <script src="assets/works-page.js?v=9" defer></script>
 </head>
 <body>
 <header class="works-header">
@@ -101,7 +101,11 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
             <?php foreach(cluster_map_works($group['works'],max(0,min(20,(float)($map['cluster_threshold']??6)))) as $cluster): $clusterCount=count($cluster['items']); $clusterIds=array_map(fn(array $item): string => (string)($item['work']['id']??''),$cluster['items']); ?>
             <div class="pin-group<?= $clusterCount>1?' is-cluster':'' ?>" style="left:<?= e(50+($cluster['x']-50)*$mapScale) ?>%;top:<?= e($cluster['y']) ?>%" data-cluster-ids="<?= e(json_encode($clusterIds,JSON_UNESCAPED_SLASHES)) ?>">
               <?php if($clusterCount===1): $item=$cluster['items'][0]; ?>
-              <a class="project-pin" data-work-pin="<?= e($item['work']['id']) ?>" href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" aria-label="<?= e($item['work']['title']??'') ?>"></a>
+              <button type="button" class="project-pin single-pin" data-work-pin="<?= e($item['work']['id']) ?>" data-single-toggle aria-expanded="false" aria-label="<?= e($item['work']['title']??'') ?>を表示"></button>
+              <div class="pin-popup" data-pin-popup hidden>
+                <strong>この場所の施工事例</strong>
+                <a href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></a>
+              </div>
               <?php else: ?>
               <button type="button" class="project-pin cluster-pin" data-cluster-toggle aria-expanded="false" aria-label="このエリアの<?= $clusterCount ?>件を表示"><span><?= $clusterCount ?></span></button>
               <div class="pin-popup" data-pin-popup hidden>

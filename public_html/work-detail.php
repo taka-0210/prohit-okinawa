@@ -39,8 +39,8 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title><?= e($work['title']) ?>｜施工事例｜<?= e($company['company_name']??APP_NAME) ?></title>
   <meta name="description" content="<?= e(mb_substr((string)($work['summary']??''),0,120)) ?>">
-  <link rel="stylesheet" href="assets/works-page.css?v=1">
-  <link rel="stylesheet" href="assets/work-gallery.css?v=2">
+  <link rel="stylesheet" href="assets/works-page.css?v=2">
+  <link rel="stylesheet" href="assets/work-gallery.css?v=3">
   <link rel="stylesheet" href="assets/work-detail.css?v=6">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
   <script src="assets/work-gallery.js?v=3" defer></script>

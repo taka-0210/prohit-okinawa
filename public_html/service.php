@@ -33,6 +33,7 @@ $visibleSectionCount = count($visibleSections);
   <meta name="description" content="<?= e($service['lead']) ?>">
   <link rel="stylesheet" href="assets/service-page.css">
   <link rel="stylesheet" href="assets/service-copy-size.css?v=1">
+  <link rel="stylesheet" href="assets/service-text-only.css?v=1">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">
   <link rel="stylesheet" href="assets/service-header-fix.css?v=2">
 </head>
@@ -52,8 +53,9 @@ $visibleSectionCount = count($visibleSections);
   <section class="service-intro"><p>OUR APPROACH</p><div><p><?= nl2br(e($service['intro'])) ?></p></div></section>
   <div class="service-story">
     <?php foreach ($visibleSections as $index => $section): ?>
-      <section class="story-block">
-        <div class="story-photo<?= empty($section['image']) ? ' is-placeholder' : '' ?>"<?= !empty($section['image']) ? ' style="background-image:url(' . e($section['image']) . ')"' : '' ?>><span>PHOTO <?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div>
+      <?php $textOnly = ($section['layout'] ?? 'image_text') === 'text_only'; ?>
+      <section class="story-block<?= $textOnly ? ' is-text-only' : '' ?>">
+        <?php if (!$textOnly): ?><div class="story-photo<?= empty($section['image']) ? ' is-placeholder' : '' ?>"<?= !empty($section['image']) ? ' style="background-image:url(' . e($section['image']) . ')"' : '' ?>><span>PHOTO <?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div><?php endif; ?>
         <div class="story-text"><p><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string) $visibleSectionCount, 2, '0', STR_PAD_LEFT) ?></p><h2><?= e($section['heading'] ?? '') ?></h2><p><?= nl2br(e($section['body'] ?? '')) ?></p></div>
       </section>
     <?php endforeach; ?>

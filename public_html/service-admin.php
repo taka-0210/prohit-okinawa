@@ -35,10 +35,12 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $sections = [];
         for ($index = 0; $index < 5; $index++) {
             $current = (string)($service['sections'][$index]['image'] ?? '');
+            $layout = (string)($_POST['section_layout'][$index] ?? 'image_text');
             $sections[] = [
                 'heading' => trim((string)($_POST['section_heading'][$index] ?? '')),
                 'body' => trim((string)($_POST['section_body'][$index] ?? '')),
                 'image' => upload_image('section_image_' . $index, $current),
+                'layout' => $layout === 'text_only' ? 'text_only' : 'image_text',
                 'enabled' => isset($_POST['section_enabled'][$index]),
             ];
         }
@@ -104,7 +106,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       </label>
     </section>
     <div class="service-blocks">
-      <?php for($index=0;$index<5;$index++):$section=$service['sections'][$index]??[];$sectionEnabled=!array_key_exists('enabled',$section)||!empty($section['enabled']);?>
+      <?php for($index=0;$index<5;$index++):$section=$service['sections'][$index]??[];$sectionEnabled=!array_key_exists('enabled',$section)||!empty($section['enabled']);$sectionLayout=($section['layout']??'image_text')==='text_only'?'text_only':'image_text';?>
       <section class="panel editor service-block">
         <div class="block-number">PHOTO &amp; TEXT <?=str_pad((string)($index+1),2,'0',STR_PAD_LEFT)?></div>
         <div class="block-media">
@@ -113,6 +115,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         </div>
         <div class="block-copy">
           <label class="block-enabled"><input type="checkbox" name="section_enabled[<?=$index?>]" <?=$sectionEnabled?'checked':''?>>この項目を使用する</label>
+          <label>表示形式<select name="section_layout[]"><option value="image_text" <?=$sectionLayout==='image_text'?'selected':''?>>写真＋テキスト</option><option value="text_only" <?=$sectionLayout==='text_only'?'selected':''?>>テキストのみ</option></select></label>
           <label>見出し<input name="section_heading[]" value="<?=e($section['heading']??'')?>"></label>
           <label>本文<textarea name="section_body[]" rows="8"><?=e($section['body']??'')?></textarea></label>
         </div>

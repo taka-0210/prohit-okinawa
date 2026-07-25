@@ -22,9 +22,20 @@
 }
 
 .block-copy input,
-.block-copy textarea {
+.block-copy textarea,
+.block-copy select {
   min-width: 0;
   max-width: 100%;
+}
+
+.block-copy select {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  padding: 12px;
+  border: 1px solid #d8d5ce;
+  background: #fff;
+  font: inherit;
 }
 
 @media (max-width: 800px) {

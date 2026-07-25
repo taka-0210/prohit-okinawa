@@ -196,6 +196,48 @@ function save_content(string $name, array $data): void
     rename($temp, $path);
 }
 function e(mixed $value): string { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); }
+function content_link(string $type, string $label, string $url): array
+{
+    $type = in_array($type, ['internal', 'external'], true) ? $type : '';
+    $label = trim($label);
+    $url = trim($url);
+    if ($label === '' && $url === '') return ['type'=>'', 'label'=>'', 'url'=>''];
+    if ($label === '' || $url === '') {
+        throw new RuntimeException('リンクを設定する場合は、ボタン名とリンク先の両方を入力してください。');
+    }
+    if ($type === 'external') {
+        if (!filter_var($url, FILTER_VALIDATE_URL) || !in_array(strtolower((string)parse_url($url, PHP_URL_SCHEME)), ['http', 'https'], true)) {
+            throw new RuntimeException('外部リンクはhttp://またはhttps://から始まるURLを入力してください。');
+        }
+    } elseif ($type === 'internal') {
+        if (str_contains($url, '..') || str_starts_with($url, '//') || preg_match('/[\x00-\x20\\\\]/', $url) || preg_match('/^[a-z][a-z0-9+.-]*:/i', $url)) {
+            throw new RuntimeException('サイト内リンクは候補から選ぶか、サイト内の相対URLを入力してください。');
+        }
+        $url = ltrim($url, '/');
+    } else {
+        throw new RuntimeException('リンク種別を選択してください。');
+    }
+    return ['type'=>$type, 'label'=>$label, 'url'=>$url];
+}
+function internal_link_options(): array
+{
+    $options = [
+        'トップページ' => 'index.php',
+        'サービス一覧' => 'index.php#services',
+        '施工事例一覧' => 'works.php',
+        '最新情報一覧' => 'news.php',
+        'お問い合わせ' => 'contact.php',
+    ];
+    foreach (load_content('services') as $service) {
+        if (empty($service['id'])) continue;
+        $options['サービス｜' . ($service['title'] ?? $service['id'])] = 'service.php?slug=' . rawurlencode((string)$service['id']);
+    }
+    foreach (load_content('works') as $work) {
+        if (empty($work['id'])) continue;
+        $options['施工事例｜' . ($work['title'] ?? $work['id'])] = 'works.php#work-' . rawurlencode((string)$work['id']);
+    }
+    return $options;
+}
 function csrf_token(): string { return $_SESSION['csrf'] ??= bin2hex(random_bytes(24)); }
 function verify_csrf(): void
 {

@@ -51,6 +51,11 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 
         $title = trim((string)($_POST['title'] ?? ''));
         if ($title === '') throw new RuntimeException('タイトルは必須です。');
+        $link = content_link(
+            (string)($_POST['link_type'] ?? ''),
+            (string)($_POST['link_label'] ?? ''),
+            (string)($_POST['link_url'] ?? '')
+        );
         $textBlocks = array_values(array_filter($blocks, fn(array $block): bool => $block['type'] === 'text'));
         $record = [
             'id' => $id,
@@ -60,6 +65,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'blocks' => $blocks,
             'published_at' => (string)($_POST['published_at'] ?? date('Y-m-d')),
             'published' => isset($_POST['published']),
+            'link_type' => $link['type'],
+            'link_label' => $link['label'],
+            'link_url' => $link['url'],
         ];
 
         $updated = false;
@@ -83,8 +91,9 @@ $blocks = $edit['blocks'] ?? [];
 if ($blocks === [] && !empty($edit['body'])) {
     $blocks = [['id'=>'legacy-text', 'type'=>'text', 'text'=>(string)$edit['body']]];
 }
+$internalLinkOptions = internal_link_options();
 ?>
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>最新情報管理</title><link rel="stylesheet" href="assets/admin.css"><link rel="stylesheet" href="assets/admin-menu-fix.css"><link rel="stylesheet" href="assets/news-admin.css"><link rel="stylesheet" href="assets/news-block-enhancements.css?v=1"></head>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>最新情報管理</title><link rel="stylesheet" href="assets/admin.css"><link rel="stylesheet" href="assets/admin-menu-fix.css"><link rel="stylesheet" href="assets/news-admin.css"><link rel="stylesheet" href="assets/news-block-enhancements.css?v=1"><link rel="stylesheet" href="assets/content-link-admin.css?v=1"></head>
 <body class="admin-shell"><aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside><script src="assets/admin-nav.js?v=6" defer></script>
 <main class="admin-main"><header><div><p>PRO CHUBO HIT OKINAWA</p><h1>最新情報</h1></div><a href="news.php" target="_blank">公開ページを確認 ↗</a></header>
 <?php if(isset($_GET['saved'])):?><p class="success">保存しました。</p><?php endif;?><?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
@@ -102,6 +111,15 @@ if ($blocks === [] && !empty($edit['body'])) {
 <?php if(($block['type']??'text')==='image'):?><input type="hidden" name="block_existing_image[<?=e($key)?>]" value="<?=e($block['image']??'')?>"><?php if(!empty($block['image'])):?><img class="news-image-preview" src="<?=e($block['image'])?>" alt="登録中の写真"><?php endif;?><label>写真<input type="file" name="block_image_<?=e($key)?>" accept="image/jpeg,image/png,image/webp"><small>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
 <?php else:?><label>小見出し（任意）<input name="block_subtitle[<?=e($key)?>]" value="<?=e($block['subtitle']??'')?>"></label><label>本文<textarea name="block_text[<?=e($key)?>]" rows="7"><?=e($block['text']??'')?></textarea></label><?php endif;?></section>
 <?php endforeach;?></div></div>
+<fieldset class="content-link-fields">
+  <legend>記事からのリンクボタン（任意）</legend>
+  <div class="fields">
+    <label>ボタン名<input name="link_label" value="<?=e($v['link_label']??'')?>" placeholder="例：施工事例を見る"></label>
+    <label>リンク種別<select name="link_type"><option value="">使用しない</option><option value="internal" <?=($v['link_type']??'')==='internal'?'selected':''?>>サイト内</option><option value="external" <?=($v['link_type']??'')==='external'?'selected':''?>>外部サイト</option></select></label>
+  </div>
+  <label>リンク先<input name="link_url" list="internal-link-options" value="<?=e($v['link_url']??'')?>" placeholder="サイト内の候補を選択、または https://..."></label>
+  <small>サイト内リンクは同じタブ、外部サイトは別タブで開きます。</small>
+</fieldset>
 <label class="check"><input type="checkbox" name="published" <?=!isset($v['published'])||$v['published']?'checked':''?>>公開する</label><button class="primary">保存する</button></form>
 <?php if($edit):?><form method="post" onsubmit="return confirm('この記事を削除しますか？')"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?=e($edit['id'])?>"><button class="danger">削除</button></form><?php endif;?>
-</section><?php endif;?></div></main><script src="assets/news-admin.js?v=2" defer></script></body></html>
+</section><?php endif;?></div><datalist id="internal-link-options"><?php foreach($internalLinkOptions as $label=>$url):?><option value="<?=e($url)?>"><?=e($label)?></option><?php endforeach;?></datalist></main><script src="assets/news-admin.js?v=2" defer></script></body></html>

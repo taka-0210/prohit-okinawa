@@ -63,6 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('mouseenter', () => highlight(card.dataset.workCard));
       card.addEventListener('mouseleave', () => highlight(''));
     });
+    const requestedWorkId = decodeURIComponent(location.hash.replace(/^#work-/, ''));
+    if (location.hash.startsWith('#work-') && panel.querySelector(`[data-work-card="${CSS.escape(requestedWorkId)}"]`)) {
+      activate(panel.dataset.mapPanel);
+      window.setTimeout(() => showWork(requestedWorkId), 80);
+    }
 
     const viewport = panel.querySelector('[data-map-viewport]');
     const canvas = viewport?.querySelector('.map-canvas');

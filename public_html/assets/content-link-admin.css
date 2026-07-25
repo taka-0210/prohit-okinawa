@@ -1,0 +1,18 @@
+.content-link-fields {
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid #cfd6da;
+  background: #f7f8f7;
+}
+
+.content-link-fields legend {
+  padding: 0 8px;
+  color: #17314d;
+  font-weight: 700;
+}
+
+.content-link-fields > small {
+  display: block;
+  margin-top: 8px;
+  color: #66747c;
+}

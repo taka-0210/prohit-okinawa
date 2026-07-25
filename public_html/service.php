@@ -34,6 +34,7 @@ $visibleSectionCount = count($visibleSections);
   <link rel="stylesheet" href="assets/service-page.css">
   <link rel="stylesheet" href="assets/service-copy-size.css?v=1">
   <link rel="stylesheet" href="assets/service-text-only.css?v=2">
+  <link rel="stylesheet" href="assets/content-links.css?v=1">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">
   <link rel="stylesheet" href="assets/service-header-fix.css?v=2">
 </head>
@@ -56,7 +57,7 @@ $visibleSectionCount = count($visibleSections);
       <?php $textOnly = ($section['layout'] ?? 'image_text') === 'text_only'; ?>
       <section class="story-block<?= $textOnly ? ' is-text-only' : '' ?>">
         <?php if (!$textOnly): ?><div class="story-photo<?= empty($section['image']) ? ' is-placeholder' : '' ?>"<?= !empty($section['image']) ? ' style="background-image:url(' . e($section['image']) . ')"' : '' ?>><span>PHOTO <?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div><?php endif; ?>
-        <div class="story-text"><p><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string) $visibleSectionCount, 2, '0', STR_PAD_LEFT) ?></p><h2><?= e($section['heading'] ?? '') ?></h2><p><?= nl2br(e($section['body'] ?? '')) ?></p></div>
+        <div class="story-text"><p><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string) $visibleSectionCount, 2, '0', STR_PAD_LEFT) ?></p><h2><?= e($section['heading'] ?? '') ?></h2><p><?= nl2br(e($section['body'] ?? '')) ?></p><?php if(!empty($section['link_label'])&&!empty($section['link_url'])):?><a class="content-link-button" href="<?=e($section['link_url'])?>"<?=($section['link_type']??'')==='external'?' target="_blank" rel="noopener noreferrer"':''?>><?=e($section['link_label'])?> <span>→</span></a><?php endif;?></div>
       </section>
     <?php endforeach; ?>
   </div>

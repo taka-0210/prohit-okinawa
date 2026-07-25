@@ -36,12 +36,20 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         for ($index = 0; $index < 5; $index++) {
             $current = (string)($service['sections'][$index]['image'] ?? '');
             $layout = (string)($_POST['section_layout'][$index] ?? 'image_text');
+            $link = content_link(
+                (string)($_POST['section_link_type'][$index] ?? ''),
+                (string)($_POST['section_link_label'][$index] ?? ''),
+                (string)($_POST['section_link_url'][$index] ?? '')
+            );
             $sections[] = [
                 'heading' => trim((string)($_POST['section_heading'][$index] ?? '')),
                 'body' => trim((string)($_POST['section_body'][$index] ?? '')),
                 'image' => upload_image('section_image_' . $index, $current),
                 'layout' => $layout === 'text_only' ? 'text_only' : 'image_text',
                 'enabled' => isset($_POST['section_enabled'][$index]),
+                'link_type' => $link['type'],
+                'link_label' => $link['label'],
+                'link_url' => $link['url'],
             ];
         }
         $savedId = $isNew ? 'service-' . bin2hex(random_bytes(5)) : $id;
@@ -67,6 +75,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $error = $exception->getMessage();
     }
 }
+$internalLinkOptions = internal_link_options();
 ?>
 <!doctype html>
 <html lang="ja">
@@ -79,6 +88,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
   <link rel="stylesheet" href="assets/service-admin.css?v=4">
   <link rel="stylesheet" href="assets/service-admin-fit.css?v=1">
+  <link rel="stylesheet" href="assets/content-link-admin.css?v=1">
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
@@ -118,12 +128,22 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
           <label>表示形式<select name="section_layout[]"><option value="image_text" <?=$sectionLayout==='image_text'?'selected':''?>>写真＋テキスト</option><option value="text_only" <?=$sectionLayout==='text_only'?'selected':''?>>テキストのみ</option></select></label>
           <label>見出し<input name="section_heading[]" value="<?=e($section['heading']??'')?>"></label>
           <label>本文<textarea name="section_body[]" rows="8"><?=e($section['body']??'')?></textarea></label>
+          <fieldset class="content-link-fields">
+            <legend>リンクボタン（任意）</legend>
+            <div class="fields">
+              <label>ボタン名<input name="section_link_label[]" value="<?=e($section['link_label']??'')?>" placeholder="例：施工事例を見る"></label>
+              <label>リンク種別<select name="section_link_type[]"><option value="">使用しない</option><option value="internal" <?=($section['link_type']??'')==='internal'?'selected':''?>>サイト内</option><option value="external" <?=($section['link_type']??'')==='external'?'selected':''?>>外部サイト</option></select></label>
+            </div>
+            <label>リンク先<input name="section_link_url[]" list="internal-link-options" value="<?=e($section['link_url']??'')?>" placeholder="サイト内の候補を選択、または https://..."></label>
+            <small>サイト内リンクは同じタブ、外部サイトは別タブで開きます。</small>
+          </fieldset>
         </div>
       </section>
       <?php endfor;?>
     </div>
     <div class="save-bar"><button class="primary"><?= $isNew?'新規サービスを登録する':'サービスページを保存する' ?></button></div>
   </form>
+  <datalist id="internal-link-options"><?php foreach($internalLinkOptions as $label=>$url):?><option value="<?=e($url)?>"><?=e($label)?></option><?php endforeach;?></datalist>
 </main>
 </body>
 </html>

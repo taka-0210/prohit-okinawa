@@ -26,7 +26,7 @@ if ($blocks === [] && !empty($article['body'])) {
 <?php if(($block['type']??'text')==='image'&&!empty($block['image'])):?><figure><img src="<?=e($block['image'])?>" alt=""></figure>
 <?php elseif(($block['type']??'text')==='text'&&(!empty($block['subtitle'])||!empty($block['text']))):?><section class="article-text"><?php if(!empty($block['subtitle'])):?><h2 class="article-subheading"><?=e($block['subtitle'])?></h2><?php endif;?><?php if(!empty($block['text'])):?><div><?=nl2br(e($block['text']))?></div><?php endif;?></section><?php endif;?>
 <?php endforeach; ?>
-<?php if(!empty($article['link_label'])&&!empty($article['link_url'])):?><a class="article-link-button" href="<?=e($article['link_url'])?>"<?=($article['link_type']??'')==='external'?' target="_blank" rel="noopener noreferrer"':''?>><?=e($article['link_label'])?> <span>→</span></a><?php endif;?>
+<?php if(!empty($article['link_label'])&&!empty($article['link_url'])):$isExternalLink=($article['link_type']??'')==='external';?><a class="article-link-button" href="<?=e($article['link_url'])?>"<?=$isExternalLink?' target="_blank" rel="noopener noreferrer"':''?>><span><?=e($article['link_label'])?></span><span class="content-link-arrow" aria-hidden="true"><?=$isExternalLink?'↗':'→'?></span></a><?php endif;?>
 </div><a class="news-back" href="news.php">← 最新情報一覧へ戻る</a></article>
 <section class="news-cta"><p>START YOUR RESTAURANT WITH US.</p><h2>お店づくりのことなら、<br>お気軽にご相談ください。</h2><a href="contact.php">お問い合わせへ →</a></section></main>
 <footer><a href="index.php">← トップページへ戻る</a><small>© <?=date('Y')?> <?=e($company['company_name_en']??'PRO CHUBO HIT OKINAWA')?></small></footer></body></html>

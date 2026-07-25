@@ -2,7 +2,9 @@
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  gap: 24px;
+  min-width: 230px;
   margin-top: 26px;
   padding: 12px 18px;
   border: 1px solid #102a43;
@@ -20,14 +22,18 @@
   color: #fff;
 }
 
-.content-link-button span {
+.content-link-button .content-link-arrow {
   color: #e8623d;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .article-link-button {
   display: inline-flex;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 24px;
+  min-width: 250px;
   margin-top: 8px;
   padding: 14px 22px;
   border: 1px solid #102a43;
@@ -44,6 +50,8 @@
   color: #fff;
 }
 
-.article-link-button span {
+.article-link-button .content-link-arrow {
   color: #e8623d;
+  font-size: 16px;
+  line-height: 1;
 }

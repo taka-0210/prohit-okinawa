@@ -111,7 +111,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
               <div class="pin-popup" data-pin-popup hidden>
                 <strong>このエリアの施工事例</strong>
                 <?php foreach($cluster['items'] as $item): ?>
-                <a href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" data-popup-work="<?= e($item['work']['id']) ?>"><span><?= $item['number'] ?></span><?= e($item['work']['title']??'') ?></a>
+                <a href="work-detail.php?id=<?= rawurlencode((string)$item['work']['id']) ?>" data-popup-work="<?= e($item['work']['id']) ?>"><span class="single-popup-bullet">・</span><?= e($item['work']['title']??'') ?></a>
                 <?php endforeach; ?>
               </div>
               <?php endif; ?>

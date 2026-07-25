@@ -210,6 +210,69 @@
   text-decoration: none;
 }
 
+.google-map-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 22px;
+  padding: 12px 15px;
+  border: 1px solid #102a43;
+  color: #102a43;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .2s, color .2s;
+}
+
+.google-map-button span {
+  color: #e8623d;
+  font-size: 16px;
+}
+
+.google-map-button:hover,
+.google-map-button:focus-visible {
+  background: #102a43;
+  color: #fff;
+}
+
+.mini-project-map {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e3e2de;
+}
+
+.mini-project-map > p {
+  margin: 0 0 10px;
+  color: #71808a;
+  font: 700 9px Arial, sans-serif;
+  letter-spacing: .12em;
+}
+
+.mini-project-map > div {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  background: #f5f3ed;
+}
+
+.mini-project-map img {
+  position: absolute;
+  max-width: none;
+  object-fit: fill;
+}
+
+.mini-project-map span {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #e8623d;
+  box-shadow: 0 2px 8px #06182766;
+  transform: translate(-50%, -50%);
+}
+
 .work-external-links {
   display: grid;
   gap: 8px;

@@ -41,9 +41,10 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
   <meta name="description" content="<?= e(mb_substr((string)($work['summary']??''),0,120)) ?>">
   <link rel="stylesheet" href="assets/works-page.css?v=1">
   <link rel="stylesheet" href="assets/work-gallery.css?v=2">
-  <link rel="stylesheet" href="assets/work-detail.css?v=4">
+  <link rel="stylesheet" href="assets/work-detail.css?v=5">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
   <script src="assets/work-gallery.js?v=3" defer></script>
+  <script src="assets/work-detail-map.js?v=1" defer></script>
 </head>
 <body>
 <header class="works-header">
@@ -85,9 +86,19 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
           <?php if(!empty($work['category'])): ?><div><dt>業種</dt><dd><?= e($work['category']) ?></dd></div><?php endif; ?>
           <?php if(!empty($work['area'])): ?><div><dt>地域</dt><dd><?= e($work['area']) ?></dd></div><?php endif; ?>
           <?php if(!empty($work['designer'])): ?><div><dt>デザイナー</dt><dd><?= e($work['designer']) ?></dd></div><?php endif; ?>
-          <?php if(!empty($work['address'])||$googleMapsUrl!==''): ?><div><dt>住所</dt><dd><?php if($googleMapsUrl!==''): ?><a href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer"><?= !empty($work['address'])?e($work['address']):'Googleマップを開く' ?> ↗</a><?php else: ?><?= e($work['address']) ?><?php endif; ?></dd></div><?php endif; ?>
+          <?php if(!empty($work['address'])): ?><div><dt>住所</dt><dd><?= e($work['address']) ?></dd></div><?php endif; ?>
           <?php if($map): ?><div><dt>掲載地図</dt><dd><?= e($map['title']??'') ?></dd></div><?php endif; ?>
         </dl>
+        <?php if($googleMapsUrl!==''): ?><a class="google-map-button" href="<?= e($googleMapsUrl) ?>" target="_blank" rel="noopener noreferrer">Googleマップで見る <span>→</span></a><?php endif; ?>
+        <?php if($map&&!empty($map['image'])): ?>
+        <div class="mini-project-map">
+          <p>MAP / <?= e($map['title']??'') ?></p>
+          <div data-mini-project-map data-x="<?= e($work['position_x']??50) ?>" data-y="<?= e($work['position_y']??50) ?>" data-scale="<?= e(((int)($map['display_scale']??100))/100) ?>">
+            <img src="<?= e($map['image']) ?>" alt="<?= e($map['title']??'') ?>の地図">
+            <span aria-hidden="true"></span>
+          </div>
+        </div>
+        <?php endif; ?>
         <?php if(!empty($work['instagram_url'])||!empty($work['website_url'])): ?>
         <div class="work-external-links">
           <?php if(!empty($work['instagram_url'])): ?><a href="<?= e($work['instagram_url']) ?>" target="_blank" rel="noopener noreferrer">Instagram ↗</a><?php endif; ?>

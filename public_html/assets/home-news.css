@@ -43,29 +43,35 @@
 
 @media (max-width: 650px) {
   .news.section {
-    padding-top: 58px;
-    padding-bottom: 58px;
+    padding-top: 42px;
+    padding-bottom: 42px;
   }
 
   .news > div > h2 {
-    margin-bottom: 24px;
-    font-size: 28px;
+    margin-bottom: 16px;
+    font-size: 25px;
   }
 
   .home-news-link article,
   .home-news-link article:hover {
-    padding: 16px 32px 16px 0;
+    padding: 12px 28px 12px 0;
   }
 
   .news .home-news-link h3 {
-    margin-top: 8px;
-    font-size: 16px;
-    line-height: 1.6;
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .news .home-news-link time,
   .news .home-news-link span {
-    font-size: 10px;
+    font-size: 9px;
+  }
+
+  .news .news-more {
+    margin-top: 26px;
+    padding: 12px 18px;
+    font-size: 13px;
   }
 
   .home-news-link article::after {

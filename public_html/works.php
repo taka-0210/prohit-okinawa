@@ -57,7 +57,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
   <title>施工事例｜<?= e($company['company_name']??APP_NAME) ?></title>
   <meta name="description" content="沖縄県内・県外で手がけた厨房、店舗工事、飲食店開業支援の施工事例をご紹介します。">
   <link rel="stylesheet" href="assets/works-page.css?v=2">
-  <link rel="stylesheet" href="assets/works-links.css?v=6">
+  <link rel="stylesheet" href="assets/works-links.css?v=7">
   <link rel="stylesheet" href="assets/map-scale.css?v=8">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
   <link rel="stylesheet" href="assets/works-cards.css?v=4">

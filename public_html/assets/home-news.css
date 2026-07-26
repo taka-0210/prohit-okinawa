@@ -1,3 +1,7 @@
+.news > div > h2 {
+  font-size: clamp(32px, 3.5vw, 50px);
+}
+
 .home-news-link {
   display: block;
   color: inherit;

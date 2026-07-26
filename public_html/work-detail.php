@@ -41,7 +41,7 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
   <meta name="description" content="<?= e(mb_substr((string)($work['summary']??''),0,120)) ?>">
   <link rel="stylesheet" href="assets/works-page.css?v=2">
   <link rel="stylesheet" href="assets/work-gallery.css?v=3">
-  <link rel="stylesheet" href="assets/work-detail.css?v=7">
+  <link rel="stylesheet" href="assets/work-detail.css?v=8">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
   <script src="assets/work-gallery.js?v=3" defer></script>
   <script src="assets/work-detail-map.js?v=1" defer></script>

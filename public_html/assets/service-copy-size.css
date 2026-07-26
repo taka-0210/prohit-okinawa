@@ -34,7 +34,12 @@
   }
 
   .service-intro > div > p {
-    font-size: 17px;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+
+  .story-text > p:not(:first-child) {
+    font-size: 15px;
     line-height: 1.9;
   }
 

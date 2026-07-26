@@ -84,6 +84,13 @@
 }
 
 @media (max-width: 800px) {
+  .intro h2,
+  .strength-copy h2 {
+    font-size: clamp(24px, 6.8vw, 26px);
+    line-height: 1.5;
+    letter-spacing: -.035em;
+  }
+
   .strength-section > .section-no {
     grid-column: auto;
     grid-row: auto;

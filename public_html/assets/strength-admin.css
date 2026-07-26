@@ -52,11 +52,16 @@
   gap: 14px;
 }
 
-.strength-image-list label {
+.strength-image-card {
+  position: relative;
   margin: 0;
   padding: 8px;
   background: #fff;
   border: 1px solid #d8dfe2;
+}
+
+.strength-image-card label {
+  margin: 0;
 }
 
 .strength-image-list img,
@@ -71,6 +76,22 @@
   display: block;
   margin-top: 8px;
   font-size: 11px;
+}
+
+.strength-image-delete {
+  width: 100%;
+  margin-top: 8px;
+  padding: 7px 8px;
+  border: 1px solid #d36a55;
+  background: #fff;
+  color: #a43f2d;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.strength-image-delete:hover {
+  background: #fff0ec;
 }
 
 .image-upload {

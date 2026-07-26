@@ -1,4 +1,15 @@
 (() => {
+  document.querySelectorAll('[data-strength-image-delete]').forEach(button => {
+    button.addEventListener('click', () => {
+      if (!window.confirm('この写真を登録から削除しますか？\n「OUR STRENGTHを保存する」を押すと削除が確定します。')) return;
+      const card = button.closest('[data-strength-image-card]');
+      if (!card) return;
+      const keep = card.querySelector('input[name="keep_images[]"]');
+      if (keep) keep.checked = false;
+      card.hidden = true;
+    });
+  });
+
   const input = document.querySelector('[data-strength-images]');
   const preview = document.querySelector('[data-strength-preview]');
   if (!input || !preview) return;

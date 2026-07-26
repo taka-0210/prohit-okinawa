@@ -51,8 +51,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <title>OUR STRENGTH管理｜管理画面</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css?v=2">
-  <link rel="stylesheet" href="assets/strength-admin.css?v=1">
-  <script src="assets/strength-admin.js?v=1" defer></script>
+  <link rel="stylesheet" href="assets/strength-admin.css?v=2">
+  <script src="assets/strength-admin.js?v=2" defer></script>
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
@@ -70,7 +70,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       <div class="strength-images">
         <strong>登録写真</strong>
         <p class="hint">公開ページではモノトーンに変換し、横方向へゆっくり自動スクロールします。</p>
-        <?php if(!empty($strength['images'])):?><div class="strength-image-list"><?php foreach($strength['images'] as $image):?><label><img src="<?=e($image)?>" alt=""><span><input type="checkbox" name="keep_images[]" value="<?=e($image)?>" checked> この写真を使用する</span></label><?php endforeach;?></div><?php endif;?>
+        <?php if(!empty($strength['images'])):?><div class="strength-image-list"><?php foreach($strength['images'] as $image):?><div class="strength-image-card" data-strength-image-card><img src="<?=e($image)?>" alt=""><label><span><input type="checkbox" name="keep_images[]" value="<?=e($image)?>" checked> この写真を使用する</span></label><button type="button" class="strength-image-delete" data-strength-image-delete>写真を削除</button></div><?php endforeach;?></div><?php endif;?>
         <label class="image-upload">写真を追加<input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple data-strength-images><small>JPEG・PNG・WebP／1枚6MBまで・合計12枚まで。長辺1920pxを超える画像は比率を保って自動縮小します。</small></label>
         <div class="strength-image-preview" data-strength-preview></div>
         <label class="strength-speed">スクロール速度 <output data-strength-speed-output><?=e((string)($strength['scroll_duration']??72))?>秒</output><input type="range" name="scroll_duration" min="30" max="180" step="6" value="<?=e((string)($strength['scroll_duration']??72))?>" data-strength-speed><small>数字が大きいほど、ゆっくり流れます。</small></label>

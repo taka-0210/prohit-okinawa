@@ -1,4 +1,20 @@
 (() => {
+  const body = document.querySelector('[data-strength-body]');
+  const insertHeading = document.querySelector('[data-strength-heading-insert]');
+  if (body && insertHeading) {
+    insertHeading.addEventListener('click', () => {
+      const heading = window.prompt('小見出しを入力してください。');
+      if (!heading || !heading.trim()) return;
+      const start = body.selectionStart;
+      const end = body.selectionEnd;
+      const before = body.value.slice(0, start).replace(/\s*$/, '');
+      const after = body.value.slice(end).replace(/^\s*/, '');
+      const insertion = `${before ? '\n\n' : ''}## ${heading.trim()}${after ? '\n\n' : ''}`;
+      body.setRangeText(insertion, start, end, 'end');
+      body.focus();
+    });
+  }
+
   document.querySelectorAll('[data-strength-image-delete]').forEach(button => {
     button.addEventListener('click', () => {
       if (!window.confirm('この写真を登録から削除しますか？\n「OUR STRENGTHを保存する」を押すと削除が確定します。')) return;

@@ -31,11 +31,13 @@
   max-width: 820px;
 }
 
-.strength-copy .strength-kicker {
-  margin: 0 0 18px;
-  color: var(--orange);
-  font: 700 12px/1.6 Arial, sans-serif;
-  letter-spacing: .16em;
+.strength-copy h3 {
+  max-width: 820px;
+  margin: 42px 0 16px;
+  color: var(--ink);
+  font-size: clamp(20px, 1.7vw, 26px);
+  line-height: 1.55;
+  letter-spacing: -.02em;
 }
 
 .instagram-section {

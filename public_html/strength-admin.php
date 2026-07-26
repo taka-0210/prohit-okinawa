@@ -4,7 +4,6 @@ if (!is_admin()) redirect('admin.php');
 
 $defaults = [
     'id' => 'home-strength',
-    'subheading' => '',
     'heading' => "飲食店経営者だから、\nできる提案がある。",
     'body' => '代表・新垣大作は、開業、運営、スタッフ育成、厨房づくり、設備投資、店舗売却までを実際に経験。現在も広島で沖縄料理店「新垣家」を経営しています。',
     'quote' => "「機械を売る」のではなく、\n「繁盛するお店づくり」を考える。",
@@ -28,7 +27,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $newImages = upload_image_files('images', max(0, 12 - count($keptImages)));
         $strength = [
             'id' => 'home-strength',
-            'subheading' => trim((string)($_POST['subheading'] ?? '')),
             'heading' => trim((string)($_POST['heading'] ?? '')),
             'body' => trim((string)($_POST['body'] ?? '')),
             'quote' => trim((string)($_POST['quote'] ?? '')),
@@ -53,8 +51,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <title>OUR STRENGTH管理｜管理画面</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css?v=2">
-  <link rel="stylesheet" href="assets/strength-admin.css?v=2">
-  <script src="assets/strength-admin.js?v=2" defer></script>
+  <link rel="stylesheet" href="assets/strength-admin.css?v=3">
+  <script src="assets/strength-admin.js?v=3" defer></script>
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
@@ -67,9 +65,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?=e(csrf_token())?>">
       <p class="section-label">02 / OUR STRENGTH</p>
-      <label>小見出し<input type="text" name="subheading" value="<?=e($strength['subheading']??'')?>" placeholder="例：現場と経営、両方を知る。"><small>大見出しの上に表示します。未入力の場合は表示しません。</small></label>
       <label>大見出し<textarea name="heading" rows="3" required><?=e($strength['heading'])?></textarea><small>入力した改行を公開ページにも反映します。</small></label>
-      <label>本文<textarea name="body" rows="7" required><?=e($strength['body'])?></textarea><small>空行を入れると段落が分かれます。</small></label>
+      <label>本文<span class="strength-body-tools"><button type="button" data-strength-heading-insert>＋ カーソル位置に小見出しを挿入</button></span><textarea name="body" rows="18" required data-strength-body><?=e($strength['body'])?></textarea><small>空行を入れると段落が分かれます。小見出しは公開ページで少し大きい太文字になります。</small></label>
       <div class="strength-images">
         <strong>登録写真</strong>
         <p class="hint">公開ページではモノトーンに変換し、横方向へゆっくり自動スクロールします。</p>

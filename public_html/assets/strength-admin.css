@@ -33,6 +33,26 @@
   font-weight: 400;
 }
 
+.strength-body-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 0;
+}
+
+.strength-body-tools button {
+  padding: 8px 12px;
+  border: 1px solid #9cabb3;
+  background: #fff;
+  color: #263b47;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.strength-body-tools button:hover {
+  background: #edf2f4;
+}
+
 .strength-images {
   margin: 40px 0;
   padding: 28px;

@@ -59,7 +59,7 @@ function seed_content(): void
             ['id' => 'news-1', 'title' => 'プロ厨房HIT沖縄 Webサイト準備中', 'category' => 'お知らせ', 'body' => '現在、Webサイトの公開準備を進めています。', 'published_at' => date('Y-m-d'), 'published' => true],
         ],
         'company' => [[
-            'id' => 'company-profile', 'logo' => '',
+            'id' => 'company-profile', 'logo' => '', 'exterior_image' => '', 'interior_image' => '',
             'company_name' => '株式会社 プロ厨房HIT 沖縄', 'company_name_en' => 'PRO CHUBO HIT OKINAWA',
             'postal_code' => '', 'address' => '沖縄県', 'phone' => '', 'email' => '',
             'hours' => '', 'closed_days' => '', 'representative' => '新垣 大作', 'executive' => '高見 昌也',

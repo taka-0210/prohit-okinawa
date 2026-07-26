@@ -94,7 +94,7 @@ if ($blocks === [] && !empty($edit['body'])) {
 $internalLinkOptions = internal_link_options();
 ?>
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>最新情報管理</title><link rel="stylesheet" href="assets/admin.css"><link rel="stylesheet" href="assets/admin-menu-fix.css"><link rel="stylesheet" href="assets/news-admin.css"><link rel="stylesheet" href="assets/news-block-enhancements.css?v=1"><link rel="stylesheet" href="assets/content-link-admin.css?v=1"></head>
-<body class="admin-shell"><aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside><script src="assets/admin-nav.js?v=7" defer></script>
+<body class="admin-shell"><aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside><script src="assets/admin-nav.js?v=8" defer></script>
 <main class="admin-main"><header><div><p>PRO CHUBO HIT OKINAWA</p><h1>最新情報</h1></div><a href="news.php" target="_blank">公開ページを確認 ↗</a></header>
 <?php if(isset($_GET['saved'])):?><p class="success">保存しました。</p><?php endif;?><?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
 <div class="toolbar"><p><?=count($items)?>件登録</p><a class="primary" href="news-admin.php?edit=new">＋ 新規追加</a></div>

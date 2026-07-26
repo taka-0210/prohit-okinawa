@@ -23,6 +23,21 @@
   grid-row: 1;
 }
 
+.story > .strength-copy {
+  max-width: 980px;
+}
+
+.strength-copy > p:not(.strength-kicker) {
+  max-width: 820px;
+}
+
+.strength-copy .strength-kicker {
+  margin: 0 0 18px;
+  color: var(--orange);
+  font: 700 12px/1.6 Arial, sans-serif;
+  letter-spacing: .16em;
+}
+
 .instagram-section {
   overflow: clip;
 }

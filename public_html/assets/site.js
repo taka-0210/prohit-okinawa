@@ -17,5 +17,8 @@ document.addEventListener('DOMContentLoaded',()=>{
  hero?.addEventListener('mouseenter',stop);hero?.addEventListener('mouseleave',start);hero?.addEventListener('focusin',stop);hero?.addEventListener('focusout',start);
  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
  show(0);start();
- const toggle=document.querySelector('.nav-toggle'),nav=document.querySelector('#nav');toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')==='true';toggle.setAttribute('aria-expanded',String(!open));nav?.classList.toggle('open',!open)});
+ const toggle=document.querySelector('.nav-toggle'),nav=document.querySelector('#nav');
+ const closeNav=()=>{toggle?.setAttribute('aria-expanded','false');nav?.classList.remove('open')};
+ toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')==='true';toggle.setAttribute('aria-expanded',String(!open));nav?.classList.toggle('open',!open)});
+ nav?.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeNav));
 });

@@ -218,9 +218,15 @@ $currentImages = $edit ? work_images($edit) : [];
         <div class="gallery-admin">
           <div class="gallery-heading"><h3>施工写真</h3><span><?= count($currentImages) ?> / 10枚</span></div>
           <?php if($currentImages): ?>
-          <div class="existing-images">
+          <div class="existing-images" data-work-image-list>
             <?php foreach($currentImages as $index=>$image): ?>
-            <label><img src="<?= e($image) ?>" alt="登録画像<?= $index+1 ?>"><span><input type="checkbox" name="keep_images[]" value="<?= e($image) ?>" checked> 使用する</span><small><?= $index===0?'メイン画像':'画像 '.($index+1) ?></small></label>
+            <div class="existing-image-card" data-work-image-card draggable="true">
+              <img src="<?= e($image) ?>" alt="登録画像<?= $index+1 ?>">
+              <label><span><input type="checkbox" name="keep_images[]" value="<?= e($image) ?>" checked> 使用する</span></label>
+              <small><?= $index===0?'メイン画像':'画像 '.($index+1) ?></small>
+              <span class="existing-image-drag" aria-hidden="true">↔ ドラッグして並べ替え</span>
+              <button type="button" class="existing-image-delete" data-work-image-delete>写真を削除</button>
+            </div>
             <?php endforeach; ?>
           </div>
           <?php endif; ?>
@@ -242,5 +248,6 @@ $currentImages = $edit ? work_images($edit) : [];
   </div>
 </main>
 <script src="assets/works-admin-map.js?v=5" defer></script>
+<script src="assets/works-admin-gallery.js?v=2" defer></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 
 .service-hero .lead {
   max-width: 760px;
-  font-size: clamp(16px, 1.2vw, 19px);
+  font-size: clamp(14px, 1.05vw, 17px);
   line-height: 1.9;
 }
 
@@ -29,7 +29,7 @@
   }
 
   .service-hero .lead {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.85;
   }
 

@@ -44,6 +44,44 @@
   overflow: clip;
 }
 
+.company-photos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 54px 0 8px;
+}
+
+.company-photos:has(figure:only-child) {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 720px;
+}
+
+.company-photos figure {
+  position: relative;
+  aspect-ratio: 16 / 7;
+  margin: 0;
+  overflow: hidden;
+  background: #d4d1c9;
+}
+
+.company-photos img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-photos figcaption {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  padding: 4px 7px;
+  background: rgba(11, 41, 64, .78);
+  color: #fff;
+  font: 700 8px Arial, sans-serif;
+  letter-spacing: .16em;
+}
+
 .story > .strength-reel {
   grid-column: 1 / -1;
   grid-row: 2;
@@ -105,6 +143,18 @@
     margin-bottom: 20px;
     font-size: 15px;
     line-height: 1.9;
+  }
+
+  .company-photos {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 36px;
+  }
+
+  .company-photos figure,
+  .company-photos:has(figure:only-child) {
+    max-width: none;
+    aspect-ratio: 16 / 9;
   }
 
   .strength-section > .section-no {

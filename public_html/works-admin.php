@@ -119,7 +119,7 @@ $currentImages = $edit ? work_images($edit) : [];
   <title>施工事例管理</title>
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
-  <link rel="stylesheet" href="assets/works-admin.css?v=2">
+  <link rel="stylesheet" href="assets/works-admin.css?v=3">
   <link rel="stylesheet" href="assets/home-works-admin.css?v=1">
 </head>
 <body class="admin-shell">
@@ -248,6 +248,6 @@ $currentImages = $edit ? work_images($edit) : [];
   </div>
 </main>
 <script src="assets/works-admin-map.js?v=5" defer></script>
-<script src="assets/works-admin-gallery.js?v=2" defer></script>
+<script src="assets/works-admin-gallery.js?v=3" defer></script>
 </body>
 </html>

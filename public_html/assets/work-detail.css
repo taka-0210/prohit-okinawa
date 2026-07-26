@@ -369,7 +369,7 @@
   }
 
   .work-detail-hero h1 {
-    font-size: clamp(31px, 10vw, 40px);
+    font-size: clamp(28px, 8.5vw, 34px);
   }
 
   .work-hero-photo.has-photo-rail {

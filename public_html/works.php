@@ -60,7 +60,7 @@ function cluster_map_works(array $works, float $threshold = 6.0): array
   <link rel="stylesheet" href="assets/works-links.css?v=6">
   <link rel="stylesheet" href="assets/map-scale.css?v=8">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
-  <link rel="stylesheet" href="assets/works-cards.css?v=3">
+  <link rel="stylesheet" href="assets/works-cards.css?v=4">
   <script src="assets/works-page.js?v=9" defer></script>
 </head>
 <body>

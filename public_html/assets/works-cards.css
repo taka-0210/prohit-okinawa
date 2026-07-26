@@ -134,12 +134,12 @@
 
 @media (max-width: 650px) {
   .works-hero {
-    padding-top: 52px;
-    padding-bottom: 48px;
+    padding-top: 44px;
+    padding-bottom: 42px;
   }
 
   .works-hero h1 {
-    font-size: clamp(42px, 15vw, 62px);
+    font-size: clamp(28px, 8.5vw, 34px);
   }
 
   .project-card-link article {

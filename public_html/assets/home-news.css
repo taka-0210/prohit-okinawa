@@ -40,3 +40,35 @@
   outline: 2px solid var(--orange);
   outline-offset: 3px;
 }
+
+@media (max-width: 650px) {
+  .news.section {
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
+
+  .news > div > h2 {
+    margin-bottom: 24px;
+    font-size: 28px;
+  }
+
+  .home-news-link article,
+  .home-news-link article:hover {
+    padding: 16px 32px 16px 0;
+  }
+
+  .news .home-news-link h3 {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .news .home-news-link time,
+  .news .home-news-link span {
+    font-size: 10px;
+  }
+
+  .home-news-link article::after {
+    right: 8px;
+  }
+}

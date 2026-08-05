@@ -49,6 +49,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 'image' => upload_image('section_image_' . $index, $current, 'services/' . $savedId),
                 'layout' => $layout === 'text_only' ? 'text_only' : 'image_text',
                 'enabled' => isset($_POST['section_enabled'][$index]),
+                'mobile_contain' => isset($_POST['section_mobile_contain'][$index]),
                 'link_type' => $link['type'],
                 'link_label' => $link['label'],
                 'link_url' => $link['url'],
@@ -142,6 +143,7 @@ $internalLinkOptions = internal_link_options();
         </div>
         <div class="block-copy">
           <label class="block-enabled"><input type="checkbox" name="section_enabled[<?=$index?>]" <?=$sectionEnabled?'checked':''?>>この項目を使用する</label>
+          <label class="block-enabled"><input type="checkbox" name="section_mobile_contain[<?=$index?>]" <?=!empty($section['mobile_contain'])?'checked':''?>>スマホでは縮小して写真全体を表示する（トリミングしない）</label>
           <label>表示形式<select name="section_layout[]"><option value="image_text" <?=$sectionLayout==='image_text'?'selected':''?>>写真＋テキスト</option><option value="text_only" <?=$sectionLayout==='text_only'?'selected':''?>>テキストのみ</option></select></label>
           <label>見出し<input name="section_heading[]" value="<?=e($section['heading']??'')?>"></label>
           <label>本文<textarea name="section_body[]" rows="8"><?=e($section['body']??'')?></textarea></label>

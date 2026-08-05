@@ -1,0 +1,6 @@
+@media (max-width: 800px) {
+  .story-photo.is-mobile-contain {
+    background-color: #e5e2da;
+    background-size: contain;
+  }
+}

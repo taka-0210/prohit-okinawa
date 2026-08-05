@@ -34,6 +34,7 @@ $visibleSectionCount = count($visibleSections);
   <link rel="stylesheet" href="assets/service-page.css?v=3">
   <link rel="stylesheet" href="assets/service-copy-size.css?v=7">
   <link rel="stylesheet" href="assets/service-text-only.css?v=2">
+  <link rel="stylesheet" href="assets/service-mobile-image-fit.css?v=1">
   <link rel="stylesheet" href="assets/content-links.css?v=1">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">
   <link rel="stylesheet" href="assets/service-header-fix.css?v=3">
@@ -57,7 +58,7 @@ $visibleSectionCount = count($visibleSections);
     <?php foreach ($visibleSections as $index => $section): ?>
       <?php $textOnly = ($section['layout'] ?? 'image_text') === 'text_only'; ?>
       <section class="story-block<?= $textOnly ? ' is-text-only' : '' ?>">
-        <?php if (!$textOnly): ?><div class="story-photo<?= empty($section['image']) ? ' is-placeholder' : '' ?>"<?= !empty($section['image']) ? ' style="background-image:url(' . e($section['image']) . ')"' : '' ?>><span>PHOTO <?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div><?php endif; ?>
+        <?php if (!$textOnly): ?><div class="story-photo<?= empty($section['image']) ? ' is-placeholder' : '' ?><?= !empty($section['mobile_contain']) ? ' is-mobile-contain' : '' ?>"<?= !empty($section['image']) ? ' style="background-image:url(' . e($section['image']) . ')"' : '' ?>><span>PHOTO <?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div><?php endif; ?>
         <div class="story-text"><p><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?> / <?= str_pad((string) $visibleSectionCount, 2, '0', STR_PAD_LEFT) ?></p><h2><?= e($section['heading'] ?? '') ?></h2><p><?= nl2br(e($section['body'] ?? '')) ?></p><?php if(!empty($section['link_label'])&&!empty($section['link_url'])):$isExternalLink=($section['link_type']??'')==='external';?><a class="content-link-button" href="<?=e($section['link_url'])?>"<?=$isExternalLink?' target="_blank" rel="noopener noreferrer"':''?>><span><?=e($section['link_label'])?></span><span class="content-link-arrow" aria-hidden="true"><?=$isExternalLink?'↗':'→'?></span></a><?php endif;?></div>
       </section>
     <?php endforeach; ?>

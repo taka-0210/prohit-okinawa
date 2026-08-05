@@ -32,6 +32,7 @@ if ($isNew) {
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     verify_csrf();
     try {
+        $savedId = $isNew ? 'service-' . bin2hex(random_bytes(5)) : $id;
         $sections = [];
         for ($index = 0; $index < 5; $index++) {
             $current = (string)($service['sections'][$index]['image'] ?? '');
@@ -44,7 +45,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $sections[] = [
                 'heading' => trim((string)($_POST['section_heading'][$index] ?? '')),
                 'body' => trim((string)($_POST['section_body'][$index] ?? '')),
-                'image' => upload_image('section_image_' . $index, $current),
+                'image' => upload_image('section_image_' . $index, $current, 'services/' . $savedId),
                 'layout' => $layout === 'text_only' ? 'text_only' : 'image_text',
                 'enabled' => isset($_POST['section_enabled'][$index]),
                 'link_type' => $link['type'],
@@ -52,7 +53,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 'link_url' => $link['url'],
             ];
         }
-        $savedId = $isNew ? 'service-' . bin2hex(random_bytes(5)) : $id;
         $service = [
             'id' => $savedId,
             'title' => trim((string)($_POST['title'] ?? '')),

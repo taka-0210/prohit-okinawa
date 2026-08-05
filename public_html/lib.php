@@ -26,6 +26,7 @@ function boot_app(): void
         }
     }
     seed_content();
+    migrate_upload_layout();
 }
 
 function seed_content(): void
@@ -300,7 +301,7 @@ function notify_inquiry(array $inquiry, string $recipient): bool
     ];
     return @mail($recipient, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, implode("\r\n", $headers));
 }
-function upload_image(string $field, string $current = ''): string
+function upload_image(string $field, string $current = '', string $directory = 'misc'): string
 {
     if (empty($_FILES[$field]['tmp_name'])) return $current;
     $file = $_FILES[$field];
@@ -308,21 +309,40 @@ function upload_image(string $field, string $current = ''): string
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
     $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
     if (!isset($extensions[$mime])) throw new RuntimeException('JPEG、PNG、WebPのみ利用できます。');
-    return store_uploaded_image((string)$file['tmp_name'], $mime);
+    return store_uploaded_image((string)$file['tmp_name'], $mime, $directory);
 }
 
-function store_uploaded_image(string $temporary, string $mime): string
+function upload_directory(string $directory): string
+{
+    $segments = array_values(array_filter(
+        explode('/', str_replace('\\', '/', $directory)),
+        fn(string $segment): bool => $segment !== ''
+    ));
+    $safeSegments = array_map(
+        fn(string $segment): string => preg_replace('/[^a-zA-Z0-9_-]/', '', $segment) ?: 'misc',
+        $segments
+    );
+    $relative = implode('/', $safeSegments) ?: 'misc';
+    $absolute = UPLOAD_DIR . '/' . $relative;
+    if (!is_dir($absolute) && !mkdir($absolute, 0775, true) && !is_dir($absolute)) {
+        throw new RuntimeException('画像の保存先フォルダを作成できませんでした。');
+    }
+    return $relative;
+}
+
+function store_uploaded_image(string $temporary, string $mime, string $directory = 'misc'): string
 {
     $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
     $name = bin2hex(random_bytes(12)) . '.' . $extensions[$mime];
-    $destination = UPLOAD_DIR . '/' . $name;
+    $relativeDirectory = upload_directory($directory);
+    $destination = UPLOAD_DIR . '/' . $relativeDirectory . '/' . $name;
     $size = @getimagesize($temporary);
     if (!$size || empty($size[0]) || empty($size[1])) throw new RuntimeException('画像のサイズを確認できませんでした。');
     $width = (int)$size[0];
     $height = (int)$size[1];
     if (max($width, $height) <= UPLOAD_IMAGE_MAX_EDGE) {
         if (!move_uploaded_file($temporary, $destination)) throw new RuntimeException('画像を保存できませんでした。');
-        return 'uploads/' . $name;
+        return 'uploads/' . $relativeDirectory . '/' . $name;
     }
     $loaders = [
         'image/jpeg' => 'imagecreatefromjpeg',
@@ -354,10 +374,10 @@ function store_uploaded_image(string $temporary, string $mime): string
     imagedestroy($source);
     imagedestroy($resized);
     if (!$saved) throw new RuntimeException('画像を保存できませんでした。');
-    return 'uploads/' . $name;
+    return 'uploads/' . $relativeDirectory . '/' . $name;
 }
 
-function upload_image_files(string $field, int $limit): array
+function upload_image_files(string $field, int $limit, string $directory = 'misc'): array
 {
     if (empty($_FILES[$field]['name']) || !is_array($_FILES[$field]['name'])) return [];
     $saved = [];
@@ -374,9 +394,98 @@ function upload_image_files(string $field, int $limit): array
         $mime = (new finfo(FILEINFO_MIME_TYPE))->file($temporary);
         $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
         if (!isset($extensions[$mime])) throw new RuntimeException('JPEG、PNG、WebPのみ利用できます。');
-        $saved[] = store_uploaded_image($temporary, $mime);
+        $saved[] = store_uploaded_image($temporary, $mime, $directory);
     }
     return $saved;
+}
+
+function migrate_upload_path(string $path, string $directory): string
+{
+    if (!preg_match('~^uploads/([^/]+\.(?:jpe?g|png|webp))$~i', $path, $matches)) return $path;
+    $relativeDirectory = upload_directory($directory);
+    $relative = 'uploads/' . $relativeDirectory . '/' . $matches[1];
+    $destination = __DIR__ . '/' . $relative;
+    if (is_file($destination)) return $relative;
+    $source = __DIR__ . '/' . $path;
+    if (!is_file($source)) return $path;
+    if (!@rename($source, $destination)) {
+        if (!@copy($source, $destination)) return $path;
+        @unlink($source);
+    }
+    return $relative;
+}
+
+function migrate_upload_layout(): void
+{
+    $changedContent = [];
+    foreach (['hero', 'maps', 'works', 'news', 'services', 'strength', 'company'] as $type) {
+        $items = load_content($type);
+        $changed = false;
+        foreach ($items as &$item) {
+            $id = (string)($item['id'] ?? 'shared');
+            if ($type === 'hero' || $type === 'maps') {
+                $field = 'image';
+                $old = (string)($item[$field] ?? '');
+                $item[$field] = migrate_upload_path($old, $type . '/' . $id);
+                $changed = $changed || $item[$field] !== $old;
+            } elseif ($type === 'works') {
+                foreach (['images', 'image'] as $field) {
+                    $values = $field === 'images' ? (array)($item[$field] ?? []) : [(string)($item[$field] ?? '')];
+                    foreach ($values as &$value) {
+                        $old = (string)$value;
+                        $value = migrate_upload_path($old, 'works/' . $id);
+                        $changed = $changed || $value !== $old;
+                    }
+                    unset($value);
+                    $item[$field] = $field === 'images' ? $values : ($values[0] ?? '');
+                }
+            } elseif ($type === 'news') {
+                $blocks = (array)($item['blocks'] ?? []);
+                foreach ($blocks as &$block) {
+                    if (($block['type'] ?? '') !== 'image') continue;
+                    $old = (string)($block['image'] ?? '');
+                    $block['image'] = migrate_upload_path($old, 'news/' . $id);
+                    $changed = $changed || $block['image'] !== $old;
+                }
+                unset($block);
+                $item['blocks'] = $blocks;
+            } elseif ($type === 'services') {
+                $sections = (array)($item['sections'] ?? []);
+                foreach ($sections as &$section) {
+                    $old = (string)($section['image'] ?? '');
+                    $section['image'] = migrate_upload_path($old, 'services/' . $id);
+                    $changed = $changed || $section['image'] !== $old;
+                }
+                unset($section);
+                $item['sections'] = $sections;
+            } elseif ($type === 'strength') {
+                $images = (array)($item['images'] ?? []);
+                foreach ($images as &$image) {
+                    $old = (string)$image;
+                    $image = migrate_upload_path($old, 'strength');
+                    $changed = $changed || $image !== $old;
+                }
+                unset($image);
+                $item['images'] = $images;
+            } elseif ($type === 'company') {
+                foreach (['logo', 'exterior_image', 'interior_image'] as $field) {
+                    $old = (string)($item[$field] ?? '');
+                    $item[$field] = migrate_upload_path($old, 'company');
+                    $changed = $changed || $item[$field] !== $old;
+                }
+            }
+        }
+        unset($item);
+        if ($changed) $changedContent[$type] = $items;
+    }
+    foreach ($changedContent as $type => $items) save_content($type, $items);
+    foreach (glob(UPLOAD_DIR . '/*.{jpg,jpeg,png,webp}', GLOB_BRACE) ?: [] as $orphan) {
+        $legacyDirectory = upload_directory('legacy');
+        $destination = UPLOAD_DIR . '/' . $legacyDirectory . '/' . basename($orphan);
+        if (!is_file($destination) && !@rename($orphan, $destination) && @copy($orphan, $destination)) {
+            @unlink($orphan);
+        }
+    }
 }
 
 function work_images(array $work): array

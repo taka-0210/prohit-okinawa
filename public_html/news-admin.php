@@ -44,7 +44,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 if ($subtitle !== '' || $text !== '') $blocks[] = ['id'=>$key, 'type'=>'text', 'subtitle'=>$subtitle, 'text'=>$text];
             } elseif ($type === 'image') {
                 $current = (string)($existingImages[$key] ?? '');
-                $image = upload_image('block_image_' . $key, $current);
+                $image = upload_image('block_image_' . $key, $current, 'news/' . $id);
                 if ($image !== '') $blocks[] = ['id'=>$key, 'type'=>'image', 'image'=>$image];
             }
         }

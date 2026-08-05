@@ -68,7 +68,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             (array)($_POST['keep_images'] ?? []),
             fn($path) => is_string($path) && str_starts_with($path, 'uploads/') && is_file(__DIR__ . '/' . $path)
         ));
-        $newImages = upload_image_files('images', max(0, 10 - count($kept)));
+        $newImages = upload_image_files('images', max(0, 10 - count($kept)), 'works/' . $id);
         $images = array_slice(array_merge($kept, $newImages), 0, 10);
         $mapId = (string)($_POST['map_id'] ?? 'outside');
         if ($mapId !== 'outside' && !isset($mapLookup[$mapId])) {

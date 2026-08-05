@@ -24,3 +24,12 @@
 - Demo workflow: `.github/workflows/deploy-demo.yml` (`デモへデプロイ`).
 - Production workflow: not configured yet.
 - Protected server paths: `/prohit-okinawa.com/storage-demo/`, runtime uploads, `.user.ini`, deployment sync state, and server-created sessions or inquiries.
+
+## Media storage
+
+- Store uploaded images in purpose-specific directories. Do not place unrelated images together directly under `uploads/`.
+- Use `uploads/<content-type>/<content-id>/` for repeatable content such as works, maps, news, and services.
+- Use `uploads/<content-type>/` for singleton content such as company information or site-wide strength content.
+- Keep generated collision-resistant filenames inside those directories; never rely on the original client filename.
+- When changing the directory scheme, migrate both files and every persisted reference atomically, while preserving server-owned uploads and content data.
+- Keep unreferenced historical files in `uploads/legacy/` until an explicit, verified cleanup is approved.

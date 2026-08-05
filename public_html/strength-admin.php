@@ -24,7 +24,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         if (count($keptImages) + $selectedCount > 12) {
             throw new RuntimeException('OUR STRENGTHの写真は合計12枚までです。');
         }
-        $newImages = upload_image_files('images', max(0, 12 - count($keptImages)));
+        $newImages = upload_image_files('images', max(0, 12 - count($keptImages)), 'strength');
         $strength = [
             'id' => 'home-strength',
             'heading' => trim((string)($_POST['heading'] ?? '')),

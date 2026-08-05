@@ -8,12 +8,12 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     try {
         $exteriorImage = isset($_POST['remove_exterior_image'])
             ? ''
-            : upload_image('exterior_image', (string)($profile['exterior_image'] ?? ''));
+            : upload_image('exterior_image', (string)($profile['exterior_image'] ?? ''), 'company');
         $interiorImage = isset($_POST['remove_interior_image'])
             ? ''
-            : upload_image('interior_image', (string)($profile['interior_image'] ?? ''));
+            : upload_image('interior_image', (string)($profile['interior_image'] ?? ''), 'company');
         $profile = [
-            'id' => 'company-profile', 'logo' => upload_image('logo', (string)($profile['logo'] ?? '')),
+            'id' => 'company-profile', 'logo' => upload_image('logo', (string)($profile['logo'] ?? ''), 'company'),
             'exterior_image' => $exteriorImage, 'interior_image' => $interiorImage,
             'company_name' => trim((string)($_POST['company_name'] ?? '')), 'company_name_en' => trim((string)($_POST['company_name_en'] ?? '')),
             'postal_code' => trim((string)($_POST['postal_code'] ?? '')), 'address' => trim((string)($_POST['address'] ?? '')),

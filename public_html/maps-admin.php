@@ -42,7 +42,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'id' => $id,
             'map_number' => $mapNumber,
             'title' => trim((string)($_POST['title'] ?? '')),
-            'image' => upload_image('image', (string)($existing['image'] ?? '')),
+            'image' => upload_image('image', (string)($existing['image'] ?? ''), 'maps/' . $id),
             'display_scale' => max(40, min(150, (int)($_POST['display_scale'] ?? 100))),
             'cluster_threshold' => max(0, min(20, (float)($_POST['cluster_threshold'] ?? 6))),
             'sort_order' => (int)($_POST['sort_order'] ?? $mapNumber),

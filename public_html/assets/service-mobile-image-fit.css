@@ -1,6 +1,53 @@
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
   .story-photo.is-mobile-contain {
     background-color: #e5e2da;
     background-size: contain;
+  }
+}
+
+@media (min-width: 801px) and (max-width: 1024px) {
+  .service-header nav a:not(.contact-link) {
+    display: none;
+  }
+
+  .service-hero {
+    min-height: 0;
+    padding: 45px 22px;
+  }
+
+  .service-hero > span {
+    display: none;
+  }
+
+  .service-intro {
+    display: block;
+    padding: 80px 22px;
+  }
+
+  .story-block,
+  .story-block:nth-child(even) {
+    display: block;
+    margin-bottom: 45px;
+  }
+
+  .story-block:nth-child(even) .story-photo {
+    order: initial;
+  }
+
+  .service-story {
+    padding: 0 22px 80px;
+  }
+
+  .story-photo {
+    min-height: 420px;
+  }
+
+  .story-text {
+    padding: 45px 35px;
+  }
+
+  footer {
+    display: grid;
+    gap: 15px;
   }
 }

@@ -34,7 +34,7 @@ $visibleSectionCount = count($visibleSections);
   <link rel="stylesheet" href="assets/service-page.css?v=3">
   <link rel="stylesheet" href="assets/service-copy-size.css?v=7">
   <link rel="stylesheet" href="assets/service-text-only.css?v=2">
-  <link rel="stylesheet" href="assets/service-mobile-image-fit.css?v=1">
+  <link rel="stylesheet" href="assets/service-mobile-image-fit.css?v=2">
   <link rel="stylesheet" href="assets/content-links.css?v=1">
   <link rel="stylesheet" href="assets/service-navigation.css?v=1">
   <link rel="stylesheet" href="assets/service-header-fix.css?v=3">

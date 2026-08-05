@@ -35,29 +35,35 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     try {
         $savedId = $isNew ? 'service-' . bin2hex(random_bytes(5)) : $id;
         $sections = [];
-        for ($index = 0; $index < 5; $index++) {
-            $current = (string)($service['sections'][$index]['image'] ?? '');
-            $layout = (string)($_POST['section_layout'][$index] ?? 'image_text');
+        $sectionByKey = [];
+        foreach ((array)($_POST['section_order'] ?? []) as $postedKey) {
+            $key = (string)$postedKey;
+            if (!preg_match('/^\d+$/', $key) || isset($sectionByKey[$key])) continue;
+            $originalIndex = (int)$key;
+            $current = (string)($service['sections'][$originalIndex]['image'] ?? '');
+            $layout = (string)($_POST['section_layout'][$key] ?? 'image_text');
             $link = content_link(
-                (string)($_POST['section_link_type'][$index] ?? ''),
-                (string)($_POST['section_link_label'][$index] ?? ''),
-                (string)($_POST['section_link_url'][$index] ?? '')
+                (string)($_POST['section_link_type'][$key] ?? ''),
+                (string)($_POST['section_link_label'][$key] ?? ''),
+                (string)($_POST['section_link_url'][$key] ?? '')
             );
-            $sections[] = [
-                'heading' => trim((string)($_POST['section_heading'][$index] ?? '')),
-                'body' => trim((string)($_POST['section_body'][$index] ?? '')),
-                'image' => upload_image('section_image_' . $index, $current, 'services/' . $savedId),
+            $section = [
+                'heading' => trim((string)($_POST['section_heading'][$key] ?? '')),
+                'body' => trim((string)($_POST['section_body'][$key] ?? '')),
+                'image' => upload_image('section_image_' . $key, $current, 'services/' . $savedId),
                 'layout' => $layout === 'text_only' ? 'text_only' : 'image_text',
-                'enabled' => isset($_POST['section_enabled'][$index]),
-                'mobile_contain' => isset($_POST['section_mobile_contain'][$index]),
+                'enabled' => isset($_POST['section_enabled'][$key]),
+                'mobile_contain' => isset($_POST['section_mobile_contain'][$key]),
                 'link_type' => $link['type'],
                 'link_label' => $link['label'],
                 'link_url' => $link['url'],
             ];
+            $sections[] = $section;
+            $sectionByKey[$key] = $section;
         }
-        $cardImageSection = filter_var($_POST['card_image_section'] ?? null, FILTER_VALIDATE_INT);
-        $cardImage = $cardImageSection !== false && isset($sections[$cardImageSection])
-            ? (string)($sections[$cardImageSection]['image'] ?? '')
+        $cardImageSection = (string)($_POST['card_image_section'] ?? '');
+        $cardImage = isset($sectionByKey[$cardImageSection])
+            ? (string)($sectionByKey[$cardImageSection]['image'] ?? '')
             : '';
         $service = [
             'id' => $savedId,
@@ -68,6 +74,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'card_image' => $cardImage,
             'card_image_opacity' => max(10, min(80, (int)($_POST['card_image_opacity'] ?? 40))),
             'sections' => $sections,
+            'sections_managed' => true,
             'published' => isset($_POST['published']),
             'content_revision' => (int)($service['content_revision'] ?? 0),
         ];
@@ -84,6 +91,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     }
 }
 $internalLinkOptions = internal_link_options();
+$sectionEditorCount = !empty($service['sections_managed'])
+    ? count($service['sections'] ?? [])
+    : max(6, count($service['sections'] ?? []));
 ?>
 <!doctype html>
 <html lang="ja">
@@ -97,6 +107,7 @@ $internalLinkOptions = internal_link_options();
   <link rel="stylesheet" href="assets/service-admin.css?v=4">
   <link rel="stylesheet" href="assets/service-admin-fit.css?v=1">
   <link rel="stylesheet" href="assets/service-admin-card-image.css?v=2">
+  <link rel="stylesheet" href="assets/service-admin-blocks.css?v=1">
   <link rel="stylesheet" href="assets/content-link-admin.css?v=1">
 </head>
 <body class="admin-shell">
@@ -117,7 +128,7 @@ $internalLinkOptions = internal_link_options();
         <legend>ホームのサービスカード背景</legend>
         <label>背景に使う写真<select name="card_image_section">
           <option value="">背景写真を使用しない</option>
-          <?php for($cardIndex=0;$cardIndex<5;$cardIndex++):$cardSection=$service['sections'][$cardIndex]??[];$isCardImage=!empty($cardSection['image'])&&($service['card_image']??'')===$cardSection['image'];?><option value="<?=$cardIndex?>" <?=$isCardImage?'selected':''?>>写真 <?=str_pad((string)($cardIndex+1),2,'0',STR_PAD_LEFT)?><?=$cardSection['image']??''?'（登録済み）':'（写真を同時に登録）'?></option><?php endfor;?>
+          <?php for($cardIndex=0;$cardIndex<$sectionEditorCount;$cardIndex++):$cardSection=$service['sections'][$cardIndex]??[];$isCardImage=!empty($cardSection['image'])&&($service['card_image']??'')===$cardSection['image'];?><option value="<?=$cardIndex?>" <?=$isCardImage?'selected':''?>>写真 <?=str_pad((string)($cardIndex+1),2,'0',STR_PAD_LEFT)?><?=$cardSection['image']??''?'（登録済み）':'（写真を同時に登録）'?></option><?php endfor;?>
         </select></label>
         <label class="card-image-opacity">写真の濃さ <output data-card-image-opacity-output><?=max(10,min(80,(int)($service['card_image_opacity']??40)))?>%</output><input type="range" name="card_image_opacity" min="10" max="80" step="5" value="<?=max(10,min(80,(int)($service['card_image_opacity']??40)))?>" data-card-image-opacity></label>
         <small>「背景写真を使用しない」を選んで保存すると解除できます。</small>
@@ -134,9 +145,11 @@ $internalLinkOptions = internal_link_options();
       </label>
     </section>
     <div class="service-blocks">
-      <?php for($index=0;$index<5;$index++):$section=$service['sections'][$index]??[];$sectionEnabled=!array_key_exists('enabled',$section)||!empty($section['enabled']);$sectionLayout=($section['layout']??'image_text')==='text_only'?'text_only':'image_text';?>
-      <section class="panel editor service-block">
-        <div class="block-number">PHOTO &amp; TEXT <?=str_pad((string)($index+1),2,'0',STR_PAD_LEFT)?></div>
+      <?php for($index=0;$index<$sectionEditorCount;$index++):$section=$service['sections'][$index]??[];$sectionEnabled=!empty($section)&&(!array_key_exists('enabled',$section)||!empty($section['enabled']));$sectionLayout=($section['layout']??'image_text')==='text_only'?'text_only':'image_text';?>
+      <section class="panel editor service-block" data-service-block>
+        <input type="hidden" name="section_order[]" value="<?=$index?>">
+        <div class="block-number">PHOTO &amp; TEXT <span data-block-number><?=str_pad((string)($index+1),2,'0',STR_PAD_LEFT)?></span></div>
+        <div class="block-actions"><button type="button" data-move-up>↑ 上へ</button><button type="button" data-move-down>↓ 下へ</button><button type="button" class="danger" data-remove-block>削除</button></div>
         <div class="block-media" data-service-image-field>
           <?php if(!empty($section['image'])):?><img src="<?=e($section['image'])?>" alt="登録画像" data-service-image-preview><?php else:?><div data-service-image-preview>NO IMAGE</div><?php endif;?>
           <label>写真を差し替える<input type="file" name="section_image_<?=$index?>" accept="image/jpeg,image/png,image/webp" data-service-image-input><small>JPEG・PNG・WebP／25MBまで。選択すると保存前にプレビューし、容量・寸法の大きな画像は自動縮小します。</small></label>
@@ -144,16 +157,16 @@ $internalLinkOptions = internal_link_options();
         <div class="block-copy">
           <label class="block-enabled"><input type="checkbox" name="section_enabled[<?=$index?>]" <?=$sectionEnabled?'checked':''?>>この項目を使用する</label>
           <label class="block-enabled"><input type="checkbox" name="section_mobile_contain[<?=$index?>]" <?=!empty($section['mobile_contain'])?'checked':''?>>スマホ・タブレットでは写真全体を表示する（トリミングしない）</label>
-          <label>表示形式<select name="section_layout[]"><option value="image_text" <?=$sectionLayout==='image_text'?'selected':''?>>写真＋テキスト</option><option value="text_only" <?=$sectionLayout==='text_only'?'selected':''?>>テキストのみ</option></select></label>
-          <label>見出し<input name="section_heading[]" value="<?=e($section['heading']??'')?>"></label>
-          <label>本文<textarea name="section_body[]" rows="8"><?=e($section['body']??'')?></textarea></label>
+          <label>表示形式<select name="section_layout[<?=$index?>]"><option value="image_text" <?=$sectionLayout==='image_text'?'selected':''?>>写真＋テキスト</option><option value="text_only" <?=$sectionLayout==='text_only'?'selected':''?>>テキストのみ</option></select></label>
+          <label>見出し<input name="section_heading[<?=$index?>]" value="<?=e($section['heading']??'')?>"></label>
+          <label>本文<textarea name="section_body[<?=$index?>]" rows="8"><?=e($section['body']??'')?></textarea></label>
           <fieldset class="content-link-fields">
             <legend>リンクボタン（任意）</legend>
             <div class="fields">
-              <label>ボタン名<input name="section_link_label[]" value="<?=e($section['link_label']??'')?>" placeholder="例：施工事例を見る"></label>
-              <label>リンク種別<select name="section_link_type[]"><option value="">使用しない</option><option value="internal" <?=($section['link_type']??'')==='internal'?'selected':''?>>サイト内</option><option value="external" <?=($section['link_type']??'')==='external'?'selected':''?>>外部サイト</option></select></label>
+              <label>ボタン名<input name="section_link_label[<?=$index?>]" value="<?=e($section['link_label']??'')?>" placeholder="例：施工事例を見る"></label>
+              <label>リンク種別<select name="section_link_type[<?=$index?>]"><option value="">使用しない</option><option value="internal" <?=($section['link_type']??'')==='internal'?'selected':''?>>サイト内</option><option value="external" <?=($section['link_type']??'')==='external'?'selected':''?>>外部サイト</option></select></label>
             </div>
-            <label>リンク先<input name="section_link_url[]" list="internal-link-options" value="<?=e($section['link_url']??'')?>" placeholder="サイト内の候補を選択、または https://..."></label>
+            <label>リンク先<input name="section_link_url[<?=$index?>]" list="internal-link-options" value="<?=e($section['link_url']??'')?>" placeholder="サイト内の候補を選択、または https://..."></label>
             <small>サイト内リンクは同じタブ、外部サイトは別タブで開きます。</small>
           </fieldset>
         </div>
@@ -165,5 +178,6 @@ $internalLinkOptions = internal_link_options();
   <datalist id="internal-link-options"><?php foreach($internalLinkOptions as $label=>$url):?><option value="<?=e($url)?>"><?=e($label)?></option><?php endforeach;?></datalist>
 </main>
 <script src="assets/service-admin-preview.js?v=2" defer></script>
+<script src="assets/service-admin-blocks.js?v=1" defer></script>
 </body>
 </html>

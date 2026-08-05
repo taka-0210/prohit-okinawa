@@ -19,7 +19,7 @@ if (!$service) {
 }
 $company = load_content('company')[0] ?? [];
 $visibleSections = array_values(array_filter(
-    array_slice($service['sections'] ?? [], 0, 5),
+    $service['sections'] ?? [],
     static fn(array $section): bool => !array_key_exists('enabled', $section) || !empty($section['enabled'])
 ));
 $visibleSectionCount = count($visibleSections);

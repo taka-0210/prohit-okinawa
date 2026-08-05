@@ -112,8 +112,11 @@ $internalLinkOptions = internal_link_options();
       <label>導入文<textarea name="intro" rows="5"><?=e($service['intro']??'')?></textarea></label>
       <fieldset class="card-image-choice">
         <legend>ホームのサービスカード背景</legend>
-        <label><input type="radio" name="card_image_section" value="" <?=empty($service['card_image'])?'checked':''?>>背景写真を使用しない</label>
-        <small>写真を使用する場合は、下の写真ブロックから1枚選択してください。</small>
+        <label>背景に使う写真<select name="card_image_section">
+          <option value="">背景写真を使用しない</option>
+          <?php for($cardIndex=0;$cardIndex<5;$cardIndex++):$cardSection=$service['sections'][$cardIndex]??[];$isCardImage=!empty($cardSection['image'])&&($service['card_image']??'')===$cardSection['image'];?><option value="<?=$cardIndex?>" <?=$isCardImage?'selected':''?>>写真 <?=str_pad((string)($cardIndex+1),2,'0',STR_PAD_LEFT)?><?=$cardSection['image']??''?'（登録済み）':'（写真を同時に登録）'?></option><?php endfor;?>
+        </select></label>
+        <small>「背景写真を使用しない」を選んで保存すると解除できます。</small>
       </fieldset>
       <label class="publication-toggle">
         <input type="checkbox" name="published" <?=!empty($service['published'])?'checked':''?>>
@@ -135,7 +138,6 @@ $internalLinkOptions = internal_link_options();
           <label>写真を差し替える<input type="file" name="section_image_<?=$index?>" accept="image/jpeg,image/png,image/webp" data-service-image-input><small>※選択すると保存前にプレビューします。長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
         </div>
         <div class="block-copy">
-          <label class="block-enabled"><input type="radio" name="card_image_section" value="<?=$index?>" <?=!empty($section['image'])&&($service['card_image']??'')===$section['image']?'checked':''?>>この写真をホームカードの背景に使う</label>
           <label class="block-enabled"><input type="checkbox" name="section_enabled[<?=$index?>]" <?=$sectionEnabled?'checked':''?>>この項目を使用する</label>
           <label>表示形式<select name="section_layout[]"><option value="image_text" <?=$sectionLayout==='image_text'?'selected':''?>>写真＋テキスト</option><option value="text_only" <?=$sectionLayout==='text_only'?'selected':''?>>テキストのみ</option></select></label>
           <label>見出し<input name="section_heading[]" value="<?=e($section['heading']??'')?>"></label>

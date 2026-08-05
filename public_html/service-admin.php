@@ -119,9 +119,9 @@ $internalLinkOptions = internal_link_options();
       <?php for($index=0;$index<5;$index++):$section=$service['sections'][$index]??[];$sectionEnabled=!array_key_exists('enabled',$section)||!empty($section['enabled']);$sectionLayout=($section['layout']??'image_text')==='text_only'?'text_only':'image_text';?>
       <section class="panel editor service-block">
         <div class="block-number">PHOTO &amp; TEXT <?=str_pad((string)($index+1),2,'0',STR_PAD_LEFT)?></div>
-        <div class="block-media">
-          <?php if(!empty($section['image'])):?><img src="<?=e($section['image'])?>" alt="登録画像"><?php else:?><div>NO IMAGE</div><?php endif;?>
-          <label>写真を差し替える<input type="file" name="section_image_<?=$index?>" accept="image/jpeg,image/png,image/webp"><small>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
+        <div class="block-media" data-service-image-field>
+          <?php if(!empty($section['image'])):?><img src="<?=e($section['image'])?>" alt="登録画像" data-service-image-preview><?php else:?><div data-service-image-preview>NO IMAGE</div><?php endif;?>
+          <label>写真を差し替える<input type="file" name="section_image_<?=$index?>" accept="image/jpeg,image/png,image/webp" data-service-image-input><small>※選択すると保存前にプレビューします。長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
         </div>
         <div class="block-copy">
           <label class="block-enabled"><input type="checkbox" name="section_enabled[<?=$index?>]" <?=$sectionEnabled?'checked':''?>>この項目を使用する</label>
@@ -145,5 +145,6 @@ $internalLinkOptions = internal_link_options();
   </form>
   <datalist id="internal-link-options"><?php foreach($internalLinkOptions as $label=>$url):?><option value="<?=e($url)?>"><?=e($label)?></option><?php endforeach;?></datalist>
 </main>
+<script src="assets/service-admin-preview.js?v=1" defer></script>
 </body>
 </html>

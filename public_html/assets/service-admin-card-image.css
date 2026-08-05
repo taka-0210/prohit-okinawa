@@ -1,0 +1,30 @@
+.card-image-choice {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px solid #cbd4da;
+}
+
+.card-image-choice legend {
+  padding: 0 6px;
+  color: #17314d;
+  font-weight: 700;
+}
+
+.card-image-choice label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.card-image-choice input,
+.block-copy .block-enabled input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.card-image-choice small {
+  display: block;
+  margin-top: 5px;
+  color: #66747c;
+}

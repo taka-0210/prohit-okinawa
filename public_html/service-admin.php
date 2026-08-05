@@ -53,12 +53,17 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 'link_url' => $link['url'],
             ];
         }
+        $cardImageSection = filter_var($_POST['card_image_section'] ?? null, FILTER_VALIDATE_INT);
+        $cardImage = $cardImageSection !== false && isset($sections[$cardImageSection])
+            ? (string)($sections[$cardImageSection]['image'] ?? '')
+            : '';
         $service = [
             'id' => $savedId,
             'title' => trim((string)($_POST['title'] ?? '')),
             'title_en' => trim((string)($_POST['title_en'] ?? '')),
             'lead' => trim((string)($_POST['lead'] ?? '')),
             'intro' => trim((string)($_POST['intro'] ?? '')),
+            'card_image' => $cardImage,
             'sections' => $sections,
             'published' => isset($_POST['published']),
             'content_revision' => (int)($service['content_revision'] ?? 0),
@@ -88,6 +93,7 @@ $internalLinkOptions = internal_link_options();
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
   <link rel="stylesheet" href="assets/service-admin.css?v=4">
   <link rel="stylesheet" href="assets/service-admin-fit.css?v=1">
+  <link rel="stylesheet" href="assets/service-admin-card-image.css?v=1">
   <link rel="stylesheet" href="assets/content-link-admin.css?v=1">
 </head>
 <body class="admin-shell">
@@ -104,6 +110,11 @@ $internalLinkOptions = internal_link_options();
       <div class="fields"><label>サービス名<input name="title" required value="<?=e($service['title'])?>"></label><label>英語表記<input name="title_en" value="<?=e($service['title_en']??'')?>"></label></div>
       <label>リード文<textarea name="lead" rows="3"><?=e($service['lead']??'')?></textarea></label>
       <label>導入文<textarea name="intro" rows="5"><?=e($service['intro']??'')?></textarea></label>
+      <fieldset class="card-image-choice">
+        <legend>ホームのサービスカード背景</legend>
+        <label><input type="radio" name="card_image_section" value="" <?=empty($service['card_image'])?'checked':''?>>背景写真を使用しない</label>
+        <small>写真を使用する場合は、下の写真ブロックから1枚選択してください。</small>
+      </fieldset>
       <label class="publication-toggle">
         <input type="checkbox" name="published" <?=!empty($service['published'])?'checked':''?>>
         <span class="publication-switch" aria-hidden="true"></span>
@@ -124,6 +135,7 @@ $internalLinkOptions = internal_link_options();
           <label>写真を差し替える<input type="file" name="section_image_<?=$index?>" accept="image/jpeg,image/png,image/webp" data-service-image-input><small>※選択すると保存前にプレビューします。長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
         </div>
         <div class="block-copy">
+          <label class="block-enabled"><input type="radio" name="card_image_section" value="<?=$index?>" <?=!empty($section['image'])&&($service['card_image']??'')===$section['image']?'checked':''?>>この写真をホームカードの背景に使う</label>
           <label class="block-enabled"><input type="checkbox" name="section_enabled[<?=$index?>]" <?=$sectionEnabled?'checked':''?>>この項目を使用する</label>
           <label>表示形式<select name="section_layout[]"><option value="image_text" <?=$sectionLayout==='image_text'?'selected':''?>>写真＋テキスト</option><option value="text_only" <?=$sectionLayout==='text_only'?'selected':''?>>テキストのみ</option></select></label>
           <label>見出し<input name="section_heading[]" value="<?=e($section['heading']??'')?>"></label>

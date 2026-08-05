@@ -7,6 +7,11 @@
 
 # Customer inquiry data must never be committed
 /storage/content/inquiries.json
+/storage/instagram-okinawa-cache.json
+
+# Local RISE GATE snapshots and quarantined historical uploads
+/.rise-gate/
+/public_html/uploads/legacy/
 
 # Local/editor artifacts
 .DS_Store

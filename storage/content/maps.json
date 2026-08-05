@@ -1,0 +1,61 @@
+[
+    {
+        "id": "map-d989d875fe",
+        "map_number": 1,
+        "title": "沖縄北部",
+        "image": "uploads\/maps\/map-d989d875fe\/bda4f97bbda10d4d20c09f35.png",
+        "display_scale": 100,
+        "cluster_threshold": 1,
+        "sort_order": 1,
+        "published": true
+    },
+    {
+        "id": "map-c285624454",
+        "map_number": 2,
+        "title": "沖縄中部",
+        "image": "uploads\/maps\/map-c285624454\/8184fa2001b3e3cb5c72aa3a.png",
+        "display_scale": 100,
+        "cluster_threshold": 6,
+        "sort_order": 2,
+        "published": true
+    },
+    {
+        "id": "map-e47b7bd85e",
+        "map_number": 3,
+        "title": "沖縄南部",
+        "image": "uploads\/maps\/map-e47b7bd85e\/0df5856a511b4edcfdaa71ea.png",
+        "display_scale": 100,
+        "cluster_threshold": 6,
+        "sort_order": 3,
+        "published": true
+    },
+    {
+        "id": "map-61c656a701",
+        "map_number": 4,
+        "title": "宮古島 \/ 伊良部島",
+        "image": "uploads\/maps\/map-61c656a701\/048128f9188aa27bc490289a.png",
+        "display_scale": 95,
+        "cluster_threshold": 6,
+        "sort_order": 4,
+        "published": true
+    },
+    {
+        "id": "map-07c634b1d5",
+        "map_number": 5,
+        "title": "石垣島",
+        "image": "uploads\/maps\/map-07c634b1d5\/16638278aa920a51580c7e77.png",
+        "display_scale": 65,
+        "cluster_threshold": 6,
+        "sort_order": 5,
+        "published": true
+    },
+    {
+        "id": "map-d622c3dae1",
+        "map_number": 6,
+        "title": "沖縄以外",
+        "image": "uploads\/maps\/map-d622c3dae1\/85a67020b1974980722d3d1a.png",
+        "display_scale": 100,
+        "sort_order": 6,
+        "published": true
+    }
+]

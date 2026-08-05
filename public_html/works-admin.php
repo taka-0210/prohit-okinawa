@@ -230,7 +230,7 @@ $currentImages = $edit ? work_images($edit) : [];
             <?php endforeach; ?>
           </div>
           <?php endif; ?>
-          <label class="upload-zone">画像を追加<input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple><small>合計最大10枚／1枚6MBまで。先頭画像がメイン画像になります。<br>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
+          <label class="upload-zone">画像を追加<input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple><small>合計最大10枚／1枚25MBまで。先頭画像がメイン画像になります。<br>※容量・寸法の大きな画像は、比率を保って自動縮小します。</small></label>
         </div>
         <label class="check"><input type="checkbox" name="published" <?= !isset($v['published'])||$v['published']?'checked':'' ?>>公開する</label>
         <button class="primary">保存する</button>

@@ -33,7 +33,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <main class="admin-main"><header><div><p>PRO KITCHEN HIT OKINAWA</p><h1>ブランド・会社情報</h1></div><a href="index.php" target="_blank">公開サイトを確認 ↗</a></header>
 <?php if(isset($_GET['saved'])):?><p class="success">会社情報を保存しました。</p><?php endif;?><?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
 <section class="panel editor company-editor"><form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>">
-<div class="logo-field"><div class="logo-preview"><?php if(!empty($profile['logo'])):?><img src="<?=e($profile['logo'])?>" alt="登録中のロゴ"><?php else:?><span>LOGO<br>PREVIEW</span><?php endif;?></div><label>ロゴ画像<input type="file" name="logo" accept="image/jpeg,image/png,image/webp"><small>透過PNGまたはWebP推奨。6MBまで。<br>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label></div>
+<div class="logo-field"><div class="logo-preview"><?php if(!empty($profile['logo'])):?><img src="<?=e($profile['logo'])?>" alt="登録中のロゴ"><?php else:?><span>LOGO<br>PREVIEW</span><?php endif;?></div><label>ロゴ画像<input type="file" name="logo" accept="image/jpeg,image/png,image/webp"><small>透過PNGまたはWebP推奨。25MBまで。<br>※容量・寸法の大きな画像は、比率を保って自動縮小します。</small></label></div>
 <h2>基本情報</h2><div class="fields"><label>会社名<input name="company_name" required value="<?=e($profile['company_name']??'')?>"></label><label>英語表記<input name="company_name_en" value="<?=e($profile['company_name_en']??'')?>"></label></div><label>会社紹介<textarea name="description" rows="4"><?=e($profile['description']??'')?></textarea></label>
 <div class="fields"><label>郵便番号<input name="postal_code" value="<?=e($profile['postal_code']??'')?>"></label><label>所在地<input name="address" value="<?=e($profile['address']??'')?>"></label><label>電話番号<input name="phone" value="<?=e($profile['phone']??'')?>"></label><label>メールアドレス<input type="email" name="email" value="<?=e($profile['email']??'')?>"></label><label>営業時間<input name="hours" value="<?=e($profile['hours']??'')?>"></label><label>定休日<input name="closed_days" value="<?=e($profile['closed_days']??'')?>"></label><label>代表取締役<input name="representative" value="<?=e($profile['representative']??'')?>"></label><label>役員<input name="executive" value="<?=e($profile['executive']??'')?>"></label></div><label>所属<input name="affiliation" value="<?=e($profile['affiliation']??'')?>"></label>
 <h2>会社写真</h2><p class="company-photo-note">現在は素材として保存します。公開サイトでの表示場所は後から設定できます。</p>
@@ -42,7 +42,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <section class="company-photo-field">
     <h3><?=e($label)?></h3>
     <div class="company-photo-preview"><?php if(!empty($profile[$field])):?><img src="<?=e($profile[$field])?>" alt="登録中の<?=e($label)?>写真"><?php else:?><span>NO IMAGE</span><?php endif;?></div>
-    <label><?=e($label)?>写真を選択<input type="file" name="<?=e($field)?>" accept="image/jpeg,image/png,image/webp"><small>JPEG・PNG・WebP／6MBまで。<br>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
+    <label><?=e($label)?>写真を選択<input type="file" name="<?=e($field)?>" accept="image/jpeg,image/png,image/webp"><small>JPEG・PNG・WebP／25MBまで。<br>※容量・寸法の大きな画像は、比率を保って自動縮小します。</small></label>
     <?php if(!empty($profile[$field])):?><label class="company-photo-remove"><input type="checkbox" name="remove_<?=e($field)?>" value="1"> 登録写真を削除する</label><?php endif;?>
   </section>
   <?php endforeach;?>

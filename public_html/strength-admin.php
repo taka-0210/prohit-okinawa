@@ -71,7 +71,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         <strong>登録写真</strong>
         <p class="hint">公開ページではモノトーンに変換し、横方向へゆっくり自動スクロールします。</p>
         <?php if(!empty($strength['images'])):?><div class="strength-image-list"><?php foreach($strength['images'] as $image):?><div class="strength-image-card" data-strength-image-card><img src="<?=e($image)?>" alt=""><label><span><input type="checkbox" name="keep_images[]" value="<?=e($image)?>" checked> この写真を使用する</span></label><button type="button" class="strength-image-delete" data-strength-image-delete>写真を削除</button></div><?php endforeach;?></div><?php endif;?>
-        <label class="image-upload">写真を追加<input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple data-strength-images><small>JPEG・PNG・WebP／1枚6MBまで・合計12枚まで。長辺1920pxを超える画像は比率を保って自動縮小します。</small></label>
+        <label class="image-upload">写真を追加<input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple data-strength-images><small>JPEG・PNG・WebP／1枚25MBまで・合計12枚まで。容量・寸法の大きな画像は比率を保って自動縮小します。</small></label>
         <div class="strength-image-preview" data-strength-preview></div>
         <label class="strength-speed">スクロール速度 <output data-strength-speed-output><?=e((string)($strength['scroll_duration']??72))?>秒</output><input type="range" name="scroll_duration" min="30" max="180" step="6" value="<?=e((string)($strength['scroll_duration']??72))?>" data-strength-speed><small>数字が大きいほど、ゆっくり流れます。</small></label>
       </div>

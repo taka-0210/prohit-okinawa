@@ -8,6 +8,10 @@ define('DATA_DIR', basename(dirname(__DIR__)) === 'public_html'
     : __DIR__ . '/../storage');
 const UPLOAD_DIR = __DIR__ . '/uploads';
 const UPLOAD_IMAGE_MAX_EDGE = 1920;
+const UPLOAD_IMAGE_MAX_SOURCE_BYTES = 25 * 1024 * 1024;
+const UPLOAD_IMAGE_REENCODE_BYTES = 500 * 1024;
+const UPLOAD_IMAGE_TARGET_BYTES = 1536 * 1024;
+const UPLOAD_IMAGE_MAX_PIXELS = 60000000;
 
 function boot_app(): void
 {
@@ -305,7 +309,8 @@ function upload_image(string $field, string $current = '', string $directory = '
 {
     if (empty($_FILES[$field]['tmp_name'])) return $current;
     $file = $_FILES[$field];
-    if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || ($file['size'] ?? 0) > 6 * 1024 * 1024) throw new RuntimeException('画像は6MB以下にしてください。');
+    if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) throw new RuntimeException('画像のアップロードに失敗しました。1枚25MB以下の画像を選択してください。');
+    if (($file['size'] ?? 0) < 1 || ($file['size'] ?? 0) > UPLOAD_IMAGE_MAX_SOURCE_BYTES) throw new RuntimeException('画像は1枚25MB以下にしてください。');
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
     $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
     if (!isset($extensions[$mime])) throw new RuntimeException('JPEG、PNG、WebPのみ利用できます。');
@@ -340,7 +345,9 @@ function store_uploaded_image(string $temporary, string $mime, string $directory
     if (!$size || empty($size[0]) || empty($size[1])) throw new RuntimeException('画像のサイズを確認できませんでした。');
     $width = (int)$size[0];
     $height = (int)$size[1];
-    if (max($width, $height) <= UPLOAD_IMAGE_MAX_EDGE) {
+    if ($width * $height > UPLOAD_IMAGE_MAX_PIXELS) throw new RuntimeException('画像の解像度が大きすぎます。6000万画素以下の画像を選択してください。');
+    $sourceBytes = (int)(@filesize($temporary) ?: 0);
+    if ($mime === 'image/png' && max($width, $height) <= UPLOAD_IMAGE_MAX_EDGE && $sourceBytes <= UPLOAD_IMAGE_REENCODE_BYTES) {
         if (!move_uploaded_file($temporary, $destination)) throw new RuntimeException('画像を保存できませんでした。');
         return 'uploads/' . $relativeDirectory . '/' . $name;
     }
@@ -355,7 +362,7 @@ function store_uploaded_image(string $temporary, string $mime, string $directory
     }
     $source = @$loader($temporary);
     if (!$source) throw new RuntimeException('画像を読み込めませんでした。');
-    $scale = UPLOAD_IMAGE_MAX_EDGE / max($width, $height);
+    $scale = min(1, UPLOAD_IMAGE_MAX_EDGE / max($width, $height));
     $resizedWidth = max(1, (int)round($width * $scale));
     $resizedHeight = max(1, (int)round($height * $scale));
     $resized = imagecreatetruecolor($resizedWidth, $resizedHeight);
@@ -367,10 +374,16 @@ function store_uploaded_image(string $temporary, string $mime, string $directory
     }
     imagecopyresampled($resized, $source, 0, 0, 0, 0, $resizedWidth, $resizedHeight, $width, $height);
     $saved = match ($mime) {
-        'image/jpeg' => imagejpeg($resized, $destination, 85),
+        'image/jpeg' => imagejpeg($resized, $destination, 82),
         'image/png' => imagepng($resized, $destination, 6),
-        'image/webp' => imagewebp($resized, $destination, 85),
+        'image/webp' => imagewebp($resized, $destination, 82),
     };
+    clearstatcache(true, $destination);
+    if ($saved && in_array($mime, ['image/jpeg', 'image/webp'], true) && (int)(@filesize($destination) ?: 0) > UPLOAD_IMAGE_TARGET_BYTES) {
+        $saved = $mime === 'image/jpeg'
+            ? imagejpeg($resized, $destination, 72)
+            : imagewebp($resized, $destination, 72);
+    }
     imagedestroy($source);
     imagedestroy($resized);
     if (!$saved) throw new RuntimeException('画像を保存できませんでした。');
@@ -390,7 +403,7 @@ function upload_image_files(string $field, int $limit, string $directory = 'misc
         if ($error !== UPLOAD_ERR_OK) throw new RuntimeException('画像のアップロードに失敗しました。');
         $size = (int)($_FILES[$field]['size'][$index] ?? 0);
         $temporary = (string)($_FILES[$field]['tmp_name'][$index] ?? '');
-        if ($size < 1 || $size > 6 * 1024 * 1024) throw new RuntimeException('画像は1枚6MB以下にしてください。');
+        if ($size < 1 || $size > UPLOAD_IMAGE_MAX_SOURCE_BYTES) throw new RuntimeException('画像は1枚25MB以下にしてください。');
         $mime = (new finfo(FILEINFO_MIME_TYPE))->file($temporary);
         $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
         if (!isset($extensions[$mime])) throw new RuntimeException('JPEG、PNG、WebPのみ利用できます。');

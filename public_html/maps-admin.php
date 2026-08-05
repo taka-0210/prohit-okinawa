@@ -114,7 +114,7 @@ usort($items, fn(array $a, array $b): int => [(int)($a['sort_order'] ?? 0), (int
         <label>マーカーをまとめる距離（％）<input type="number" name="cluster_threshold" min="0" max="20" step="0.5" value="<?= e($v['cluster_threshold']??6) ?>"><small>縦軸・横軸の座標が近い施工事例をまとめます。初期値は6％、0％にするとまとめません。</small></label>
         <label>表示順<input type="number" name="sort_order" min="0" value="<?= e($v['sort_order']??count($items)+1) ?>"></label>
         <?php if(!empty($v['image'])): ?><div class="map-preview" style="--map-scale:<?= e(((int)($v['display_scale']??100))/100) ?>"><img src="<?= e($v['image']) ?>" alt="登録中の地図"></div><?php endif; ?>
-        <label>地図画像<input type="file" name="image" accept="image/jpeg,image/png,image/webp" <?= $edit?'':'required' ?>><small>JPEG・PNG・WebP／6MBまで。<br>※長辺1920pxを超える画像は、比率を保って自動縮小します。</small></label>
+        <label>地図画像<input type="file" name="image" accept="image/jpeg,image/png,image/webp" <?= $edit?'':'required' ?>><small>JPEG・PNG・WebP／25MBまで。<br>※容量・寸法の大きな画像は、比率を保って自動縮小します。</small></label>
         <label class="check"><input type="checkbox" name="published" <?= !isset($v['published'])||$v['published']?'checked':'' ?>>公開する</label>
         <button class="primary">保存する</button>
       </form>

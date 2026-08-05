@@ -8,6 +8,9 @@
 - [02-sitemap.md](02-sitemap.md): 公開サイトのページ構成と導線
 - [03-admin-and-data.md](03-admin-and-data.md): 管理画面、コンテンツモデル、権限
 - [04-implementation-plan.md](04-implementation-plan.md): 技術方針、実装順、受け入れ条件
+- [05-project-status-and-handoff.md](05-project-status-and-handoff.md): 最新進捗、作業引継ぎ、次回確認事項
+- [MEDIA-STORAGE.md](MEDIA-STORAGE.md): CMS画像の保存先と運用規約
+- [XSERVER-DEMO.md](XSERVER-DEMO.md): デモ環境の配置・確認手順
 
 ## 設計上の中心
 
@@ -18,4 +21,3 @@
 1. ホームのHEROスライド（画像・文言・オーバーレイ・ドット柄）
 2. 施工事例（画像・本文・沖縄マップ座標）
 3. 最新情報（公開日時・本文・公開状態）
-

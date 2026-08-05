@@ -2,15 +2,14 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(#102a43a8, #102a43c9), var(--service-card-image);
+  background-image: linear-gradient(#102a438f, #102a43a8), var(--service-card-image);
   background-position: center;
   background-size: cover;
-  opacity: .8;
-  transition: opacity .25s, transform .45s;
+  transition: filter .25s, transform .45s;
 }
 
 .service-grid article.has-service-image:hover::before {
-  opacity: 1;
+  filter: brightness(1.12);
   transform: scale(1.025);
 }
 

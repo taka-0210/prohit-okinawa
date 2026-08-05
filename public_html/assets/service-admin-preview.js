@@ -33,6 +33,14 @@
     });
   });
 
+  const opacityInput = document.querySelector('[data-card-image-opacity]');
+  const opacityOutput = document.querySelector('[data-card-image-opacity-output]');
+  if (opacityInput && opacityOutput) {
+    const updateOpacity = () => { opacityOutput.textContent = `${opacityInput.value}%`; };
+    opacityInput.addEventListener('input', updateOpacity);
+    updateOpacity();
+  }
+
   window.addEventListener('pagehide', () => {
     objectUrls.forEach((url) => URL.revokeObjectURL(url));
     objectUrls.clear();

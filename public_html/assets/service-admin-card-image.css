@@ -25,3 +25,21 @@
   margin-top: 5px;
   color: #66747c;
 }
+
+.card-image-choice .card-image-opacity {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  margin-top: 14px;
+  font-weight: 700;
+}
+
+.card-image-opacity output {
+  color: #df6547;
+}
+
+.card-image-opacity input {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0;
+}

@@ -21,6 +21,7 @@ if ($isNew) {
         'title_en' => '',
         'lead' => '',
         'intro' => '',
+        'card_image_opacity' => 40,
         'sections' => [],
         'published' => false,
         'content_revision' => 2,
@@ -64,6 +65,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'lead' => trim((string)($_POST['lead'] ?? '')),
             'intro' => trim((string)($_POST['intro'] ?? '')),
             'card_image' => $cardImage,
+            'card_image_opacity' => max(10, min(80, (int)($_POST['card_image_opacity'] ?? 40))),
             'sections' => $sections,
             'published' => isset($_POST['published']),
             'content_revision' => (int)($service['content_revision'] ?? 0),
@@ -93,7 +95,7 @@ $internalLinkOptions = internal_link_options();
   <link rel="stylesheet" href="assets/admin-menu-fix.css">
   <link rel="stylesheet" href="assets/service-admin.css?v=4">
   <link rel="stylesheet" href="assets/service-admin-fit.css?v=1">
-  <link rel="stylesheet" href="assets/service-admin-card-image.css?v=1">
+  <link rel="stylesheet" href="assets/service-admin-card-image.css?v=2">
   <link rel="stylesheet" href="assets/content-link-admin.css?v=1">
 </head>
 <body class="admin-shell">
@@ -116,6 +118,7 @@ $internalLinkOptions = internal_link_options();
           <option value="">背景写真を使用しない</option>
           <?php for($cardIndex=0;$cardIndex<5;$cardIndex++):$cardSection=$service['sections'][$cardIndex]??[];$isCardImage=!empty($cardSection['image'])&&($service['card_image']??'')===$cardSection['image'];?><option value="<?=$cardIndex?>" <?=$isCardImage?'selected':''?>>写真 <?=str_pad((string)($cardIndex+1),2,'0',STR_PAD_LEFT)?><?=$cardSection['image']??''?'（登録済み）':'（写真を同時に登録）'?></option><?php endfor;?>
         </select></label>
+        <label class="card-image-opacity">写真の濃さ <output data-card-image-opacity-output><?=max(10,min(80,(int)($service['card_image_opacity']??40)))?>%</output><input type="range" name="card_image_opacity" min="10" max="80" step="5" value="<?=max(10,min(80,(int)($service['card_image_opacity']??40)))?>" data-card-image-opacity></label>
         <small>「背景写真を使用しない」を選んで保存すると解除できます。</small>
       </fieldset>
       <label class="publication-toggle">
@@ -159,6 +162,6 @@ $internalLinkOptions = internal_link_options();
   </form>
   <datalist id="internal-link-options"><?php foreach($internalLinkOptions as $label=>$url):?><option value="<?=e($url)?>"><?=e($label)?></option><?php endforeach;?></datalist>
 </main>
-<script src="assets/service-admin-preview.js?v=1" defer></script>
+<script src="assets/service-admin-preview.js?v=2" defer></script>
 </body>
 </html>

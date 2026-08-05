@@ -9,14 +9,6 @@ $defaults = [
     'about_body' => "私たちは、飲食店オーナーの「こんなお店をつくりたい」という想いを形にする、店舗づくりのプロフェッショナルチームです。新規開業はもちろん、改装や設備の入れ替え、店舗の譲渡・買取まで、お店の状況やこれからの計画に寄り添いながら、最適な方法を一緒に考えます。\n\n現地調査、厨房レイアウト、CAD図面、厨房機器の選定、搬入・設置、内外装工事まで、店舗づくりに必要な工程を一つの窓口で対応します。複数の業者とのやり取りをできる限り減らし、計画全体を見渡しながら進めることで、開業準備にかかる負担や行き違いを抑えます。\n\n大切にしているのは、機器を販売することだけではなく、そのお店に本当に必要な環境をつくること。業態やメニュー、厨房の広さ、スタッフの動線、予算を丁寧に確認し、営業のしやすさや将来の設備更新まで見据えてご提案します。完成した瞬間だけでなく、その先も長く愛されるお店づくりを支えます。",
 ];
 $home = array_replace($defaults, load_content('home')[0] ?? []);
-$home = array_replace([
-    'about_kicker_en' => '',
-    'about_heading_en' => '',
-    'about_body_en' => '',
-    'about_kicker_zh_tw' => '',
-    'about_heading_zh_tw' => '',
-    'about_body_zh_tw' => '',
-], $home);
 $error = '';
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
@@ -27,12 +19,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             'about_kicker' => trim((string)($_POST['about_kicker'] ?? '')),
             'about_heading' => trim((string)($_POST['about_heading'] ?? '')),
             'about_body' => trim((string)($_POST['about_body'] ?? '')),
-            'about_kicker_en' => trim((string)($_POST['about_kicker_en'] ?? '')),
-            'about_heading_en' => trim((string)($_POST['about_heading_en'] ?? '')),
-            'about_body_en' => trim((string)($_POST['about_body_en'] ?? '')),
-            'about_kicker_zh_tw' => trim((string)($_POST['about_kicker_zh_tw'] ?? '')),
-            'about_heading_zh_tw' => trim((string)($_POST['about_heading_zh_tw'] ?? '')),
-            'about_body_zh_tw' => trim((string)($_POST['about_body_zh_tw'] ?? '')),
         ];
         if (in_array('', $home, true)) {
             throw new RuntimeException('すべての項目を入力してください。');
@@ -68,14 +54,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       <label>英字キャッチコピー<textarea name="about_kicker" rows="3" required><?= e($home['about_kicker']) ?></textarea><small>入力した改行を公開ページにも反映します。</small></label>
       <label>大見出し<textarea name="about_heading" rows="3" required><?= e($home['about_heading']) ?></textarea><small>読みやすい位置で改行してください。</small></label>
       <label>本文<textarea name="about_body" rows="10" required><?= e($home['about_body']) ?></textarea><small>空行を入れると段落が分かれます。通常の改行もそのまま反映されます。</small></label>
-      <h2>English</h2>
-      <label>English kicker<textarea name="about_kicker_en" rows="3"><?= e($home['about_kicker_en']) ?></textarea></label>
-      <label>English heading<textarea name="about_heading_en" rows="3"><?= e($home['about_heading_en']) ?></textarea></label>
-      <label>English body<textarea name="about_body_en" rows="10"><?= e($home['about_body_en']) ?></textarea></label>
-      <h2>繁體中文</h2>
-      <label>繁體中文・短句<textarea name="about_kicker_zh_tw" rows="3"><?= e($home['about_kicker_zh_tw']) ?></textarea></label>
-      <label>繁體中文・標題<textarea name="about_heading_zh_tw" rows="3"><?= e($home['about_heading_zh_tw']) ?></textarea></label>
-      <label>繁體中文・本文<textarea name="about_body_zh_tw" rows="10"><?= e($home['about_body_zh_tw']) ?></textarea></label>
       <button class="primary">ホーム基本情報を保存する</button>
     </form>
   </section>

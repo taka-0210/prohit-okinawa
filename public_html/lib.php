@@ -6,18 +6,27 @@ const APP_NAME = 'プロ厨房HIT沖縄';
 $requestHost = strtolower((string) preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? ''));
 $dataDirectory = __DIR__ . '/../storage';
 if ($requestHost === 'demo.prohit-okinawa.com') {
-    $searchDirectory = __DIR__;
-    for ($depth = 0; $depth < 4; $depth++) {
-        $candidate = $searchDirectory . '/storage-demo';
+    $configuredSessionPath = (string) ini_get('session.save_path');
+    if ($configuredSessionPath !== '') {
+        $candidate = dirname($configuredSessionPath, 2) . '/storage-demo';
         if (is_dir($candidate)) {
             $dataDirectory = $candidate;
-            break;
         }
-        $parentDirectory = dirname($searchDirectory);
-        if ($parentDirectory === $searchDirectory) {
-            break;
+    }
+    if ($dataDirectory === __DIR__ . '/../storage') {
+        $searchDirectory = __DIR__;
+        for ($depth = 0; $depth < 4; $depth++) {
+            $candidate = $searchDirectory . '/storage-demo';
+            if (is_dir($candidate)) {
+                $dataDirectory = $candidate;
+                break;
+            }
+            $parentDirectory = dirname($searchDirectory);
+            if ($parentDirectory === $searchDirectory) {
+                break;
+            }
+            $searchDirectory = $parentDirectory;
         }
-        $searchDirectory = $parentDirectory;
     }
 }
 define('DATA_DIR', $dataDirectory);

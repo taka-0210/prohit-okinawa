@@ -51,10 +51,66 @@ if ($requestedTab === 'works') redirect('works-admin.php');
 if ($requestedTab === 'news') redirect('news-admin.php');
 $tab = in_array($requestedTab, ['dashboard', 'hero', 'works', 'news'], true) ? $requestedTab : 'dashboard';
 $editId=(string)($_GET['edit']??''); $items=$tab==='dashboard'?[]:load_content($tab); $edit=null; foreach($items as $item)if(($item['id']??'')===$editId)$edit=$item;
-?><!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>管理画面｜<?= APP_NAME ?></title><link rel="stylesheet" href="assets/admin.css"></head><body class="admin-shell">
+$dashboardCounts = [];
+$inquiryChart = [];
+$inquiryChartMax = 1;
+if ($tab === 'dashboard') {
+    $dashboardCounts = [
+        'hero' => load_content('hero'),
+        'works' => load_content('works'),
+        'news' => load_content('news'),
+        'services' => load_content('services'),
+        'inquiries' => load_content('inquiries'),
+    ];
+    $monthStart = new DateTimeImmutable('first day of this month 00:00:00');
+    for ($offset = 5; $offset >= 0; $offset--) {
+        $month = $monthStart->modify("-{$offset} months");
+        $inquiryChart[$month->format('Y-m')] = ['label' => $month->format('n月'), 'count' => 0];
+    }
+    foreach ($dashboardCounts['inquiries'] as $inquiry) {
+        try {
+            $createdAt = new DateTimeImmutable((string)($inquiry['created_at'] ?? ''));
+        } catch (Throwable) {
+            continue;
+        }
+        $monthKey = $createdAt->format('Y-m');
+        if (isset($inquiryChart[$monthKey])) $inquiryChart[$monthKey]['count']++;
+    }
+    $inquiryChartMax = max(1, ...array_column($inquiryChart, 'count'));
+}
+?><!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>管理画面｜<?= APP_NAME ?></title><link rel="stylesheet" href="assets/admin.css"><link rel="stylesheet" href="assets/admin-dashboard.css?v=1"></head><body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav><a class="<?= $tab==='dashboard'?'active':'' ?>" href="admin.php">ダッシュボード</a><a class="<?= $tab==='hero'?'active':'' ?>" href="?tab=hero">HEROスライド</a><a class="<?= $tab==='works'?'active':'' ?>" href="?tab=works">施工事例</a><a class="<?= $tab==='news'?'active':'' ?>" href="?tab=news">最新情報</a><a href="inquiries-admin.php">お問い合わせ</a></nav><form method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="logout"><button class="text-button">ログアウト</button></form></aside>
 <main class="admin-main"><header><div><p>PRO KITCHEN HIT OKINAWA</p><h1><?= ['dashboard'=>'ダッシュボード','hero'=>'HEROスライド','works'=>'施工事例','news'=>'最新情報'][$tab] ?></h1></div><a href="index.php" target="_blank">公開サイトを確認 ↗</a></header><?php if(isset($_GET['saved'])):?><p class="success">保存しました。</p><?php endif;?><?php if($error):?><p class="error"><?=e($error)?></p><?php endif;?>
-<?php if($tab==='dashboard'): $counts=['hero'=>load_content('hero'),'works'=>load_content('works'),'news'=>load_content('news')]; ?><div class="stats"><?php foreach(['hero'=>'HERO','works'=>'施工事例','news'=>'最新情報'] as $key=>$label):?><a href="<?=$key==='works'?'works-admin.php':'?tab='.$key?>"><span><?=count($counts[$key])?></span><?=$label?><small>公開 <?=count(published($counts[$key]))?>件</small></a><?php endforeach;?></div><section class="panel"><h2>運用の中心</h2><ol><li>HERO画像と見え方を調整</li><li>地図と施工事例を登録</li><li>最新情報を公開・更新</li></ol><p>画像はJPEG・PNG・WebP、1枚25MBまで。容量・寸法の大きな画像は自動縮小します。</p></section>
+<?php if($tab==='dashboard'): ?>
+<div class="stats">
+  <?php foreach([
+      'hero'=>['HERO','?tab=hero'],
+      'works'=>['施工事例','works-admin.php'],
+      'news'=>['最新情報','news-admin.php'],
+      'services'=>['サービス','service-admin.php'],
+  ] as $key=>$meta): ?>
+  <a href="<?=e($meta[1])?>"><span><?=count($dashboardCounts[$key])?></span><?=$meta[0]?><small>公開 <?=count(published($dashboardCounts[$key]))?>件</small></a>
+  <?php endforeach; ?>
+  <?php $unreadInquiries=count(array_filter($dashboardCounts['inquiries'],fn(array $item):bool=>($item['status']??'new')==='new')); ?>
+  <a href="inquiries-admin.php"><span><?=count($dashboardCounts['inquiries'])?></span>お問い合わせ<small>未読 <?=$unreadInquiries?>件</small></a>
+</div>
+<section class="panel dashboard-operations">
+  <div>
+    <h2>運用の中心</h2>
+    <ol><li>HERO画像と見え方を調整</li><li>地図と施工事例を登録</li><li>最新情報を公開・更新</li></ol>
+    <p>画像はJPEG・PNG・WebP、1枚25MBまで。容量・寸法の大きな画像は自動縮小します。</p>
+  </div>
+  <div class="inquiry-chart">
+    <div class="inquiry-chart-heading"><h2>お問い合わせ数</h2><span>直近6か月</span></div>
+    <div class="inquiry-bars">
+      <?php foreach($inquiryChart as $month): $barHeight=max(3,(int)round($month['count']/$inquiryChartMax*100)); ?>
+      <div class="inquiry-bar-item" aria-label="<?=e($month['label'])?> <?=$month['count']?>件">
+        <strong><?=$month['count']?></strong><span style="--bar-height:<?=$barHeight?>%"></span><small><?=e($month['label'])?></small>
+      </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
 <?php else: ?><div class="toolbar"><p><?=count($items)?>件登録</p><a class="primary" href="?tab=<?=e($tab)?>&edit=new">＋ 新規追加</a></div><div class="content-grid"><section class="panel list"><table><thead><tr><th>タイトル</th><th>状態</th><th></th></tr></thead><tbody><?php foreach($items as $item):?><tr><td><strong><?=e($item['title'])?></strong><small><?=e($item['area']??$item['category']??'')?></small></td><td><span class="status <?=!empty($item['published'])?'live':''?>"><?=!empty($item['published'])?'公開':'下書き'?></span></td><td><a href="?tab=<?=e($tab)?>&edit=<?=e($item['id'])?>">編集</a></td></tr><?php endforeach;?></tbody></table></section>
 <?php if($editId): $v=$edit??[]; ?><section class="panel editor"><h2><?=$edit?'編集':'新規追加'?></h2><form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><input type="hidden" name="action" value="save"><input type="hidden" name="type" value="<?=e($tab)?>"><input type="hidden" name="id" value="<?=e($edit['id']??'')?>"><label>タイトル<input name="title" required value="<?=e($v['title']??'')?>"></label>
 <?php if($tab==='hero'):?><label>リード<textarea name="lead"><?=e($v['lead']??'')?></textarea></label><div class="fields"><label>背景色<input type="color" name="color" value="<?=e($v['color']??'#777b7d')?>"></label><label>オーバーレイ色<input type="color" name="overlay" value="<?=e($v['overlay']??'#102a43')?>"></label></div><label>オーバーレイ濃度 <output data-overlay-out><?=e($v['overlay_opacity']??35)?>%</output><input data-overlay type="range" name="overlay_opacity" min="0" max="100" value="<?=e($v['overlay_opacity']??35)?>"></label><label class="check"><input type="checkbox" name="dots" <?=!isset($v['dots'])||$v['dots']?'checked':''?>>ドット柄を表示</label><label>ドット濃度 <output data-dots-out><?=e($v['dots_opacity']??18)?>%</output><input data-dots type="range" name="dots_opacity" min="0" max="100" value="<?=e($v['dots_opacity']??18)?>"></label><div class="preview" data-preview style="--preview-bg:<?=e($v['color']??'#777b7d')?>;--preview-overlay:<?=e($v['overlay']??'#102a43')?>;--preview-opacity:<?=e((($v['overlay_opacity']??35)/100))?>"><strong><?=e($v['title']??'HEROプレビュー')?></strong></div>

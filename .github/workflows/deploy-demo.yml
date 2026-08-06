@@ -35,25 +35,3 @@ jobs:
           server-dir: demo/
           state-name: .ftp-deploy-sync-state.json
           log-level: standard
-
-      - name: Prepare public content data
-        shell: bash
-        run: |
-          mkdir -p .deploy/storage-content
-          find storage/content -maxdepth 1 -type f -name '*.json' \
-            ! -name 'inquiries.json' \
-            -exec cp '{}' .deploy/storage-content/ \;
-
-      - name: Deploy public content data by FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.XSERVER_FTP_HOST }}
-          username: ${{ secrets.XSERVER_STORAGE_FTP_USER }}
-          password: ${{ secrets.XSERVER_STORAGE_FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: ./.deploy/storage-content/
-          # This account must be restricted to the domain root so it can reach storage-demo.
-          server-dir: storage-demo/content/
-          state-name: .ftp-deploy-content-sync-state.json
-          log-level: standard

@@ -259,15 +259,27 @@
   height: 190px;
   overflow: hidden;
   background: #f5f3ed;
+  touch-action: pan-y;
 }
 
-.mini-project-map img {
+.mini-project-map > div.is-zoomed {
+  touch-action: none;
+}
+
+.mini-map-canvas {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.mini-map-canvas img {
   position: absolute;
   max-width: none;
   object-fit: fill;
 }
 
-.mini-project-map span {
+.mini-map-canvas span {
   position: absolute;
   width: 15px;
   height: 15px;
@@ -275,7 +287,7 @@
   border-radius: 50%;
   background: #e8623d;
   box-shadow: 0 2px 8px #06182766;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(var(--mini-map-zoom-inverse, 1));
 }
 
 .work-external-links {

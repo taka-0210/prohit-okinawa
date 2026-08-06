@@ -22,7 +22,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Deploy by FTPS
+      - name: Deploy by FTPS (attempt 1)
+        id: deploy_attempt_1
+        continue-on-error: true
+        timeout-minutes: 5
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.XSERVER_FTP_HOST }}
@@ -35,3 +38,49 @@ jobs:
           server-dir: demo/
           state-name: .ftp-deploy-sync-state.json
           log-level: standard
+          timeout: 20000
+
+      - name: Wait before retry
+        if: steps.deploy_attempt_1.outcome == 'failure'
+        run: sleep 10
+
+      - name: Deploy by FTPS (attempt 2)
+        id: deploy_attempt_2
+        if: steps.deploy_attempt_1.outcome == 'failure'
+        continue-on-error: true
+        timeout-minutes: 5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.XSERVER_FTP_HOST }}
+          username: ${{ secrets.XSERVER_FTP_USER }}
+          password: ${{ secrets.XSERVER_FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./public_html/
+          server-dir: demo/
+          state-name: .ftp-deploy-sync-state.json
+          log-level: standard
+          timeout: 20000
+
+      - name: Wait before final retry
+        if: steps.deploy_attempt_1.outcome == 'failure' && steps.deploy_attempt_2.outcome == 'failure'
+        run: sleep 10
+
+      - name: Deploy by FTPS (attempt 3)
+        if: steps.deploy_attempt_1.outcome == 'failure' && steps.deploy_attempt_2.outcome == 'failure'
+        timeout-minutes: 5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.XSERVER_FTP_HOST }}
+          username: ${{ secrets.XSERVER_FTP_USER }}
+          password: ${{ secrets.XSERVER_FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./public_html/
+          server-dir: demo/
+          state-name: .ftp-deploy-sync-state.json
+          log-level: standard
+          timeout: 20000
+
+      - name: Verify demo URL
+        run: curl --fail --silent --show-error --retry 3 --retry-delay 5 https://demo.prohit-okinawa.com/ > /dev/null

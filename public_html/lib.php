@@ -2,10 +2,25 @@
 declare(strict_types=1);
 
 const APP_NAME = 'プロ厨房HIT沖縄';
-// ローカルではプロジェクト直下、サブドメイン公開時は public_html の外へ保存する。
-define('DATA_DIR', basename(dirname(__DIR__)) === 'public_html'
-    ? dirname(__DIR__, 2) . '/storage-demo'
-    : __DIR__ . '/../storage');
+// デモではドキュメントルートの構成に依存せず、ドメイン直下の storage-demo を使う。
+$requestHost = strtolower((string) preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? ''));
+$dataDirectory = __DIR__ . '/../storage';
+if ($requestHost === 'demo.prohit-okinawa.com') {
+    $searchDirectory = __DIR__;
+    for ($depth = 0; $depth < 4; $depth++) {
+        $candidate = $searchDirectory . '/storage-demo';
+        if (is_dir($candidate)) {
+            $dataDirectory = $candidate;
+            break;
+        }
+        $parentDirectory = dirname($searchDirectory);
+        if ($parentDirectory === $searchDirectory) {
+            break;
+        }
+        $searchDirectory = $parentDirectory;
+    }
+}
+define('DATA_DIR', $dataDirectory);
 const UPLOAD_DIR = __DIR__ . '/uploads';
 const UPLOAD_IMAGE_MAX_EDGE = 1920;
 const UPLOAD_IMAGE_MAX_SOURCE_BYTES = 25 * 1024 * 1024;

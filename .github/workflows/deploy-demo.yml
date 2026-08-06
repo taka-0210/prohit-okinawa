@@ -44,7 +44,7 @@ jobs:
       - name: Deploy public content data by FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
-          server: ${{ secrets.XSERVER_STORAGE_FTP_HOST }}
+          server: ${{ secrets.XSERVER_FTP_HOST }}
           username: ${{ secrets.XSERVER_STORAGE_FTP_USER }}
           password: ${{ secrets.XSERVER_STORAGE_FTP_PASSWORD }}
           protocol: ftps

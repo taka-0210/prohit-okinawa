@@ -11,11 +11,13 @@
         "instagram_url": "https:\/\/www.instagram.com\/kariuta.onna\/",
         "website_url": "https:\/\/kariuta.owst.jp\/",
         "map_id": "map-d989d875fe",
-        "position_x": 41.9,
-        "position_y": 44,
+        "position_x": 21.8,
+        "position_y": 23.4,
         "images": [
             "uploads\/works\/work-48d5e0a985\/f0d04d5bae471203536c76b6.webp",
-            "uploads\/works\/work-48d5e0a985\/32e04f771e9f5a54f3aeda32.jpg"
+            "uploads\/works\/work-48d5e0a985\/32e04f771e9f5a54f3aeda32.jpg",
+            "uploads\/works\/work-48d5e0a985\/1b3186cc64c516d56abbd4f6.jpg",
+            "uploads\/works\/work-48d5e0a985\/51712a883f0414134a70c20d.jpg"
         ],
         "image": "uploads\/works\/work-48d5e0a985\/f0d04d5bae471203536c76b6.webp",
         "published": true
@@ -36,6 +38,7 @@
         "position_y": 43.1,
         "images": [
             "uploads\/works\/work-750dbcb7e4\/5277c1193fc369e13196073c.jpg",
+            "uploads\/works\/work-750dbcb7e4\/e879b18c642de2d9f12f6e8a.jpg",
             "uploads\/works\/work-750dbcb7e4\/23b14c5110ce644d9c950723.jpg",
             "uploads\/works\/work-750dbcb7e4\/8a5696a8df56221e7dfcd373.jpg",
             "uploads\/works\/work-750dbcb7e4\/680cf98f3cf9550ba3d2ae75.jpg"
@@ -61,12 +64,12 @@
             "uploads\/works\/work-157fd33f5f\/4ad0c94e812d7df7a169da3f.jpg",
             "uploads\/works\/work-157fd33f5f\/bbf02fa96ff9393c36340803.jpg",
             "uploads\/works\/work-157fd33f5f\/57ec6673a245a529fc226789.jpg",
-            "uploads\/works\/work-157fd33f5f\/99f0890c2bb489d3830d2324.jpg",
-            "uploads\/works\/work-157fd33f5f\/c316e4a8128cdcff3d81da95.jpg",
             "uploads\/works\/work-157fd33f5f\/56244bf6dc0be04e8390331e.jpg",
             "uploads\/works\/work-157fd33f5f\/32ed7f5380897ab6cf8c18a2.jpg",
             "uploads\/works\/work-157fd33f5f\/694e3f9fc645a12f3d71dee2.jpg",
-            "uploads\/works\/work-157fd33f5f\/a8bcb003d198cea5dc4a480c.jpg"
+            "uploads\/works\/work-157fd33f5f\/a8bcb003d198cea5dc4a480c.jpg",
+            "uploads\/works\/work-157fd33f5f\/004df56536cb11a03d731941.png",
+            "uploads\/works\/work-157fd33f5f\/0b53933801ca3b4bb3b20d0d.png"
         ],
         "image": "uploads\/works\/work-157fd33f5f\/4ad0c94e812d7df7a169da3f.jpg",
         "published": true
@@ -85,8 +88,14 @@
         "map_id": "map-61c656a701",
         "position_x": 45,
         "position_y": 57.9,
-        "images": [],
-        "image": "",
+        "images": [
+            "uploads\/works\/work-5d4cdd3429\/f3b0c7fa82770bde16dee3e0.png",
+            "uploads\/works\/work-5d4cdd3429\/dce40a1bbc391a2c931dc1f5.png",
+            "uploads\/works\/work-5d4cdd3429\/4afbf4083cacccebddc0ed01.png",
+            "uploads\/works\/work-5d4cdd3429\/4bbf53ec0b6fc4f550d31ca3.png",
+            "uploads\/works\/work-5d4cdd3429\/c06bf28975c4b1d78005023e.png"
+        ],
+        "image": "uploads\/works\/work-5d4cdd3429\/f3b0c7fa82770bde16dee3e0.png",
         "published": true
     },
     {
@@ -103,8 +112,12 @@
         "map_id": "map-61c656a701",
         "position_x": 45,
         "position_y": 57.9,
-        "images": [],
-        "image": "",
+        "images": [
+            "uploads\/works\/work-d6d6940b99\/b350ff609db20614fa717b9e.png",
+            "uploads\/works\/work-d6d6940b99\/d3de3f36d49b6e46f4b0797d.png",
+            "uploads\/works\/work-d6d6940b99\/e5be767b127e5c52214b7379.png"
+        ],
+        "image": "uploads\/works\/work-d6d6940b99\/b350ff609db20614fa717b9e.png",
         "published": true
     },
     {
@@ -121,8 +134,10 @@
         "map_id": "map-d622c3dae1",
         "position_x": 23.6,
         "position_y": 77.7,
-        "images": [],
-        "image": "",
+        "images": [
+            "uploads\/works\/work-2f655bc407\/8577c21c3630e91d17670268.webp"
+        ],
+        "image": "uploads\/works\/work-2f655bc407\/8577c21c3630e91d17670268.webp",
         "published": true
     },
     {
@@ -144,24 +159,6 @@
         "published": true
     },
     {
-        "id": "work-9adc32847a",
-        "title": "年中かき氷&パスタ専門店 sora 宮古島",
-        "category": "かき氷 パスタ",
-        "area": "宮古島",
-        "designer": "",
-        "address": "沖縄県宮古島市平良久貝 アマヒサ649番8 Hotel Seahorse 1F",
-        "google_maps_url": "https:\/\/maps.app.goo.gl\/MHDcYcDHcbmTZGS39",
-        "summary": "",
-        "instagram_url": "https:\/\/www.instagram.com\/sora_miyakojima\/",
-        "website_url": "",
-        "map_id": "map-61c656a701",
-        "position_x": 45,
-        "position_y": 57.9,
-        "images": [],
-        "image": "",
-        "published": true
-    },
-    {
         "id": "work-a5f4f2ecbb",
         "title": "VOLCANO",
         "category": "ステーキ",
@@ -175,8 +172,17 @@
         "map_id": "map-d989d875fe",
         "position_x": 44.9,
         "position_y": 41.9,
-        "images": [],
-        "image": "",
+        "images": [
+            "uploads\/works\/work-a5f4f2ecbb\/fc633e9209159509a81af91e.png",
+            "uploads\/works\/work-a5f4f2ecbb\/fea7c2aa54ac86e036a619e1.png",
+            "uploads\/works\/work-a5f4f2ecbb\/f56188a1a27dc7dd818f207d.png",
+            "uploads\/works\/work-a5f4f2ecbb\/d74eb990808f086b2bbc1dcf.png",
+            "uploads\/works\/work-a5f4f2ecbb\/cb40e2a31494b044d791e79a.png",
+            "uploads\/works\/work-a5f4f2ecbb\/2b02ba7e85513dd0fddabdee.png",
+            "uploads\/works\/work-a5f4f2ecbb\/59a5f458a0a178a1aca5b26d.png",
+            "uploads\/works\/work-a5f4f2ecbb\/95bd7d1426b6a9127f548742.png"
+        ],
+        "image": "uploads\/works\/work-a5f4f2ecbb\/fc633e9209159509a81af91e.png",
         "published": true
     }
 ]

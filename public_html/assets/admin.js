@@ -2,7 +2,7 @@ document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="asset
 document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="assets/admin-media-status.css">');
 document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="assets/admin-hero-fields.css">');
 document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="assets/admin-common-effects.css">');
-const adminNavScript=document.createElement('script');adminNavScript.src='assets/admin-nav.js?v=7';document.head.append(adminNavScript);
+const adminNavScript=document.createElement('script');adminNavScript.src='assets/admin-nav.js?v=9';document.head.append(adminNavScript);
 const q=s=>document.querySelector(s);
 const backgroundColorInput=q('input[name="color"]');
 if(backgroundColorInput){const fields=backgroundColorInput.closest('.fields'),label=backgroundColorInput.closest('label'),hidden=document.createElement('input');hidden.type='hidden';hidden.name='color';hidden.value=backgroundColorInput.value||'#14283d';fields?.append(hidden);label?.remove();fields?.classList.add('single-field')}

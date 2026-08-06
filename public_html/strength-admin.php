@@ -56,7 +56,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 </head>
 <body class="admin-shell">
 <aside><a class="admin-logo" href="admin.php">HIT OKINAWA<small>CONTENT MANAGEMENT</small></a><nav></nav></aside>
-<script src="assets/admin-nav.js?v=8" defer></script>
+<script src="assets/admin-nav.js?v=9" defer></script>
 <main class="admin-main">
   <header><div><p>PRO CHUBO HIT OKINAWA</p><h1>OUR STRENGTH管理</h1></div><a href="index.php#strength" target="_blank">公開ページを確認 ↗</a></header>
   <?php if(isset($_GET['saved'])):?><p class="success">OUR STRENGTHを保存しました。</p><?php endif;?>

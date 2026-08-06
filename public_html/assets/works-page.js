@@ -138,6 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
         pinchDistance = 0;
         panStart = null;
       });
+      ['gesturestart', 'gesturechange', 'gestureend'].forEach(type => {
+        viewport.addEventListener(type, event => {
+          event.preventDefault();
+        }, {passive: false});
+      });
       viewport.addEventListener('wheel', event => {
         if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
         event.preventDefault();

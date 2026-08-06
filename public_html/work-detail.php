@@ -44,7 +44,7 @@ $next = $workIndex !== null && $workIndex < count($works) - 1 ? $works[$workInde
   <link rel="stylesheet" href="assets/work-detail.css?v=9">
   <link rel="stylesheet" href="assets/site-width.css?v=1">
   <script src="assets/work-gallery.js?v=3" defer></script>
-  <script src="assets/work-detail-map.js?v=2" defer></script>
+  <script src="assets/work-detail-map.js?v=3" defer></script>
 </head>
 <body>
 <header class="works-header">

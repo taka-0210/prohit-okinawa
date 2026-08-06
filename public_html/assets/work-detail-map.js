@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const center = midpoint(event.touches);
         const rect = map.getBoundingClientRect();
-        const nextZoom = Math.max(1, Math.min(3, pinchZoom * distance(event.touches) / pinchDistance));
+        const nextZoom = Math.max(1, Math.min(5, pinchZoom * distance(event.touches) / pinchDistance));
         const ratio = nextZoom / zoom;
         const centerX = center.x - rect.left;
         const centerY = center.y - rect.top;

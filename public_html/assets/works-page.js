@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.touches.length === 2 && pinchDistance > 0) {
           event.preventDefault();
           const center = midpoint(event.touches);
-          const nextScale = Math.max(1, Math.min(3, pinchScale * distance(event.touches) / pinchDistance));
+          const nextScale = Math.max(1, Math.min(5, pinchScale * distance(event.touches) / pinchDistance));
           const ratio = nextScale / scale;
           x = center.x - viewport.getBoundingClientRect().left - ((center.x - viewport.getBoundingClientRect().left) - x) * ratio;
           y = center.y - viewport.getBoundingClientRect().top - ((center.y - viewport.getBoundingClientRect().top) - y) * ratio;
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = viewport.getBoundingClientRect();
         const pointerX = event.clientX - rect.left;
         const pointerY = event.clientY - rect.top;
-        const nextScale = Math.max(1, Math.min(3, scale * Math.exp(-event.deltaY * .0015)));
+        const nextScale = Math.max(1, Math.min(5, scale * Math.exp(-event.deltaY * .0015)));
         const ratio = nextScale / scale;
         x = pointerX - (pointerX - x) * ratio;
         y = pointerY - (pointerY - y) * ratio;

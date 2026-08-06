@@ -14,6 +14,9 @@ jobs:
   deploy:
     name: Upload public_html to demo
     runs-on: ubuntu-latest
+    environment:
+      name: demo
+      url: https://demo.prohit-okinawa.com/
     timeout-minutes: 15
     steps:
       - name: Checkout repository
